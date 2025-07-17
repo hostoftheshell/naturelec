@@ -1,11 +1,14 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 
+import netlify from "@astrojs/netlify";
 import react from "@astrojs/react";
-import markdoc from "@astrojs/markdoc";
 import keystatic from "@keystatic/astro";
+import markdoc from "@astrojs/markdoc";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://naturelec.fr",
   integrations: [react(), markdoc(), keystatic()],
+  adapter: netlify(),
 });
