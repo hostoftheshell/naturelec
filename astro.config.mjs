@@ -8,7 +8,7 @@ import markdoc from "@astrojs/markdoc";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://naturelec.fr",
+  site: "https://naturelec.netlify.app/",
   integrations: [react(), markdoc(), keystatic()],
   adapter: netlify(),
 });
