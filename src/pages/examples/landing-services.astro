@@ -1,0 +1,68 @@
+---
+import { getCollection, getEntry } from "astro:content";
+import About from "@/components/about/About.astro";
+import AboutMe from "@/components/about/AboutMe.astro";
+import AboutNumbers from "@/components/about/AboutNumbers.astro";
+import AboutNumbersImage from "@/components/about/AboutNumbersImage.astro";
+import Contact from "@/components/contact/Contact.astro";
+import ContactCentered from "@/components/contact/ContactCentered.astro";
+import FaqAccordionsSideImage from "@/components/faq/FaqAccordionsSideImage.astro";
+
+import FeatureLightboxMarquee from "@/components/feature/FeatureLightboxMarquee.astro";
+import WarrantySteps from "@/components/feature/WarrantySteps.astro";
+import HeroBackgroundImage from "@/components/hero/HeroBackgroundImage.astro";
+import LogoNaturelecMarquee from "@/components/logo-cloud/LogoNaturelecMarquee.astro";
+import ServicesCards from "@/components/services/ServicesCards.astro";
+import ServicesSwiper from "@/components/services/ServicesSwiper.astro";
+import TeamSwiper from "@/components/team/TeamSwiper.astro";
+import TestimonialsSideImage from "@/components/testimonials/TestimonialsSideImage.astro";
+import TestimonialsSwiperSide from "@/components/testimonials/TestimonialsSwiperSide.astro";
+import { getLocaleFromUrl } from "@/js/localeUtils";
+import { getTranslatedData } from "@/js/translationUtils";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// Move these declarations in the correct order:
+const currLocale = getLocaleFromUrl(Astro.url);
+const siteData = getTranslatedData("siteData", currLocale);
+
+const aboutEntries = await getCollection("about");
+const about = aboutEntries[0];
+
+const galleryEntries = await getCollection("homepageGallery");
+let galleryData = galleryEntries.find((entry) => entry.id === currLocale);
+if (!galleryData) {
+	galleryData = galleryEntries.find((entry) => entry.id === "fr");
+}
+
+// console.log("Debug info:");
+// console.log("Total gallery items:", galleryData?.data.sectionGallery?.length || 0);
+// console.log("Gallery entries:", galleryEntries);
+// console.log("Selected gallery data:", galleryData);
+---
+
+<BaseLayout title={siteData.title} description={siteData.description}>
+	<HeroBackgroundImage />
+
+	<!-- <AboutNumbersImage /> -->
+	<!-- <ServicesSwiper /> -->
+	<ServicesCards categorySlug="general-electricity" />
+	<ServicesCards categorySlug="renewable-energy" />
+	<About about={about} />
+	<LogoNaturelecMarquee />
+	<WarrantySteps />
+	<AboutMe />
+	{
+		galleryData && (
+			<FeatureLightboxMarquee
+				sectionBadge={galleryData.data.sectionBadge}
+				sectionTitle={galleryData.data.sectionTitle}
+				sectionDescription={galleryData.data.sectionDescription}
+				sectionGallery={galleryData.data.sectionGallery}
+			/>
+		)
+	}
+	<!-- <FeatureGalleryMarquee /> -->
+	<!-- <Contact /> -->
+	<ContactCentered />
+	<FaqAccordionsSideImage />
+</BaseLayout>

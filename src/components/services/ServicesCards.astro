@@ -1,0 +1,123 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+
+import Button from "@/components/button/Button.astro";
+import { filterCollectionByLanguage, getLocaleFromUrl } from "@/js/localeUtils";
+import { getLocalizedRoute, useTranslations } from "@/js/translationUtils";
+
+import ServiceCard from "./ServiceCard.astro";
+
+interface Props {
+	categorySlug?: string; // Optional prop to show services from specific category
+}
+
+const { categorySlug } = Astro.props;
+
+const currLocale = getLocaleFromUrl(Astro.url);
+
+// Get all services collection entries
+const allServicesEntries = await getCollection("services", ({ data }) => {
+	// filter out draft entries
+	return data.draft !== true;
+});
+
+// Filter by language
+const filteredEntries = filterCollectionByLanguage(
+	allServicesEntries,
+	currLocale,
+) as CollectionEntry<"services">[];
+
+// Separate categories and services
+const categories = filteredEntries.filter((entry) => entry.data.type === "category");
+const services = filteredEntries.filter((entry) => entry.data.type === "service");
+
+// Get the category data for title and description
+const categoryData = categorySlug
+	? categories.find((cat) => cat.id === categorySlug || cat.data.mappingKey === categorySlug)
+	: null;
+
+// Get services for the specified category or all services
+const relevantServices = categorySlug
+	? services.filter((service) => {
+			// Match by mappingKey primarily
+			return (
+				service.data.mappingKey === categorySlug ||
+				service.data.mappingKey === categoryData?.data.mappingKey
+			);
+		})
+	: services;
+
+// Order the services
+const orderedServices = relevantServices.sort((a, b) => {
+	// If both have order numbers, compare them
+	if (a.data.order !== undefined && b.data.order !== undefined) {
+		return a.data.order - b.data.order;
+	}
+	// If only a has an order, it should come first
+	if (a.data.order !== undefined) {
+		return -1;
+	}
+	// If only b has an order, it should come first
+	if (b.data.order !== undefined) {
+		return 1;
+	}
+	// If neither has an order, sort alphabetically by title
+	return a.data.title.localeCompare(b.data.title);
+});
+
+// Default content if no category is specified or when showing all services
+const defaultTitle = "Nos Services Électriques";
+const defaultDescription = categorySlug
+	? ""
+	: "Découvrez notre gamme complète de services électriques professionnels conçus pour répondre à tous vos besoins avec expertise et qualité.";
+
+const displayTitle = categoryData?.data.title || defaultTitle;
+const displayDescription = categoryData?.data.description || defaultDescription;
+---
+
+<section id="services-cards" class="my-12 py-12">
+	<div class="site-container" id="services-cards-trigger">
+		<h2
+			class="h2 mx-auto max-w-3xl text-center text-4xl"
+			data-aos="fade-left"
+			data-aos-trigger="#services-cards-trigger"
+		>
+			{displayTitle}
+		</h2>
+		{
+			displayDescription && (
+				<p
+					class="text-muted-foreground mx-auto mt-4 max-w-5xl text-center text-lg"
+					data-aos="fade-left"
+					data-aos-delay="0.1"
+					data-aos-trigger="#services-cards-trigger"
+				>
+					{displayDescription}
+				</p>
+			)
+		}
+
+		{
+			orderedServices.length > 0 ? (
+				<div class="mt-12 grid grid-cols-1 gap-x-8 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
+					{orderedServices.map((service, idx) => (
+						<ServiceCard
+							service={service}
+							data-aos="fade-left"
+							data-aos-delay={idx * 0.15}
+							data-aos-trigger="#services-cards-trigger"
+						/>
+					))}
+				</div>
+			) : (
+				<div class="mt-12 text-center">
+					<p class="text-muted-foreground">
+						{categorySlug
+							? `Aucun service trouvé pour la catégorie "${categorySlug}"`
+							: "Aucun service disponible"}
+					</p>
+				</div>
+			)
+		}
+	</div>
+</section>

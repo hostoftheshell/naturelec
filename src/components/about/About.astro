@@ -1,0 +1,62 @@
+---
+import { Image } from "astro:assets";
+import { getLocaleFromUrl } from "@/js/localeUtils";
+const currLocale = getLocaleFromUrl(Astro.url);
+
+import type { CollectionEntry } from "astro:content";
+interface Props {
+	about: CollectionEntry<"about">;
+}
+const { about, ...rest } = Astro.props as Props;
+---
+
+<section id="about" class="site-container overflow-hidden py-16 md:py-20">
+	<div class="grid gap-10 md:grid-cols-2">
+		<div class="w-full">
+			<div class="md:max-w-lg">
+				<div class="flex">
+					<h2
+						data-aos="fade-right"
+						data-aos-trigger="#about-naturelec"
+						data-aos-delay="0.12"
+						class="h2 mb-10"
+					>
+						{about.data.title}
+					</h2>
+				</div>
+				<div class="mb-8 flex flex-col gap-8" id="about-naturelec">
+					<div
+						class="w-full"
+						data-aos="fade-right"
+						data-aos-trigger="#about-naturelec"
+						data-aos-delay="0.25"
+					>
+						<div class="flex flex-wrap gap-8">
+							<div class="flex-1">
+								<div class="md:max-w-s">
+									<p class="text-muted-foreground text-lg whitespace-pre-line">
+										{about.data.description}
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="overflow-hidden">
+			{
+				about.data.image && (
+					<Image
+						src={about.data.image}
+						class="h-full w-auto rounded-xl object-cover"
+						alt={about.data.imageAlt || "About image"}
+						loading="lazy"
+						width={600}
+						densities={[1.5, 2]}
+					/>
+				)
+			}
+		</div>
+	</div>
+</section>

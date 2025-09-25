@@ -1,0 +1,16 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+
+import { getLocaleFromUrl } from "@/js/localeUtils";
+
+import { getTranslatedData } from "@/js/translationUtils";
+
+const currLocale = getLocaleFromUrl(Astro.url);
+const siteData = getTranslatedData("siteData", currLocale);
+---
+
+<a class="primary-focus text-foreground flex items-center text-xl" href={"/"}>
+	<Icon name="tabler/star" class="text-accent size-10 p-2" aria-hidden="true" />
+	<p class="">{siteData.name}</p>
+</a>

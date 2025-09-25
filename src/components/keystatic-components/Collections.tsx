@@ -1,0 +1,888 @@
+/**
+ * * Keystatic Collection definitions that can take in languages and return the correct content
+ * This makes it much cleaner to work with content in different languages
+ */
+
+import { collection, fields, singleton } from "@keystatic/core";
+
+import ComponentBlocks from "@/components/keystatic-components/ComponentBlocks";
+import { locales } from "@/config/siteSettings.json";
+
+import Label from "../starwind/label";
+/**
+ * * Services collection
+ * This gets used by Astro Content Collections, so if you update this, you'll need to update the Astro Content Collections schema
+ */
+const Services = (locale: (typeof locales)[number]) =>
+	collection({
+		label: `Services (${locale.toUpperCase()})`,
+		slugField: "title",
+		path: `src/data/services/${locale}/*/`,
+		columns: ["title", "type", "order"],
+		entryLayout: "content",
+		format: { contentField: "content" },
+		schema: {
+			title: fields.slug({
+				name: { label: "Title" },
+				slug: {
+					label: "Slug optimisé pour le référencement",
+					description: "Ne changez jamais le slug une fois qu’un fichier est publié !",
+				},
+			}),
+			type: fields.select({
+				label: "Type de contenu",
+				description: "S'agit-il d'une catégorie de service ou d'un service individuel ?",
+				options: [
+					{ label: "Catégorie de services", value: "category" },
+					{ label: "Service individuel", value: "service" },
+				],
+				defaultValue: "service",
+			}),
+			description: fields.text({
+				label: "Description",
+				multiline: true,
+				validation: { isRequired: true },
+			}),
+			order: fields.number({
+				label: "Ordre d'affichage",
+				description: "Les nombres inférieurs apparaissent en premier",
+			}),
+			draft: fields.checkbox({
+				label: "Brouillon",
+				description: "Définir comme brouillon pour se cacher du site public",
+			}),
+			mappingKey: fields.text({
+				label: "Clé de correspondance",
+				description: "Utilisée pour relier le service à sa catégorie",
+			}),
+			// Fields for individual services
+			titleLong: fields.text({
+				label: "Titre étendu",
+				description: "Titre plus long (utilisé uniquement pour les services individuels)",
+			}),
+			category: fields.text({
+				label: "Category Slug",
+				description:
+					"Le slug de la catégorie à laquelle appartient ce service (uniquement pour les services)",
+				validation: { isRequired: false },
+			}),
+			icon: fields.text({
+				label: "Icône",
+				description: "Nom de l'icône (utilisé uniquement pour les services individuels)",
+			}),
+
+			image: fields.image({
+				label: "Image du service",
+				description: "Image principale (utilisée uniquement pour les services individuels)",
+				publicPath: "../",
+			}),
+			content: fields.mdx({
+				label: "Contenu",
+				options: {
+					bold: true,
+					italic: true,
+					strikethrough: true,
+					code: true,
+					heading: [2, 3, 4, 5, 6],
+					blockquote: true,
+					orderedList: true,
+					unorderedList: true,
+					table: true,
+					link: true,
+					image: {
+						directory: `src/data/services/${locale}/`,
+						publicPath: "../",
+					},
+					divider: true,
+					codeBlock: true,
+				},
+				components: {
+					Admonition: ComponentBlocks.Admonition,
+				},
+			}),
+		},
+	});
+/**
+ * Home Page About Me singleton
+ */
+const homePageAboutMe = (locale: (typeof locales)[number]) =>
+	singleton({
+		label: `Page d'Accueil - À propos de Benoît Gillet (${locale.toUpperCase()})`,
+		path: `src/data/homepage/aboutMe/${locale}/index`,
+		format: { data: "yaml" },
+		schema: {
+			sectionTitle: fields.text({
+				label: "Titre de la section",
+				description: "Titre principal de la section 'À propos de Benoît Gillet'",
+				validation: { isRequired: true },
+			}),
+			sectionDescription: fields.text({
+				label: "Description de la section",
+				description: "Description détaillée de la section 'À propos de Benoît Gillet'",
+				validation: { isRequired: true },
+			}),
+			image: fields.image({
+				label: "Image de la section",
+				description: "Image principale affichée à côté de 'À propos de Benoît Gillet'",
+				directory: "src/assets/images/homepage/aboutme",
+				publicPath: "@images/homepage/aboutMe/",
+				validation: { isRequired: true },
+			}),
+			imageAlt: fields.text({
+				label: "Texte alternatif de l'image",
+				description: "Texte alternatif pour l'image de la section 'À propos de Benoît Gillet'",
+				validation: {
+					isRequired: false,
+					length: { max: 125 },
+				},
+			}),
+			facts: fields.array(
+				fields.object({
+					icon: fields.text({
+						label: "Icône d'illustration",
+						description: "Nom de l'icône d'illustration",
+					}),
+					title: fields.text({ label: "Titre" }),
+					description: fields.text({ label: "Description" }),
+				}),
+				{
+					label: "Faits à savoir",
+					itemLabel: (props) =>
+						`${props.fields.icon.value}\n` +
+						`• ${props.fields.title.value}\n` +
+						`• ${props.fields.description.value}`,
+				},
+			),
+		},
+	});
+
+/**
+ * Home Page About singleton
+ */
+const homePageAbout = (locale: (typeof locales)[number]) =>
+	singleton({
+		label: `Page d'Accueil - À propos (${locale.toUpperCase()})`,
+		path: `src/data/homepage/about/${locale}/index`,
+		format: { data: "yaml" },
+		schema: {
+			title: fields.text({
+				label: "Titre de la section",
+				description: "Le titre principal de la section 'À propos'",
+				validation: { isRequired: true },
+			}),
+			description: fields.text({
+				label: "Description",
+				description: "Brève description de l'entreprise/personne",
+				multiline: true,
+				validation: {
+					isRequired: true,
+					length: { min: 10, max: 500 },
+				},
+			}),
+			image: fields.image({
+				label: "Image de la section",
+				description: "Image principale affichée à côté des 'À propos'",
+				directory: "src/assets/images/homepage/about",
+				publicPath: "@images/about/",
+				validation: { isRequired: false },
+			}),
+			imageAlt: fields.text({
+				label: "Texte alternatif de l'image",
+				description: "Texte alternatif pour l'image de la section 'À propos'",
+				validation: {
+					isRequired: false,
+					length: { max: 125 },
+				},
+			}),
+			mappingKey: fields.text({
+				label: "Mapping Key",
+				description: "This is used to map entries between languages.",
+				validation: { isRequired: false },
+			}),
+		},
+	});
+
+/**
+ * Home Page Warranties singleton
+ */
+const homePageWarranties = (locale: (typeof locales)[number]) =>
+	singleton({
+		label: `Page d'Accueil - Garanties & engagements (${locale.toUpperCase()})`,
+		path: `src/data/homepage/warranty/${locale}/index`,
+		format: { data: "yaml" },
+		schema: {
+			sectionTitle: fields.text({
+				label: "Titre de la section",
+				description: "Titre principal de la section 'Garanties & engagements'",
+				validation: { isRequired: true },
+			}),
+			buttonText: fields.text({
+				label: "Libellé du bouton",
+				description: "Texte du bouton d'appel à l'action",
+				validation: { isRequired: true },
+			}),
+			buttonHref: fields.text({
+				label: "Lien du bouton",
+				description: "URL ou chemin du bouton (par exemple, /contact)",
+				validation: { isRequired: true },
+			}),
+			sectionImage: fields.image({
+				label: "Image de la section",
+				description: "Image principale affichée à côté des 'Garanties & engagements'",
+				directory: "src/assets/images/homepage/warranty",
+				publicPath: "@images/homepage/warranty/",
+				validation: { isRequired: true },
+			}),
+			sectionImageAlt: fields.text({
+				label: "Texte alternatif de l'image",
+				description: "Texte alternatif pour l'image de la section 'Garanties & engagements'",
+				validation: {
+					isRequired: true,
+					length: { max: 125 },
+				},
+			}),
+			mappingKey: fields.text({
+				label: "Mapping Key",
+				description: "Used to map entries between languages",
+				validation: { isRequired: false },
+			}),
+			sectionList: fields.array(
+				fields.object({
+					title: fields.text({ label: "Titre" }),
+					description: fields.text({ label: "Description" }),
+				}),
+				{
+					label: "Liste des Garanties & Engagements",
+					itemLabel: (props) => `${props.fields.title.value} - ${props.fields.description.value}`,
+				},
+			),
+		},
+	});
+
+/**
+ * * Media gallery collection for homePageFeatureLightboxMarquee
+ *
+ */
+const homePageLightboxMarquee = (locale: (typeof locales)[number]) =>
+	singleton({
+		label: `Media Gallery (${locale.toUpperCase()})`,
+		path: `src/data/homepage/gallery/${locale}/index`,
+		format: { data: "yaml" },
+		schema: {
+			sectionBadge: fields.text({
+				label: "Badge",
+				description: "Accroche ou mot-clé mis en avant au-dessus du titre.",
+			}),
+			sectionTitle: fields.text({
+				label: "Titre",
+				description: "Titre principal de la section.",
+			}),
+			sectionDescription: fields.text({
+				label: "Description",
+				description:
+					"Texte explicatif et/ou introductif qui détaille la section galerie et apporte du contexte.",
+			}),
+
+			sectionGallery: fields.array(
+				fields.object({
+					image: fields.image({
+						label: "Image",
+						directory: "src/assets/images/homepage/gallery",
+						publicPath: "@images/homepage/gallery",
+					}),
+					alt: fields.text({
+						label: "Texte alternatif de l'image",
+						description:
+							"Déscription du contenu de l'image. Utilisé par les lecteurs d'écrans et les moteurs de recherche.",
+					}),
+					caption: fields.text({
+						label: "Légende de l'image",
+						description:
+							"Texte affiché avec l'image en mode plein écran pour fournir un contexte ou un complément d'information.",
+					}),
+					role: fields.select({
+						label: "Role",
+						options: [
+							{ label: "Haut", value: "top" },
+							{ label: "Milieu", value: "middle" },
+							{ label: "Bas", value: "bottom" },
+						],
+						defaultValue: "top",
+					}),
+				}),
+				{
+					label: "Gallery Items",
+					itemLabel: (props) => `${props.fields.role.value} : ${props.fields.caption.value}`,
+				},
+			),
+		},
+	});
+
+/**
+ * * Blog posts collection
+ * This gets used by Astro Content Collections, so if you update this, you'll need to update the Astro Content Collections schema
+ */
+const Blog = (locale: (typeof locales)[number]) =>
+	collection({
+		label: `Blog (${locale.toUpperCase()})`,
+		slugField: "title",
+		path: `src/data/blog/${locale}/*/`,
+		columns: ["title", "pubDate"],
+		entryLayout: "content",
+		format: { contentField: "content" },
+		schema: {
+			title: fields.slug({
+				name: { label: "Title" },
+				slug: {
+					label: "SEO-friendly slug",
+					description: "Never change the slug once a file is published!",
+				},
+			}),
+			description: fields.text({
+				label: "Description",
+				validation: { isRequired: true, length: { min: 1, max: 160 } },
+			}),
+			draft: fields.checkbox({
+				label: "Draft",
+				description: "Set this post as draft to prevent it from being published.",
+			}),
+
+			authors: fields.array(
+				fields.relationship({
+					label: "Post author",
+					collection: `authors`,
+					// authors field in keystatic.config.tsx must match the collection name here (like "authorsEN" or "authorsFR")
+					// collection: `authors${locale.toUpperCase()}`,
+				}),
+				{
+					label: "Authors",
+					validation: { length: { min: 1 } },
+					itemLabel: (props) => props.value || "Please select an author",
+				},
+			),
+			pubDate: fields.date({ label: "Publish Date" }),
+			updatedDate: fields.date({
+				label: "Updated Date",
+				description: "If you update this post at a later date, put that date here.",
+			}),
+			mappingKey: fields.text({
+				label: "Mapping Key",
+				description: "This is used to map entries between languages.",
+			}),
+			heroImage: fields.image({
+				label: "Hero Image",
+				publicPath: "../",
+				validation: { isRequired: true },
+			}),
+			categories: fields.array(fields.text({ label: "Category" }), {
+				label: "Categories",
+				description: "This is NOT case sensitive.",
+				itemLabel: (props) => props.value,
+				validation: { length: { min: 1 } },
+			}),
+			tags: fields.array(fields.text({ label: "Tag" }), {
+				label: "Tags",
+				itemLabel: (props) => props.value,
+				validation: { length: { min: 1 } },
+			}),
+			content: fields.mdx({
+				label: "Content",
+				options: {
+					bold: true,
+					italic: true,
+					strikethrough: true,
+					code: true,
+					heading: [2, 3, 4, 5, 6],
+					blockquote: true,
+					orderedList: true,
+					unorderedList: true,
+					table: true,
+					link: true,
+					image: {
+						directory: `src/data/blog/${locale}/`,
+						publicPath: "../",
+						// schema: {
+						//   title: fields.text({
+						//     label: "Caption",
+						//     description:
+						//       "The text to display under the image in a caption.",
+						//   }),
+						// },
+					},
+					divider: true,
+					codeBlock: true,
+				},
+				components: {
+					Admonition: ComponentBlocks.Admonition,
+				},
+			}),
+		},
+	});
+
+/**
+ * * Authors collection
+ * This gets used by Astro Content Collections, so if you update this, you'll need to update the Astro Content Collections schema
+ */
+const Authors = (locale: (typeof locales)[number] | "") =>
+	collection({
+		label: `Authors ${locale === "" ? "" : `(${locale.toUpperCase()})`} `,
+		slugField: "name",
+		path: `src/data/authors/${locale}/*/`,
+		columns: ["name"],
+		entryLayout: "content",
+		format: { contentField: "bio" },
+		schema: {
+			name: fields.slug({
+				name: {
+					label: "Name",
+					validation: {
+						isRequired: true,
+					},
+				},
+				slug: {
+					label: "SEO-friendly slug",
+					description: "Never change the slug once this file is published!",
+				},
+			}),
+			avatar: fields.image({
+				label: "Author avatar",
+				publicPath: "../",
+				validation: { isRequired: true },
+			}),
+			about: fields.text({
+				label: "About",
+				description: "A short bio about the author",
+				validation: { isRequired: true },
+			}),
+			email: fields.text({
+				label: "The author's email",
+				description: "This must look something like `you@email.com`",
+				validation: { isRequired: true },
+			}),
+			authorLink: fields.url({
+				label: "Author Website or Social Media Link",
+				validation: { isRequired: true },
+			}),
+			bio: fields.mdx({
+				label: "Full Bio",
+				description: "The author's full bio",
+				options: {
+					bold: true,
+					italic: true,
+					strikethrough: true,
+					code: true,
+					heading: [2, 3, 4],
+					blockquote: true,
+					orderedList: true,
+					unorderedList: true,
+					table: false,
+					link: true,
+					image: {
+						directory: "src/data/authors/",
+						publicPath: "../",
+					},
+					divider: true,
+					codeBlock: false,
+				},
+			}),
+		},
+	});
+
+/**
+ * * Careers collection
+ * This gets used by Astro Content Collections, so if you update this, you'll need to update the Astro Content Collections schema
+ */
+const Careers = (locale: (typeof locales)[number]) =>
+	collection({
+		label: `Careers (${locale.toUpperCase()})`,
+		slugField: "title",
+		path: `src/data/careers/${locale}/*/`,
+		columns: ["title", "category", "location", "type", "publishDate"],
+		entryLayout: "content",
+		format: { contentField: "content" },
+		schema: {
+			title: fields.slug({
+				name: { label: "Title" },
+				slug: {
+					label: "SEO-friendly slug",
+					description: "Never change the slug once a file is published!",
+				},
+			}),
+			category: fields.text({
+				label: "Category",
+				validation: { isRequired: true },
+			}),
+			location: fields.text({
+				label: "Location",
+				validation: { isRequired: true },
+			}),
+			type: fields.select({
+				label: "Job Type",
+				options: [
+					{ label: "Full-time", value: "Full-time" },
+					{ label: "Part-time", value: "Part-time" },
+					{ label: "Contract", value: "Contract" },
+					{ label: "Remote", value: "Remote" },
+				],
+				defaultValue: "Full-time",
+			}),
+			description: fields.text({
+				label: "Short Description",
+				multiline: true,
+				validation: { isRequired: true },
+			}),
+			requirements: fields.array(fields.text({ label: "Requirement" }), {
+				label: "Requirements",
+				itemLabel: (props) => props.value,
+				validation: { length: { min: 1 } },
+			}),
+			applicationUrl: fields.url({
+				label: "Application URL",
+				validation: { isRequired: true },
+			}),
+			publishDate: fields.date({
+				label: "Publish Date",
+				validation: { isRequired: true },
+			}),
+			draft: fields.checkbox({
+				label: "Draft",
+				description: "Set this job posting as draft to prevent it from being published.",
+			}),
+			mappingKey: fields.text({
+				label: "Mapping Key",
+				description: "This is used to map entries between languages.",
+			}),
+			content: fields.mdx({
+				label: "Content",
+				options: {
+					bold: true,
+					italic: true,
+					strikethrough: true,
+					code: true,
+					heading: [2, 3, 4, 5, 6],
+					blockquote: true,
+					orderedList: true,
+					unorderedList: true,
+					table: true,
+					link: true,
+					image: {
+						directory: `src/data/careers/${locale}/`,
+						publicPath: "../",
+					},
+					divider: true,
+					codeBlock: true,
+				},
+				components: {
+					Admonition: ComponentBlocks.Admonition,
+				},
+			}),
+		},
+	});
+
+/**
+ * * Projects collection
+ * This gets used by Astro Content Collections, so if you update this, you'll need to update the Astro Content Collections schema
+ */
+const Projects = (locale: (typeof locales)[number]) =>
+	collection({
+		label: `Projects (${locale.toUpperCase()})`,
+		slugField: "title",
+		path: `src/data/projects/${locale}/*/`,
+		columns: ["title", "completionDate"],
+		entryLayout: "content",
+		format: { contentField: "content" },
+		schema: {
+			title: fields.slug({
+				name: { label: "Title" },
+				slug: {
+					label: "SEO-friendly slug",
+					description: "Never change the slug once a file is published!",
+				},
+			}),
+			description: fields.text({
+				label: "Description",
+				validation: { isRequired: true },
+			}),
+			image: fields.image({
+				label: "Project Image",
+				publicPath: "../",
+				validation: { isRequired: true },
+			}),
+			technologies: fields.array(fields.text({ label: "Technology" }), {
+				label: "Technologies Used",
+				itemLabel: (props) => props.value,
+				validation: { length: { min: 1 } },
+			}),
+			demoUrl: fields.url({
+				label: "Demo URL",
+				description: "Link to live demo if available",
+			}),
+			githubUrl: fields.url({
+				label: "GitHub URL",
+				description: "Link to GitHub repository",
+			}),
+			completionDate: fields.date({
+				label: "Completion Date",
+				validation: { isRequired: true },
+			}),
+			keyFeatures: fields.array(fields.text({ label: "Feature" }), {
+				label: "Key Features",
+				itemLabel: (props) => props.value,
+				validation: { length: { min: 1 } },
+			}),
+			order: fields.number({
+				label: "Display Order",
+				description: "Optional: Use to control the order of projects (lower numbers appear first)",
+			}),
+			mappingKey: fields.text({
+				label: "Mapping Key",
+				description: "This is used to map entries between languages.",
+			}),
+			draft: fields.checkbox({
+				label: "Draft",
+				description: "Set this project as draft to prevent it from being published.",
+			}),
+			content: fields.mdx({
+				label: "Content",
+				options: {
+					bold: true,
+					italic: true,
+					strikethrough: true,
+					code: true,
+					heading: [2, 3, 4, 5, 6],
+					blockquote: true,
+					orderedList: true,
+					unorderedList: true,
+					table: true,
+					link: true,
+					image: {
+						directory: `src/data/projects/${locale}/`,
+						publicPath: "../",
+					},
+					divider: true,
+					codeBlock: true,
+				},
+				components: {
+					Admonition: ComponentBlocks.Admonition,
+				},
+			}),
+		},
+	});
+
+/**
+ * * Resume singleton
+ */
+const Resume = (locale: (typeof locales)[number]) =>
+	singleton({
+		label: `Resume (${locale.toUpperCase()})`,
+		path: `src/data/resume/${locale}/resume/index`,
+		format: { data: "json" },
+		schema: {
+			diplomas: fields.array(
+				fields.object({
+					title: fields.text({ label: "Title" }),
+					school: fields.text({ label: "School" }),
+					year: fields.number({ label: "Year" }),
+				}),
+				{
+					label: "Diplomas",
+					itemLabel: (props) =>
+						`${props.fields.title.value} - ${props.fields.school.value} (${props.fields.year.value})`,
+				},
+			),
+			certifications: fields.array(
+				fields.object({
+					title: fields.text({ label: "Title" }),
+					year: fields.number({ label: "Year" }),
+				}),
+				{
+					label: "Certifications",
+					itemLabel: (props) => `${props.fields.title.value} (${props.fields.year.value})`,
+				},
+			),
+			experience: fields.array(
+				fields.object({
+					title: fields.text({ label: "Title" }),
+					company: fields.text({ label: "Company" }),
+					companyImage: fields.image({
+						label: "Company Logo",
+						publicPath: "./index/",
+						validation: { isRequired: true },
+					}),
+					dates: fields.text({ label: "Dates" }),
+					location: fields.text({ label: "Location" }),
+					responsibilities: fields.array(fields.text({ label: "Responsibility" }), {
+						label: "Responsibilities",
+						itemLabel: (props) => props.value,
+					}),
+				}),
+				{
+					label: "Experience",
+					itemLabel: (props) => `${props.fields.title.value} at ${props.fields.company.value}`,
+				},
+			),
+			hardSkills: fields.array(
+				fields.object({
+					skill: fields.text({ label: "Skill" }),
+					percentage: fields.number({
+						label: "Level (%)",
+						description: "Enter a percentage between 0 and 100",
+						validation: {
+							min: 0,
+							max: 100,
+							isRequired: true,
+						},
+					}),
+				}),
+				{
+					label: "Hard Skills",
+					itemLabel: (props) => `${props.fields.skill.value} - ${props.fields.percentage.value}%`,
+				},
+			),
+			softSkills: fields.array(
+				fields.object({
+					skill: fields.text({
+						label: "Skill",
+						validation: { isRequired: true },
+					}),
+					icon: fields.text({
+						label: "Icon Image",
+						description: "Copy in your favorite emoji like 👑",
+						validation: { isRequired: true },
+					}),
+				}),
+				{
+					label: "Soft Skills",
+					itemLabel: (props) => props.fields.skill.value,
+				},
+			),
+			languages: fields.array(
+				fields.object({
+					language: fields.text({
+						label: "Language",
+						validation: { isRequired: true },
+					}),
+					level: fields.number({
+						label: "Proficiency Level",
+						description: "Enter a value between 1 (basic) and 10 (native)",
+						validation: {
+							min: 1,
+							max: 10,
+							isRequired: true,
+						},
+					}),
+				}),
+				{
+					label: "Languages",
+					itemLabel: (props) =>
+						`${props.fields.language.value} - Level ${props.fields.level.value}/10`,
+				},
+			),
+			tools: fields.array(
+				fields.object({
+					name: fields.text({
+						label: "Tool Name",
+						validation: { isRequired: true },
+					}),
+					category: fields.text({
+						label: "Category",
+						description: "Tool category (e.g., 'Development', 'Design', 'DevOps')",
+						validation: { isRequired: true },
+					}),
+					image: fields.image({
+						label: "Tool Logo",
+						description: "Logo or icon for the tool",
+						publicPath: "./index/",
+						validation: { isRequired: true },
+					}),
+					link: fields.url({
+						label: "Tool Website",
+						description: "Link to the tool's official website",
+						validation: { isRequired: true },
+					}),
+				}),
+				{
+					label: "Tools & Technologies",
+					itemLabel: (props) => `${props.fields.name.value} (${props.fields.category.value})`,
+				},
+			),
+			mappingKey: fields.text({
+				label: "Mapping Key",
+				description: "This is used to map entries between languages.",
+			}),
+		},
+	});
+
+/**
+ * * Other Pages collection
+ * For items like legal pages, about pages, etc.
+ * This gets used by Astro Content Collections, so if you update this, you'll need to update the Astro Content Collections schema
+ */
+const OtherPages = (locale: (typeof locales)[number]) =>
+	collection({
+		label: `Other Pages (${locale.toUpperCase()})`,
+		slugField: "title",
+		path: `src/data/otherPages/${locale}/*/`,
+		columns: ["title"],
+		entryLayout: "content",
+		format: { contentField: "content" },
+		schema: {
+			title: fields.slug({
+				name: { label: "Title" },
+				slug: {
+					label: "SEO-friendly slug",
+					description: "Never change the slug once a file is published!",
+				},
+			}),
+			description: fields.text({
+				label: "Description",
+				validation: { isRequired: true, length: { min: 1, max: 160 } },
+			}),
+			draft: fields.checkbox({
+				label: "Draft",
+				description: "Set this page as draft to prevent it from being published.",
+			}),
+			mappingKey: fields.text({
+				label: "Mapping Key",
+				description: "This is used to map entries between languages.",
+			}),
+			content: fields.mdx({
+				label: "Page Contents",
+				options: {
+					bold: true,
+					italic: true,
+					strikethrough: true,
+					code: true,
+					heading: [2, 3, 4, 5, 6],
+					blockquote: true,
+					orderedList: true,
+					unorderedList: true,
+					table: true,
+					link: true,
+					image: {
+						directory: `src/data/otherPages/${locale}/`,
+						publicPath: "../",
+					},
+					divider: true,
+					codeBlock: true,
+				},
+				components: {
+					Admonition: ComponentBlocks.Admonition,
+				},
+			}),
+		},
+	});
+
+export default {
+	homePageAbout,
+	homePageAboutMe,
+	homePageWarranties,
+	homePageLightboxMarquee,
+	Blog,
+	Authors,
+	Services,
+	Careers,
+	Projects,
+	Resume,
+	OtherPages,
+};

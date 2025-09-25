@@ -1,0 +1,92 @@
+---
+import { Icon } from "astro-icon/components";
+import { logos } from "@/data/logos";
+import Badge from "@/components/badge/Badge.astro";
+
+// Filter active logos
+const activeLogos = logos.filter((logo) => logo.active);
+---
+
+<section id="logo-cloud-marquee" class="overflow-clip pt-16 pb-16 md:pt-20 md:pb-20">
+	<div class="mx-auto mb-16 max-w-5xl px-6">
+		<div class="mx-auto max-w-5xl text-center" data-aos="fade-left" id="code-toggle-trigger">
+			<Badge>Marques partenaires</Badge>
+			<p class="description mt-4 text-pretty">
+				Naturelec collabore exclusivement avec des marques réputées, gages de qualité et de
+				fiabilité pour vous garantir des équipements performants et une installation durable :
+			</p>
+		</div>
+	</div>
+
+	<div class="relative mx-auto max-w-[1400px] overflow-hidden px-4">
+		<!-- left fade-out -->
+		<div
+			class="from-background absolute top-0 -left-px z-10 h-full w-[10%] bg-gradient-to-r from-20% to-transparent"
+		>
+		</div>
+		<!-- right fade-out -->
+		<div
+			class="to-background absolute top-0 -right-px z-10 h-full w-[10%] bg-gradient-to-r from-transparent to-80%"
+		>
+		</div>
+
+		<div class="logo-marquee relative flex overflow-hidden">
+			<!-- First marquee section -->
+			<div class="animate-marquee flex min-w-full shrink-0 items-center justify-around">
+				{
+					activeLogos.map((logo) =>
+						logo.url ? (
+							<a href={logo.url} target="_blank" rel="noopener noreferrer" class="logo-link">
+								<Icon name={logo.icon} class="logo" aria-label={logo.name} />
+							</a>
+						) : (
+							<Icon name={logo.icon} class="logo" aria-label={logo.name} />
+						),
+					)
+				}
+			</div>
+
+			<!-- Duplicate for seamless loop -->
+			<div
+				aria-hidden="true"
+				class="animate-marquee flex min-w-full shrink-0 items-center justify-around"
+			>
+				{
+					activeLogos.map((logo) =>
+						logo.url ? (
+							<a href={logo.url} target="_blank" rel="noopener noreferrer" class="logo-link">
+								<Icon name={logo.icon} class="logo" aria-label={logo.name} />
+							</a>
+						) : (
+							<Icon name={logo.icon} class="logo" aria-label={logo.name} />
+						),
+					)
+				}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.logo {
+		margin-inline: auto;
+		height: calc(var(--spacing) * 10);
+		width: auto;
+		opacity: 60%;
+		transition-property: opacity;
+		transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+		transition-duration: var(--tw-duration, var(--default-transition-duration));
+
+		&:hover {
+			opacity: 100%;
+		}
+	}
+
+	.logo-link {
+		display: inline-block;
+
+		&:hover .logo {
+			opacity: 100%;
+		}
+	}
+</style>

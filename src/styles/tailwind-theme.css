@@ -1,0 +1,203 @@
+/**
+ * * Tailwind theme settings
+ * 
+ * These are in a separate file so it can be imported into <style> tags in .astro components
+ */
+@theme {
+	/* primary colors. Can generate with https://uicolors.app/create, then convert to oklch with https://oklch.com/ */
+	--color-primary-50: var(--color-blue-50);
+	--color-primary-100: var(--color-blue-100);
+	--color-primary-200: var(--color-blue-200);
+	--color-primary-300: var(--color-blue-300);
+	--color-primary-400: var(--color-blue-400);
+	--color-primary-500: var(--color-blue-500);
+	--color-primary-600: var(--color-blue-600);
+	--color-primary-700: var(--color-blue-700);
+	--color-primary-800: var(--color-blue-800);
+	--color-primary-900: var(--color-blue-900);
+	--color-primary-950: var(--color-blue-950);
+
+	/* base colors */
+	--color-base-50: var(--color-neutral-50);
+	--color-base-100: var(--color-neutral-100);
+	--color-base-200: var(--color-neutral-200);
+	--color-base-300: var(--color-neutral-300);
+	--color-base-400: var(--color-neutral-400);
+	--color-base-500: var(--color-neutral-500);
+	--color-base-600: var(--color-neutral-600);
+	--color-base-700: var(--color-neutral-700);
+	--color-base-800: var(--color-neutral-800);
+	--color-base-900: var(--color-neutral-900);
+	--color-base-950: var(--color-neutral-950);
+
+	/* light theme */
+	--light-bg-pri: oklch(0.9623 0.0184 86.15);
+	--light-bg-sec: oklch(0.712 0.1238 134.27 / 17%);
+	--light-bg-ter: oklch(0.9679 0.0226 98.64);
+	--light-bg-forth: oklch(0.9452 0.0795 103.15);
+	--light-brand-pri: oklch(0.5446 0.1707 255.29);
+	--light-brand-sec: oklch(0.5304 0.1134 134.88);
+	--light-btn-pri: oklch(0.6017 0.193 263.25);
+	--light-btn-pri-hover: oklch(0.5168 0.1592 262.58);
+	--light-btn-sec: oklch(0.5304 0.1134 134.88);
+	--light-btn-sec-hover: oklch(0.4705 0.1081 143.62);
+	--light-cta: oklch(0.6048 0.216559 257.2136);
+	--light-cta-hover: oklch(0.4675 0.1639 256.7);
+	--light-danger: oklch(0.4424 0.1038 21.46);
+	--light-danger-bg: oklch(0.9525 0.0207 13.86);
+	--light-link: oklch(0.4257 0.0904 143.38);
+	--light-link-hover: oklch(0.4188 0.1272 263.21);
+	--light-success: oklch(0.4384 0.0551 121.69);
+	--light-success-bg: oklch(0.9659 0.0296 139.1);
+	--light-text-btn: oklch(98.5% 0 0);
+	--light-text-info: oklch(0.4257 0.0904 143.38);
+	--light-text-pri: oklch(0.4054 0 0);
+	--light-text-sec: oklch(0.5032 0 0);
+	--light-warning: oklch(0.4544 0.0583 71.26);
+	--light-warning-bg: oklch(0.9854 0.0291 98.47);
+
+	/* dark theme */
+	--dark-bg-pri: oklch(0.2771 0.0126 243.31);
+	--dark-bg-sec: oklch(0.3456 0.0139 226.4);
+	--dark-border: oklch(0.5187 0.008 247.98);
+	--dark-brand-pri: oklch(0.6757 0.1464 252.54);
+	--dark-brand-pri-dimmed: oklch(0.7365 0.1166 251.78);
+	--dark-brand-sec: oklch(0.7565 0.1306 134.02);
+	--dark-btn-pri: oklch(0.7487 0.0631 185.5);
+	--dark-btn-pri-hover: oklch(0.6692 0.0566 209.48);
+	--dark-btn-sec: oklch(0.7732 0.0906 125.78);
+	--dark-cta: oklch(0.7147 0.1729 50.75);
+	--dark-cta-hover: oklch(0.5813 0.1371 49.94);
+	--dark-danger: oklch(0.8155 0.079 12.03);
+	--dark-danger-dimmed: oklch(0.8605 0.0587 11.77);
+	--dark-link: oklch(0.7772 0.0817 152.07);
+	--dark-link-dimmed: oklch(0.8518 0.0532 152.76);
+	--dark-link-dimmed-hover: oklch(0.8372 0.026 202.77);
+	--dark-link-hover: oklch(0.7709 0.0368 200.83);
+	--dark-success: oklch(0.7738 0.1145 145.39);
+	--dark-success-dimmed: oklch(0.8569 0.0703 146.18);
+	--dark-text-btn: oklch(0.2178 0 0);
+	--dark-text-info: oklch(0.9518 0.0394 110.24);
+	--dark-text-pri: oklch(0.8299 0.0405 86.05);
+	--dark-text-pri-dimmed: oklch(0.8419 0.0375 86.17);
+	--dark-text-sec: oklch(0.7829 0.0112 136.57);
+	--dark-text-sec-dimmed: oklch(0.8373 0.0093 134.88);
+	--dark--warning: oklch(0.7696 0.158192 95.5662);
+	--dark--warning-dimmed: oklch(0.8868 0.182186 95.3305);
+
+	/* other theme settings */
+	--button-transition-properties:
+		box-shadow, color, background-color, border-color, text-decoration-color, fill, stroke;
+
+	/* layout settings */
+	--breakpoint-xs: 400px;
+	--breakpoint-sm: 640px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+	--breakpoint-2xl: 1536px;
+
+	/* font families */
+	--font-fallback:
+		"-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica", "Arial", "sans-serif",
+		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	--font-sans: "Barlow", var(--font-fallback);
+	--font-heading: "Albert Sans Variable", var(--font-fallback);
+	--font-serif:
+		"Iowan Old Style", "Apple Garamond", "Baskerville", "Times New Roman", "Droid Serif", "Times",
+		"Source Serif Pro", "serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	--font-mono:
+		"SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace";
+
+	/* starwind and cosmic themes animations */
+	--animate-accordion-down: accordion-down 0.2s ease-out;
+	--animate-accordion-up: accordion-up 0.2s ease-out;
+	--animate-marquee: marquee 70s linear infinite;
+	--animate-marquee-testimonials: marquee-testimonials 60s linear infinite;
+	--animate-marquee-gallery: marquee-gallery 100s linear infinite;
+
+	@keyframes accordion-down {
+		from {
+			height: 0;
+		}
+		to {
+			height: var(--starwind-accordion-content-height);
+		}
+	}
+
+	@keyframes accordion-up {
+		from {
+			height: var(--starwind-accordion-content-height);
+		}
+		to {
+			height: 0;
+		}
+	}
+
+	@keyframes marquee {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(calc(-100% - 8rem));
+		}
+	}
+
+	@keyframes marquee-testimonials {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(calc(-100% - 1.5rem));
+		}
+	}
+
+	@keyframes marquee-gallery {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(calc(-100% - 2.5rem));
+		}
+	}
+}
+
+/* "inline" option is necessary here https://github.com/tailwindlabs/tailwindcss/discussions/15122#discussioncomment-11356322 */
+@theme inline {
+	/* starwind utilities setup */
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--color-bgter: var(--bgter);
+	--color-bgforth: var(--bgforth);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-info: var(--info);
+	--color-info-foreground: var(--info-foreground);
+	--color-success: var(--success);
+	--color-success-foreground: var(--success-foreground);
+	--color-warning: var(--warning);
+	--color-warning-foreground: var(--warning-foreground);
+	--color-error: var(--error);
+	--color-error-foreground: var(--error-foreground);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-outline: var(--outline);
+
+	--radius-xs: calc(var(--radius) - 0.375rem);
+	--radius-sm: calc(var(--radius) - 0.25rem);
+	--radius-md: calc(var(--radius) - 0.125rem);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 0.25rem);
+	--radius-2xl: calc(var(--radius) + 0.5rem);
+	--radius-3xl: calc(var(--radius) + 1rem);
+}

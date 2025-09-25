@@ -1,0 +1,84 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Button from "@/components/button/Button.astro";
+import { getLocaleFromUrl } from "@/js/localeUtils";
+
+const currLocale = getLocaleFromUrl(Astro.url);
+
+const allWarrantyEntries = await getCollection("warranty");
+const warrantyEntry = allWarrantyEntries[0];
+
+const sectionTitle =
+	warrantyEntry?.data.sectionTitle || "Naturelec, électricien dans l'Yonne, vous garantit :";
+const buttonText = warrantyEntry?.data.buttonText || "Découvrir nos garanties";
+const buttonHref = warrantyEntry?.data.buttonHref || "/contact";
+const sectionImage = warrantyEntry?.data.sectionImage;
+const sectionImageAlt = warrantyEntry?.data.sectionImageAlt || "warranty guarantees";
+
+const featureData = [...(warrantyEntry?.data.sectionList || [])];
+---
+
+<section id="feature-steps" class="bg-bgforth overflow-hidden py-16 md:py-20">
+	<div class="site-container">
+		<div class="grid gap-10 md:grid-cols-2">
+			<div class="w-full">
+				<div class="md:max-w-2xl">
+					<div class="flex">
+						<h2 class="h2 mb-10 text-4xl">{sectionTitle}</h2>
+					</div>
+					<div class="mb-8 flex flex-col gap-8" id="feature-steps-trigger">
+						{
+							featureData.map((feature, idx) => (
+								<div
+									class="w-full"
+									data-aos="fade-right"
+									data-aos-trigger="#feature-steps-trigger"
+									data-aos-delay={0.25 * idx}
+								>
+									<div class="flex flex-wrap gap-8">
+										<div class="w-auto">
+											<div class="text-accent bg-bgter mb-3 flex size-12 items-center justify-center rounded-full border text-lg font-bold">
+												<span class="">{idx + 1}</span>
+											</div>
+										</div>
+										<div class="flex-1">
+											<div class="md:max-w-xs">
+												<h3 class="mb-3 text-xl font-medium tracking-tight">{feature.title}</h3>
+												<p class="text-muted-foreground font-medium">{feature.description}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							))
+						}
+					</div>
+					<div
+						class="mx-auto flex justify-start"
+						data-aos="fade-right"
+						data-aos-trigger="#feature-steps-trigger"
+						data-aos-delay={0.75}
+					>
+						<Button variant="primary" arrow="right" href={buttonHref}>
+							{buttonText}
+						</Button>
+					</div>
+				</div>
+			</div>
+			<div class="overflow-hidden">
+				{
+					sectionImage && (
+						<Image
+							src={sectionImage}
+							class="h-full w-auto rounded-xl border object-cover"
+							alt={sectionImageAlt}
+							loading="lazy"
+							width={550}
+							densities={[1.5, 2]}
+						/>
+					)
+				}
+			</div>
+		</div>
+	</div>
+</section>

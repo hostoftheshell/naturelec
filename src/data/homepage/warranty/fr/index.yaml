@@ -1,0 +1,12 @@
+sectionTitle: "Naturelec, électricien dans l'Yonne, vous garantit :"
+buttonText: Découvrir nos garanties
+buttonHref: /contact
+sectionImage: "@images/warranty/sectionImage.jpg"
+sectionImageAlt: un coffret électrique moderne
+sectionList:
+  - title: Conformité et sécurité
+    description: Le respect des normes électriques et de la réglementation en vigueur
+  - title: Respect des engagements
+    description: Le respect des délais convenus
+  - title: Suivi personnalisé
+    description: Un service après-vente et une maintenance de qualité

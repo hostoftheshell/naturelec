@@ -1,0 +1,55 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Icon } from "astro-icon/components";
+
+import Button from "@/components/button/Button.astro";
+import { getLocaleFromUrl } from "@/js/localeUtils";
+import { getLocalizedRoute, getTranslatedData, useTranslations } from "@/js/translationUtils";
+
+interface Props {
+	service: CollectionEntry<"services">;
+}
+
+const { service, ...rest } = Astro.props as Props;
+
+const currLocale = getLocaleFromUrl(Astro.url);
+
+// Runtime type guard and early return for categories
+if (service.data.type !== "service") {
+	throw new Error(
+		`ServiceCard component should only receive services, not categories. Received: ${service.id}`,
+	);
+}
+
+// After the type guard, TypeScript knows service.data.type is "service"
+// so service.data.icon will be available
+---
+
+<div class="flex" {...rest}>
+	<div
+		class="service-card hover:border-service-accent bg-muted flex flex-col justify-between rounded-lg border p-8 transition-colors md:rounded-xl"
+		data-service-type={service.data.mappingKey || service.id}
+	>
+		<div>
+			<div class="relative mr-auto flex items-center">
+				<Icon
+					name={service.data.icon}
+					class="ml-[-6px] h-[68px] w-[68px]"
+					style="color: var(--service-accent);"
+				/>
+			</div>
+			<h3 class="font-heading mt-6 text-xl font-semibold">
+				{service.data.title}
+			</h3>
+			<p class="text-muted-foreground mt-4 text-base">{service.data.description}</p>
+		</div>
+		<Button
+			variant="primary"
+			arrow="right"
+			href={`/services/${service.id}`}
+			class="service-button mt-6 py-2 pl-4 font-medium"
+		>
+			En Savoir Plus
+		</Button>
+	</div>
+</div>

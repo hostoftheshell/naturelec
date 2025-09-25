@@ -1,0 +1,23 @@
+sectionTitle: Benoit Gillet, fondateur de Naturelec
+sectionDescription: >-
+  Électricien passionné depuis plusieurs années, spécialisé dans les solutions
+  qui allient performance énergétique et respect de l'environnement pour créer
+  des installations durables et optimisées.
+image: '@images/homepage/aboutme/image.jpg'
+imageAlt: portrait de Benoît Gillet
+facts:
+  - icon: aboutme/naturelec-lightning
+    title: Courant fort
+    description: >-
+      Installation et maintenance d'équipements électriques haute puissance avec
+      une expertise reconnue
+  - icon: aboutme/naturelec-led
+    title: Courant faible
+    description: >-
+      Réalisation de réseaux informatiques et systèmes de sécurité pour un
+      habitat connecté
+  - icon: aboutme/naturelec-plug_leaf
+    title: Énergies renouvelables
+    description: >-
+      Conception de systèmes photovoltaïques et autonomes pour un avenir
+      énergétique durable
