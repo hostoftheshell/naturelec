@@ -103,6 +103,45 @@ const Services = (locale: (typeof locales)[number]) =>
 		},
 	});
 /**
+ * Hero Section singleton
+ */
+const heroSection = (locale: (typeof locales)[number]) =>
+	singleton({
+		label: `Page d'Accueil - Hero (${locale.toUpperCase()})`,
+		path: `src/data/homepage/hero/${locale}/index`,
+		format: { data: "yaml" },
+		schema: {
+			heroTitlePrefix: fields.text({
+				label: "Texte avant le nom du site",
+				description: "Ex : Sécurité, proximité et solutions durables :",
+				validation: { isRequired: true },
+			}),
+			heroTitleSuffix: fields.text({
+				label: "Texte après le nom du site",
+				description: "Ex : votre électricien proche de Vermenton",
+			}),
+			heroDescription: fields.text({
+				label: "Synthèse de présentation de l'entreprise Naturelec",
+				description: "Un pitch court et percutant",
+				multiline: true,
+				validation: {
+					isRequired: true,
+					length: { min: 10, max: 500 },
+				},
+			}),
+			buttonText: fields.text({
+				label: "Libellé du bouton",
+				description: "Texte du bouton d'appel à l'action",
+				validation: { isRequired: true },
+			}),
+			buttonHref: fields.text({
+				label: "Lien du bouton",
+				description: "URL ou chemin du bouton (par exemple, /contact)",
+				validation: { isRequired: true },
+			}),
+		},
+	});
+/**
  * Home Page About Me singleton
  */
 const homePageAboutMe = (locale: (typeof locales)[number]) =>
@@ -151,6 +190,53 @@ const homePageAboutMe = (locale: (typeof locales)[number]) =>
 						`${props.fields.icon.value}\n` +
 						`• ${props.fields.title.value}\n` +
 						`• ${props.fields.description.value}`,
+				},
+			),
+		},
+	});
+/**
+ * Home Page Location singleton
+ */
+const homePageLocation = (locale: (typeof locales)[number]) =>
+	singleton({
+		label: `Page d'Accueil - Zone d'intervention (${locale.toUpperCase()})`,
+		path: `src/data/homepage/location/${locale}/index`,
+		format: { data: "yaml" },
+		schema: {
+			sectionBadge: fields.text({
+				label: "Badge",
+				description: "Accroche ou mot-clé mis en avant au-dessus du titre.",
+			}),
+			sectionTitle: fields.text({
+				label: "Titre de la section",
+				description: "Le titre principal de la section 'Zone d'intervention'",
+				validation: { isRequired: true },
+			}),
+			sectionDescription: fields.text({
+				label: "Description",
+				description: "Brève description de la zone d'intervention",
+				multiline: true,
+				validation: {
+					isRequired: true,
+					length: { min: 10, max: 500 },
+				},
+			}),
+			buttonText: fields.text({
+				label: "Libellé du bouton",
+				description: "Texte du bouton d'appel à l'action",
+				validation: { isRequired: true },
+			}),
+			buttonHref: fields.text({
+				label: "Lien du bouton",
+				description: "URL ou chemin du bouton (par exemple, /contact)",
+				validation: { isRequired: true },
+			}),
+			locations: fields.array(
+				fields.text({ label: "Ajouter une entrée à la liste des communes déservies" }),
+				{
+					label: "Liste des communes déservies",
+					itemLabel: (props) => props.value,
+					validation: { length: { min: 1 } },
 				},
 			),
 		},
@@ -874,10 +960,12 @@ const OtherPages = (locale: (typeof locales)[number]) =>
 	});
 
 export default {
+	heroSection,
 	homePageAbout,
 	homePageAboutMe,
 	homePageWarranties,
 	homePageLightboxMarquee,
+	homePageLocation,
 	Blog,
 	Authors,
 	Services,

@@ -116,6 +116,40 @@ export const homePageLightboxMarquee = defineCollection({
 		}),
 });
 
+// Home Page Location
+const homePageLocationCollection = defineCollection({
+	loader: glob({
+		pattern: "**/index.{yaml,yml}",
+		base: "./src/data/homepage/location",
+	}),
+	schema: () =>
+		z.object({
+			sectionBadge: z.string(),
+			sectionTitle: z.string(),
+			sectionDescription: z.string().min(10).max(500),
+			buttonText: z.string(),
+			buttonHref: z.string(),
+			locations: z.array(z.string()).min(1),
+			mappingKey: z.string().optional(),
+		}),
+});
+
+// Home Page hero
+const homePageHeroCollection = defineCollection({
+	loader: glob({
+		pattern: "**/index.{yaml,yml}",
+		base: "./src/data/homepage/hero",
+	}),
+	schema: () =>
+		z.object({
+			heroTitlePrefix: z.string(),
+			heroTitleSuffix: z.string(),
+			heroDescription: z.string().min(10).max(500),
+			buttonText: z.string(),
+			buttonHref: z.string(),
+		}),
+});
+
 // services collection - handles both categories and individual services
 const servicesCollection = defineCollection({
 	loader: glob({ pattern: "**/[^_]*{md,mdx}", base: "./src/data/services" }),
@@ -285,4 +319,6 @@ export const collections = {
 	careers: careersCollection,
 	resume: resumeCollection,
 	codeToggles: codeToggleCollection,
+	location: homePageLocationCollection,
+	hero: homePageHeroCollection,
 };

@@ -103,6 +103,7 @@
 		"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	--font-sans: "Barlow", var(--font-fallback);
 	--font-heading: "Albert Sans Variable", var(--font-fallback);
+	--font-logo: "Barlow Condensed", var(--font-fallback);
 	--font-serif:
 		"Iowan Old Style", "Apple Garamond", "Baskerville", "Times New Roman", "Droid Serif", "Times",
 		"Source Serif Pro", "serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -180,6 +181,7 @@
 	--color-muted: var(--muted);
 	--color-muted-foreground: var(--muted-foreground);
 	--color-accent: var(--accent);
+	--color-accent-sec: var(--accent-sec);
 	--color-accent-foreground: var(--accent-foreground);
 	--color-info: var(--info);
 	--color-info-foreground: var(--info-foreground);

@@ -48,6 +48,7 @@
 
 		/* Accents used throughout the site */
 		--accent: var(--light-brand-pri);
+		--accent-sec: var(--light-brand-sec);
 		--accent-foreground: var(--light-text-btn);
 
 		/* Various component colors for variant="info" */
@@ -146,10 +147,20 @@
 		@apply cursor-pointer;
 	}
 }
+/* Custom popup styling */
+.leaflet-container .naturelec-popup .leaflet-popup-content-wrapper {
+	background-color: var(--background);
+	color: var(--foreground);
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
 
+.leaflet-popup-tip {
+	background: var(--background);
+}
 @layer components {
 	.site-container {
-		@apply mx-auto max-w-[86rem] px-4;
+		@apply mx-auto max-w-[86rem] px-4 md:max-2xl:pr-24;
 	}
 
 	/* styles navbar links */
@@ -206,6 +217,11 @@
 		color: var(--dark-text-sec);
 	}
 
+	/* logo text styling used throughout the components*/
+	.logo-text {
+		@apply font-logo text-xl;
+		font-weight: 500;
+	}
 	/* various H1 styling used throughout the components */
 	.h1 {
 		@apply font-heading text-4xl leading-tight font-semibold lg:text-5xl;

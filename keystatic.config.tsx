@@ -42,10 +42,12 @@ export default config({
 	},
 
 	singletons: {
+		heroSection: Collections.heroSection("fr"),
 		resumeFR: Collections.Resume("fr"),
 		aboutFR: Collections.homePageAbout("fr"),
 		aboutMeFR: Collections.homePageAboutMe("fr"),
 		WarrantyFR: Collections.homePageWarranties("fr"),
 		homePageLightboxMarqueeFR: Collections.homePageLightboxMarquee("fr"),
+		homePageLocationFR: Collections.homePageLocation("fr"),
 	},
 });

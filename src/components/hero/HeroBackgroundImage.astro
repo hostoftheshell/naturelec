@@ -1,6 +1,7 @@
 ---
-import doctorImage from "@images/hero/doctor_2-min.png";
-import backgroundImage from "@images/hero/hero_bg_3-min.png";
+import leafImage from "@images/hero/naturelec-hero.svg";
+import backgroundImage from "@images/hero/naturelec-hero_bg.png";
+
 import { Image } from "astro:assets";
 
 import Button from "@/components/button/Button.astro";
@@ -8,31 +9,45 @@ import { getLocaleFromUrl } from "@/js/localeUtils";
 import { getLocalizedRoute, getTranslatedData, useTranslations } from "@/js/translationUtils";
 
 const currLocale = getLocaleFromUrl(Astro.url);
+const siteData = getTranslatedData("siteData", currLocale);
+const siteName = siteData.name;
+const firstPart = siteName.substring(0, 5);
+const secondPart = siteName.substring(5);
+
+import type { CollectionEntry } from "astro:content";
+interface Props {
+	hero: CollectionEntry<"hero">;
+}
+const { hero, ...rest } = Astro.props as Props;
 ---
 
 <section
-	class="relative isolate mx-auto flex w-full items-center overflow-hidden"
+	class="relative isolate mx-auto flex w-full items-center overflow-y-visible"
 	aria-label="Hero section"
 >
 	<Image
 		src={backgroundImage}
-		alt="Blue healthcare background"
+		alt="Green energy background"
 		class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover dark:brightness-25"
 		aria-hidden="true"
 	/>
 
 	<div
-		class="site-container relative flex h-full min-h-full grow flex-col items-center justify-between gap-8 md:flex-row"
+		class="site-container relative flex h-full min-h-full grow flex-col items-center justify-between gap-8 overflow-y-visible md:flex-row"
 	>
 		<div id="hero-shapes-trigger" class="max-w-2xl flex-1 pt-30 md:py-44 lg:pb-50">
 			<h1
 				data-aos-trigger="#hero-shapes-trigger"
 				data-aos="fade-right"
-				class="text-foreground leading-tighter font-heading mb-4 text-4xl font-semibold md:text-5xl xl:text-7xl"
+				class="text-foreground leading-tighter font-heading mb-4 text-4xl font-semibold md:text-5xl"
 			>
-				We Help Patients Live Longer,
-				<span class="text-accent">Healthier </span>
-				Lives
+				{hero.data.heroTitlePrefix}{" "}
+
+				<br /><span class="text-accent text-pretty">{firstPart}</span><span class="text-accent-sec"
+					>{secondPart}</span
+				>
+
+				{hero.data.heroTitleSuffix}{" "}
 			</h1>
 			<p
 				data-aos-trigger="#hero-shapes-trigger"
@@ -40,33 +55,43 @@ const currLocale = getLocaleFromUrl(Astro.url);
 				data-aos-delay=".2"
 				class="text-muted-foreground mb-8 text-lg md:text-xl"
 			>
-				Experience exceptional healthcare with our dedicated team of medical professionals. We're
-				committed to your well-being and providing personalized care.
+				{hero.data.heroDescription}{" "}
 			</p>
 			<Button
 				type="button"
-				href={`#contact`}
+				href={hero.data.buttonHref}
 				variant="primary"
 				class="md:text-lg"
-				aria-label="Book An Appointment"
+				aria-label="Ouvrir la page de contact"
 				data-aos-trigger="#hero-shapes-trigger"
 				data-aos="fade-right"
 				data-aos-delay=".4"
 			>
-				Book An Appointment
+				{hero.data.buttonText}
 			</Button>
 		</div>
 		<div
-			class="xs:h-[360px] mt-auto flex h-[300px] justify-end md:h-[500px] md:pt-20 lg:h-[600px] xl:h-[700px]"
+			class="xs:h-[360px] flex h-[300px] justify-end md:-mb-50 md:h-[500px] md:pt-20 lg:h-[600px] xl:h-[780px]"
 		>
 			<Image
-				src={doctorImage}
+				src={leafImage}
 				alt="Smiling healthcare professional with stethoscope"
-				class="m-0 h-full w-auto object-contain p-0 align-bottom"
-				width={700}
+				class=".sidebar-offset m-0 h-full w-auto object-contain align-bottom"
+				width={440}
+				height={780}
 				densities={[1.5, 2]}
 				loading="eager"
+				data-aos-trigger="#hero-shapes-trigger"
+				data-aos="fade-right"
+				data-aos-delay=".1"
 			/>
 		</div>
 	</div>
 </section>
+<style>
+	@media (min-width: 1024px) and (max-width: 1280px) {
+		.sidebar-offset {
+			padding-right: clamp(0rem, calc(4rem - ((100vw - 768px) * 4 / 768)), 4rem);
+		}
+	}
+</style>

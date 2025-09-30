@@ -8,9 +8,15 @@ import { getTranslatedData } from "@/js/translationUtils";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 const siteData = getTranslatedData("siteData", currLocale);
+
+const siteName = siteData.name;
+const firstPart = siteName.substring(0, 5); // "NATUR"
+const secondPart = siteName.substring(5); // "ELEC"
 ---
 
 <a class="primary-focus text-foreground flex items-center text-xl" href={"/"}>
-	<Icon name="tabler/star" class="text-accent size-10 p-2" aria-hidden="true" />
-	<p class="">{siteData.name}</p>
+	<Icon name="naturelec/naturelec-naturelec" class="text-accent size-10 p-2" aria-hidden="true" />
+	<p class="logo-text uppercase">
+		<span class="text-accent">{firstPart}</span><span class="text-accent-sec">{secondPart}</span>
+	</p>
 </a>

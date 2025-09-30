@@ -12,8 +12,10 @@ import FeatureLightboxMarquee from "@/components/feature/FeatureLightboxMarquee.
 import WarrantySteps from "@/components/feature/WarrantySteps.astro";
 import HeroBackgroundImage from "@/components/hero/HeroBackgroundImage.astro";
 import LogoNaturelecMarquee from "@/components/logo-cloud/LogoNaturelecMarquee.astro";
+import HomePageMap from "@/components/map/HomePageMap.astro";
 import ServicesCards from "@/components/services/ServicesCards.astro";
 import ServicesSwiper from "@/components/services/ServicesSwiper.astro";
+import SideNav from "@/components/nav/side-nav.astro";
 import TeamSwiper from "@/components/team/TeamSwiper.astro";
 import TestimonialsSideImage from "@/components/testimonials/TestimonialsSideImage.astro";
 import TestimonialsSwiperSide from "@/components/testimonials/TestimonialsSwiperSide.astro";
@@ -21,10 +23,10 @@ import { getLocaleFromUrl } from "@/js/localeUtils";
 import { getTranslatedData } from "@/js/translationUtils";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
-// Move these declarations in the correct order:
+// Get locale information
 const currLocale = getLocaleFromUrl(Astro.url);
 const siteData = getTranslatedData("siteData", currLocale);
-
+import { contactData } from "@/config/fr/contactData.json";
 const aboutEntries = await getCollection("about");
 const about = aboutEntries[0];
 
@@ -34,14 +36,26 @@ if (!galleryData) {
 	galleryData = galleryEntries.find((entry) => entry.id === "fr");
 }
 
-// console.log("Debug info:");
-// console.log("Total gallery items:", galleryData?.data.sectionGallery?.length || 0);
-// console.log("Gallery entries:", galleryEntries);
-// console.log("Selected gallery data:", galleryData);
+const locationEntries = await getCollection("location");
+let locationData = locationEntries.find((entry) => entry.id === currLocale);
+if (!locationData) {
+	locationData = locationEntries.find((entry) => entry.id === "fr");
+}
+
+const heroEntries = await getCollection("hero");
+let heroData = heroEntries.find((entry) => entry.id === currLocale);
+if (!heroData) {
+	heroData = heroEntries.find((entry) => entry.id === "fr");
+}
 ---
 
 <BaseLayout title={siteData.title} description={siteData.description}>
-	<HeroBackgroundImage />
+	<SideNav
+		phoneHref={contactData.phone_link}
+		locationHref="https://maps.google.com/"
+		facebookHref={contactData.facebook}
+	/>
+	{heroData && <HeroBackgroundImage hero={heroData} />}
 
 	<!-- <AboutNumbersImage /> -->
 	<!-- <ServicesSwiper /> -->
@@ -61,8 +75,5 @@ if (!galleryData) {
 			/>
 		)
 	}
-	<!-- <FeatureGalleryMarquee /> -->
-	<!-- <Contact /> -->
-	<ContactCentered />
-	<FaqAccordionsSideImage />
+	{locationData && <HomePageMap location={locationData} />}
 </BaseLayout>

@@ -32,12 +32,9 @@ interface Props {
 	sectionDescription: string;
 	sectionGallery: GalleryItem[];
 }
-console.log("FeatureLightboxMarquee sectionGallery:", sectionGallery);
-console.log("Marquee setup initialized");
-console.log("Lightbox setup initialized");
 ---
 
-<section id="feature-lightbox-marquee" class="py-24 md:py-28">
+<section id="feature-lightbox-marquee" class="py-16 md:py-24">
 	<div class="site-container flex justify-center">
 		<div class="mx-auto mb-16 text-center md:max-w-4xl" data-aos="fade-up">
 			<Badge>{sectionBadge}</Badge>
@@ -49,7 +46,6 @@ console.log("Lightbox setup initialized");
 	</div>
 
 	<div class="marquee-wrapper relative flex flex-col gap-6 overflow-hidden md:gap-10">
-		<!-- marquee top row -->
 		<div class="marquee-top relative flex gap-6 overflow-hidden md:gap-10">
 			<div
 				class="animate-marquee-gallery flex min-w-full shrink-0 items-center justify-around gap-6 md:gap-10"
@@ -93,7 +89,6 @@ console.log("Lightbox setup initialized");
 			</div>
 		</div>
 
-		<!-- marquee middle row -->
 		<div class="marquee-middle relative flex gap-6 overflow-hidden md:gap-10">
 			<div
 				class="animate-marquee-gallery flex min-w-full shrink-0 items-center justify-around gap-6 [animation-direction:reverse] md:gap-10"

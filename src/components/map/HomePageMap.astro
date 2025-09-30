@@ -1,0 +1,84 @@
+---
+import { Icon } from "astro-icon/components";
+import Badge from "@/components/badge/Badge.astro";
+import Map from "@/components/map/Map.astro";
+
+import { getLocaleFromUrl } from "@/js/localeUtils";
+const currLocale = getLocaleFromUrl(Astro.url);
+
+import type { CollectionEntry } from "astro:content";
+interface Props {
+	location: CollectionEntry<"location">;
+}
+const { location, ...rest } = Astro.props as Props;
+---
+
+<section id="map" class="bg-bgforth overflow-hidden py-16 md:py-20">
+	<div class="site-container">
+		<div class="mr-auto max-w-4xl pb-12" data-aos="fade-left" id="code-toggle-trigger">
+			<Badge>{location.data.sectionBadge}</Badge>
+			<h2 class="h1 mb-6">{location.data.sectionTitle}</h2>
+			<p class="text-muted-foreground mb-4 md:text-lg">{location.data.sectionDescription}</p>
+		</div>
+
+		<!-- Content Section with Sidebar -->
+		<div class="grid gap-8 pb-16 md:grid-cols-1 lg:grid-cols-[400px_1fr] lg:gap-20 xl:gap-30">
+			<!-- Sidebar with Apply Button and Requirements -->
+			<aside class="order-2 lg:order-1">
+				<div class="sticky top-24 space-y-8">
+					{
+						location.data.locations.length > 0 && (
+							<div>
+								<h3 id="warranty-trigger" class="mb-4 text-lg">
+									Principales communes desservies :{" "}
+								</h3>
+								<ul class="space-y-2">
+									{location.data.locations.map((item, idx) => (
+										<li
+											class="flex items-start gap-2"
+											data-aos="fade-right"
+											data-aos-trigger="#warranty-trigger"
+											data-aos-delay={0.1 * idx}
+										>
+											<Icon name="tabler/check" class="text-accent mt-1 size-4 shrink-0" />
+											<span>{item}</span>
+										</li>
+									))}
+								</ul>
+							</div>
+						)
+					}
+					<div
+						class="mx-auto flex justify-start *:space-y-4"
+						data-aos="fade-right"
+						data-aos-trigger="#warranty-trigger"
+						data-aos-delay={0.75}
+					>
+						<a
+							href={location.data.buttonHref}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="button button--primary flex w-full items-center justify-center gap-2 py-3"
+						>
+							{location.data.buttonText}
+							<!-- <Icon name="tabler/mail" class="size-4" /> -->
+						</a>
+					</div>
+					<div
+						class="mx-auto flex justify-start *:space-y-4"
+						data-aos="fade-right"
+						data-aos-trigger="#warranty-trigger"
+						data-aos-delay={0.8}
+					>
+						<p class="text-muted-foreground italic md:text-sm">
+							Et de nombreuses autres communes dans un rayon de 50 km.
+						</p>
+					</div>
+				</div>
+			</aside>
+			<div class="order-1 min-h-[300px] lg:order-2">
+				<Map />
+			</div>
+		</div>
+	</div>
+</section>
