@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import HeroBackgroundImage from "@/components/hero/HeroBackgroundImage.astro";
 import HeroBasic from "@/components/hero/HeroBasic.astro";
 import HeroCentered from "@/components/hero/HeroCentered.astro";
@@ -13,12 +14,18 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 const siteData = getTranslatedData("siteData", currLocale);
+
+const heroEntries = await getCollection("homepageHero");
+let heroData = heroEntries.find((entry) => entry.id === currLocale);
+if (!heroData) {
+	heroData = heroEntries.find((entry) => entry.id === "fr");
+}
 ---
 
 <BaseLayout title={siteData.title} description={siteData.description} navStyle="default">
 	<HeroCentered />
 	<LogoCloudStaticSimple />
-	<HeroBackgroundImage />
+	{heroData && <HeroBackgroundImage hero={heroData} />}
 	<LogoCloudMarquee />
 	<HeroSideImage />
 	<LogoCloudStatic />
