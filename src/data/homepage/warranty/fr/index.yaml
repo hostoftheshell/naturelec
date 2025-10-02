@@ -1,6 +1,6 @@
 sectionTitle: "Naturelec, électricien dans l'Yonne, vous garantit :"
 buttonText: Découvrir nos garanties
-buttonHref: /contact
+buttonHref: https://example.com
 sectionImage: "@images/warranty/sectionImage.jpg"
 sectionImageAlt: un coffret électrique moderne
 sectionList:

@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import { Icon } from "astro-icon/components";
 import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
 
 import authorImage from "@/assets/images/about/designer.jpg";
 
@@ -11,7 +11,7 @@ interface AboutItem {
 	icon: string;
 }
 
-const allAboutMeEntries = await getCollection("aboutMe");
+const allAboutMeEntries = await getCollection("homepageAboutMe");
 const aboutMeEntry = allAboutMeEntries[0];
 
 const sectionTitle = aboutMeEntry?.data.sectionTitle || "Benoit Gillet, fondateur de Naturelec";
@@ -27,9 +27,9 @@ const featureData = [...(aboutMeEntry?.data.facts || [])];
 <section id="about-alt" class="bg-background text-foreground overflow-hidden py-16 md:py-24">
 	<div class="site-container">
 		<div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-			<div class="order-2 lg:order-1">
+			<div class="order-1 lg:order-2">
 				<div data-aos="fade-right" data-aos-trigger="#about-alt">
-					<h2 class="text-foreground h2 mb-4">{sectionTitle}</h2>
+					<h2 class="text-foreground h2 mb-10 text-4xl">{sectionTitle}</h2>
 					<p class="description mb-12">{sectionDescription}</p>
 				</div>
 				<div class="grid gap-6 md:grid-cols-2">
@@ -51,7 +51,7 @@ const featureData = [...(aboutMeEntry?.data.facts || [])];
 					}
 				</div>
 			</div>
-			<div class="order-1 lg:order-2">
+			<div class="order-2 lg:order-1">
 				<div class="relative" data-aos="fade-left" data-aos-trigger="#about-alt">
 					<div class="relative">
 						{

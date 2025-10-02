@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+
 import Button from "@/components/button/Button.astro";
 import LanguageSelect from "@/components/language-select/LanguageSelect.astro";
 import SiteLogo from "@/components/site-logo/SiteLogo.astro";
@@ -14,8 +15,8 @@ import NavLink from "./NavLink.astro";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 const navData = getTranslatedData("navData", currLocale);
-import { locales } from "@/config/siteSettings.json";
 import { contactData } from "@/config/fr/contactData.json";
+import { locales } from "@/config/siteSettings.json";
 
 // console.log(JSON.stringify(navData, null, 2));
 
@@ -75,7 +76,7 @@ const { navStyle = "default" } = Astro.props as Props;
 					<Button
 						variant="primary"
 						class="my-auto hidden gap-2 py-2 pr-4 pl-2 text-lg md:flex"
-						href={contactData.phone_link}
+						href={`tel:${contactData.phone_link}`}
 						target="_blank"
 						rel="noreferrer"
 					>

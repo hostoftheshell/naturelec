@@ -18,6 +18,7 @@ export const contactData: ContactDataProps = {
 		weekdays: "8h00 - 18h00",
 		saturday: "8h00 - 18h00",
 		sunday: "Fermé",
+		week: "du lundi au vendredi : 8h00 - 18h00",
 	},
 
 	// Social media / other contact methods

@@ -1,0 +1,51 @@
+---
+interface Props {
+	icon: "phone" | "location" | "facebook";
+	href?: string;
+	ariaLabel: string;
+	isExternal?: boolean;
+	class?: string;
+	animated?: boolean;
+}
+
+const {
+	icon,
+	href,
+	ariaLabel,
+	isExternal = false,
+	class: className = "",
+	animated = true,
+} = Astro.props as Props;
+
+const iconMap = animated
+	? {
+			phone: () => import("@/icons/naturelec/naturelec-phone.svg"),
+			location: () => import("@/icons/naturelec/naturelec-location.svg"),
+			facebook: () => import("@/icons/naturelec/naturelec-facebook.svg"),
+		}
+	: {
+			phone: () => import("@/icons/naturelec/naturelec-phone-static.svg"),
+			location: () => import("@/icons/naturelec/naturelec-location-static.svg"),
+			facebook: () => import("@/icons/naturelec/naturelec-facebook-static.svg"),
+		};
+
+const IconComponent = (await iconMap[icon]()).default;
+---
+
+{
+	href ? (
+		<a
+			aria-label={ariaLabel}
+			href={href}
+			{...(isExternal && {
+				target: "_blank",
+				rel: "noopener noreferrer",
+			})}
+			class={className}
+		>
+			<IconComponent class="h-full w-full" />
+		</a>
+	) : (
+		<IconComponent class={className} />
+	)
+}

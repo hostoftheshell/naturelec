@@ -1,4 +1,4 @@
-heroTitlePrefix: 'Sécurité, proximité et solutions durables :'
+heroTitlePrefix: "Sécurité, proximité et solutions durables :"
 heroTitleSuffix: votre électricien proche de Vermenton
 heroDescription: >-
   Vous avez besoin d'un électricien pour une installation électrique neuve ou un
@@ -6,4 +6,4 @@ heroDescription: >-
   sécurisé pour vos projets d'électricité générale, domotique, vidéosurveillance
   ou énergies renouvelables.
 buttonText: Demander votre devis
-buttonHref: /contact
+buttonHref: https://example.com

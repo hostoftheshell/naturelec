@@ -1,14 +1,14 @@
 ---
 import { Icon } from "astro-icon/components";
+
 import Badge from "@/components/badge/Badge.astro";
 import Map from "@/components/map/Map.astro";
-
 import { getLocaleFromUrl } from "@/js/localeUtils";
 const currLocale = getLocaleFromUrl(Astro.url);
 
 import type { CollectionEntry } from "astro:content";
 interface Props {
-	location: CollectionEntry<"location">;
+	location: CollectionEntry<"homepageLocation">;
 }
 const { location, ...rest } = Astro.props as Props;
 ---

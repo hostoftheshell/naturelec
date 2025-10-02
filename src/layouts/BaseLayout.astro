@@ -21,6 +21,10 @@ interface Props extends ComponentProps<typeof Nav> {
 	authorsData?: CollectionEntry<"authors">[];
 	postFrontmatter?: CollectionEntry<"blog">["data"];
 	noindex?: boolean; // you need to opt-in to no indexing, as it hides the page from search engines
+	// Footer props
+	phoneHref?: string;
+	locationHref?: string;
+	facebookHref?: string;
 }
 
 const {
@@ -31,6 +35,9 @@ const {
 	authorsData,
 	postFrontmatter,
 	noindex = false,
+	phoneHref,
+	locationHref,
+	facebookHref,
 	...navProps
 } = Astro.props as Props;
 
@@ -59,7 +66,7 @@ const currLocale = getLocaleFromUrl(Astro.url);
 			<main class="relative min-h-[100lvh] overflow-x-clip">
 				<slot />
 			</main>
-			<Footer />
+			<Footer phoneHref={phoneHref} locationHref={locationHref} facebookHref={facebookHref} />
 		</div>
 
 		<!-- Scroll animations -->

@@ -1,14 +1,75 @@
 ---
-import HeroBasic from "@/components/hero/HeroBasic.astro";
-import HeroOverview from "@/components/hero/HeroOverview.astro";
-import { getLocaleFromUrl } from "@/js/localeUtils";
-import { getTranslatedData, useTranslations } from "@/js/translationUtils";
-import OverviewLayout from "@/layouts/OverviewLayout.astro";
+import { getCollection, getEntry } from "astro:content";
 
+import About from "@/components/about/About.astro";
+import AboutMe from "@/components/about/AboutMe.astro";
+import Contact from "@/components/contact/Contact.astro";
+import FeatureLightboxMarquee from "@/components/feature/FeatureLightboxMarquee.astro";
+import WarrantySteps from "@/components/feature/WarrantySteps.astro";
+import HeroBackgroundImage from "@/components/hero/HeroBackgroundImage.astro";
+import LogoNaturelecMarquee from "@/components/logo-cloud/LogoNaturelecMarquee.astro";
+import HomePageMap from "@/components/map/HomePageMap.astro";
+import SideNav from "@/components/nav/SideNav.astro";
+import ServicesCards from "@/components/services/ServicesCards.astro";
+import { getLocaleFromUrl } from "@/js/localeUtils";
+import { getTranslatedData } from "@/js/translationUtils";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+// Get locale information
 const currLocale = getLocaleFromUrl(Astro.url);
 const siteData = getTranslatedData("siteData", currLocale);
+import { contactData } from "@/config/fr/contactData.json";
+const aboutEntries = await getCollection("homepageAbout");
+const about = aboutEntries[0];
+
+const galleryEntries = await getCollection("homepageGallery");
+let galleryData = galleryEntries.find((entry) => entry.id === currLocale);
+if (!galleryData) {
+	galleryData = galleryEntries.find((entry) => entry.id === "fr");
+}
+
+const locationEntries = await getCollection("homepageLocation");
+let locationData = locationEntries.find((entry) => entry.id === currLocale);
+if (!locationData) {
+	locationData = locationEntries.find((entry) => entry.id === "fr");
+}
+
+const heroEntries = await getCollection("homepageHero");
+let heroData = heroEntries.find((entry) => entry.id === currLocale);
+if (!heroData) {
+	heroData = heroEntries.find((entry) => entry.id === "fr");
+}
 ---
 
-<OverviewLayout title={siteData.title} description={siteData.description}>
-	<HeroOverview slot="above-overview" />
-</OverviewLayout>
+<BaseLayout
+	title={siteData.title}
+	description={siteData.description}
+	phoneHref={contactData.phone_link}
+	locationHref="https://maps.google.com/"
+	facebookHref={contactData.facebook}
+>
+	<SideNav
+		phoneHref={contactData.phone_link}
+		locationHref="https://maps.google.com/"
+		facebookHref={contactData.facebook}
+	/>
+	{heroData && <HeroBackgroundImage hero={heroData} />}
+
+	<ServicesCards categorySlug="general-electricity" />
+	<ServicesCards categorySlug="renewable-energy" />
+	<About about={about} />
+	<LogoNaturelecMarquee />
+	<WarrantySteps />
+	<AboutMe />
+	{
+		galleryData && (
+			<FeatureLightboxMarquee
+				sectionBadge={galleryData.data.sectionBadge}
+				sectionTitle={galleryData.data.sectionTitle}
+				sectionDescription={galleryData.data.sectionDescription}
+				sectionGallery={galleryData.data.sectionGallery}
+			/>
+		)
+	}
+	{locationData && <HomePageMap location={locationData} />}
+</BaseLayout>

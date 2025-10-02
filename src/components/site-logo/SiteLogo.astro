@@ -3,7 +3,6 @@ import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
 import { getLocaleFromUrl } from "@/js/localeUtils";
-
 import { getTranslatedData } from "@/js/translationUtils";
 
 const currLocale = getLocaleFromUrl(Astro.url);
@@ -15,7 +14,11 @@ const secondPart = siteName.substring(5); // "ELEC"
 ---
 
 <a class="primary-focus text-foreground flex items-center text-xl" href={"/"}>
-	<Icon name="naturelec/naturelec-naturelec" class="text-accent size-10 p-2" aria-hidden="true" />
+	<Icon
+		name="naturelec/naturelec-naturelec"
+		class="text-accent size-10 p-2 pl-0"
+		aria-hidden="true"
+	/>
 	<p class="logo-text uppercase">
 		<span class="text-accent">{firstPart}</span><span class="text-accent-sec">{secondPart}</span>
 	</p>

@@ -1,5 +1,6 @@
 ---
 import { getCollection, getEntry } from "astro:content";
+
 import About from "@/components/about/About.astro";
 import AboutMe from "@/components/about/AboutMe.astro";
 import AboutNumbers from "@/components/about/AboutNumbers.astro";
@@ -7,15 +8,14 @@ import AboutNumbersImage from "@/components/about/AboutNumbersImage.astro";
 import Contact from "@/components/contact/Contact.astro";
 import ContactCentered from "@/components/contact/ContactCentered.astro";
 import FaqAccordionsSideImage from "@/components/faq/FaqAccordionsSideImage.astro";
-
 import FeatureLightboxMarquee from "@/components/feature/FeatureLightboxMarquee.astro";
 import WarrantySteps from "@/components/feature/WarrantySteps.astro";
 import HeroBackgroundImage from "@/components/hero/HeroBackgroundImage.astro";
 import LogoNaturelecMarquee from "@/components/logo-cloud/LogoNaturelecMarquee.astro";
 import HomePageMap from "@/components/map/HomePageMap.astro";
+import SideNav from "@/components/nav/SideNav.astro";
 import ServicesCards from "@/components/services/ServicesCards.astro";
 import ServicesSwiper from "@/components/services/ServicesSwiper.astro";
-import SideNav from "@/components/nav/side-nav.astro";
 import TeamSwiper from "@/components/team/TeamSwiper.astro";
 import TestimonialsSideImage from "@/components/testimonials/TestimonialsSideImage.astro";
 import TestimonialsSwiperSide from "@/components/testimonials/TestimonialsSwiperSide.astro";
@@ -27,7 +27,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 const currLocale = getLocaleFromUrl(Astro.url);
 const siteData = getTranslatedData("siteData", currLocale);
 import { contactData } from "@/config/fr/contactData.json";
-const aboutEntries = await getCollection("about");
+const aboutEntries = await getCollection("homepageAbout");
 const about = aboutEntries[0];
 
 const galleryEntries = await getCollection("homepageGallery");
@@ -36,20 +36,26 @@ if (!galleryData) {
 	galleryData = galleryEntries.find((entry) => entry.id === "fr");
 }
 
-const locationEntries = await getCollection("location");
+const locationEntries = await getCollection("homepageLocation");
 let locationData = locationEntries.find((entry) => entry.id === currLocale);
 if (!locationData) {
 	locationData = locationEntries.find((entry) => entry.id === "fr");
 }
 
-const heroEntries = await getCollection("hero");
+const heroEntries = await getCollection("homepageHero");
 let heroData = heroEntries.find((entry) => entry.id === currLocale);
 if (!heroData) {
 	heroData = heroEntries.find((entry) => entry.id === "fr");
 }
 ---
 
-<BaseLayout title={siteData.title} description={siteData.description}>
+<BaseLayout
+	title={siteData.title}
+	description={siteData.description}
+	phoneHref={contactData.phone_link}
+	locationHref="https://maps.google.com/"
+	facebookHref={contactData.facebook}
+>
 	<SideNav
 		phoneHref={contactData.phone_link}
 		locationHref="https://maps.google.com/"

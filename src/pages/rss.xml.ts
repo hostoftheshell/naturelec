@@ -2,7 +2,6 @@ import rss from "@astrojs/rss";
 import { type CollectionEntry, getCollection } from "astro:content";
 
 import { defaultLocale } from "@/config/siteSettings.json";
-
 import { getTranslatedData } from "@/js/translationUtils";
 
 const siteData = getTranslatedData("siteData", defaultLocale);

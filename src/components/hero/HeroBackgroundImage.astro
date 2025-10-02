@@ -1,7 +1,6 @@
 ---
 import leafImage from "@images/hero/naturelec-hero.svg";
 import backgroundImage from "@images/hero/naturelec-hero_bg.png";
-
 import { Image } from "astro:assets";
 
 import Button from "@/components/button/Button.astro";
@@ -16,7 +15,7 @@ const secondPart = siteName.substring(5);
 
 import type { CollectionEntry } from "astro:content";
 interface Props {
-	hero: CollectionEntry<"hero">;
+	hero: CollectionEntry<"homepageHero">;
 }
 const { hero, ...rest } = Astro.props as Props;
 ---
@@ -41,13 +40,15 @@ const { hero, ...rest } = Astro.props as Props;
 				data-aos="fade-right"
 				class="text-foreground leading-tighter font-heading mb-4 text-4xl font-semibold md:text-5xl"
 			>
-				{hero.data.heroTitlePrefix}{" "}
+				<span class="text-pretty">
+					{hero.data.heroTitlePrefix.replace(/ ([!?:;])/g, "\u00A0$1")}{" "}
+				</span>
 
-				<br /><span class="text-accent text-pretty">{firstPart}</span><span class="text-accent-sec"
+				<br /><span class="text-accent">{firstPart}</span><span class="text-accent-sec"
 					>{secondPart}</span
 				>
 
-				{hero.data.heroTitleSuffix}{" "}
+				<span class="text-pretty">{hero.data.heroTitleSuffix}{" "}</span>
 			</h1>
 			<p
 				data-aos-trigger="#hero-shapes-trigger"
@@ -71,7 +72,7 @@ const { hero, ...rest } = Astro.props as Props;
 			</Button>
 		</div>
 		<div
-			class="xs:h-[360px] flex h-[300px] justify-end md:-mb-50 md:h-[500px] md:pt-20 lg:h-[600px] xl:h-[780px]"
+			class="xs:h-[360px] flex h-[300px] justify-end md:-mb-50 md:h-[500px] lg:h-[600px] xl:h-[780px]"
 		>
 			<Image
 				src={leafImage}

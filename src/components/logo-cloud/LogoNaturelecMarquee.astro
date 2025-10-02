@@ -1,14 +1,15 @@
 ---
 import { Icon } from "astro-icon/components";
-import { logos } from "@/data/logos";
+
 import Badge from "@/components/badge/Badge.astro";
+import { logos } from "@/data/logos";
 
 // Filter active logos
 const activeLogos = logos.filter((logo) => logo.active);
 ---
 
 <section id="logo-cloud-marquee" class="overflow-clip pt-16 pb-16 md:pt-20 md:pb-20">
-	<div class="mx-auto mb-16 max-w-5xl px-6">
+	<div class="mx-auto mb-20 max-w-5xl px-6">
 		<div class="mx-auto max-w-5xl text-center" data-aos="fade-left" id="code-toggle-trigger">
 			<Badge>Marques partenaires</Badge>
 			<p class="description mt-4 text-pretty">
@@ -30,9 +31,9 @@ const activeLogos = logos.filter((logo) => logo.active);
 		>
 		</div>
 
-		<div class="logo-marquee relative flex overflow-hidden">
+		<div class="logo-marquee relative flex gap-32 overflow-hidden">
 			<!-- First marquee section -->
-			<div class="animate-marquee flex min-w-full shrink-0 items-center justify-around">
+			<div class="animate-marquee flex min-w-full shrink-0 items-center justify-around gap-32">
 				{
 					activeLogos.map((logo) =>
 						logo.url ? (
@@ -49,7 +50,7 @@ const activeLogos = logos.filter((logo) => logo.active);
 			<!-- Duplicate for seamless loop -->
 			<div
 				aria-hidden="true"
-				class="animate-marquee flex min-w-full shrink-0 items-center justify-around"
+				class="animate-marquee flex min-w-full shrink-0 items-center justify-around gap-32"
 			>
 				{
 					activeLogos.map((logo) =>

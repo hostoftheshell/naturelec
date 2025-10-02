@@ -1,19 +1,23 @@
 ---
+import { Icon } from "astro-icon/components";
+
 import { getLocaleFromUrl } from "@/js/localeUtils";
 import { getLocalizedRoute, getTranslatedData, useTranslations } from "@/js/translationUtils";
+
 const currLocale = getLocaleFromUrl(Astro.url);
+
 type Props = {
 	label: string;
-	href: string;
+	href?: string;
+	icon?: "phone" | "mail" | "clock";
 };
-const { label, href } = Astro.props;
+
+const { label, href, icon } = Astro.props;
 ---
 
-<li>
-	<a
-		href={href}
-		class="hover:text-foreground text-muted-foreground transition-colors"
-	>
+<li class={icon ? "flex items-center gap-2" : ""}>
+	{icon && <Icon name={`tabler/${icon}`} class="text-muted-foreground h-4 w-4 flex-shrink-0" />}
+	<a href={href} class="hover:text-foreground text-muted-foreground transition-colors">
 		{label}
 	</a>
 </li>

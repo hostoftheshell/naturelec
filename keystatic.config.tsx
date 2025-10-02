@@ -12,42 +12,70 @@
 
 import { config } from "@keystatic/core";
 
-import Collections from "@/components/keystatic-components/Collections";
+// Import schema factory functions from new modular structure
+import {
+	createAuthors,
+	createBlog,
+	createProjects,
+} from "@/components/keystatic-components/schemas/content";
+import {
+	createHomepageAbout,
+	createHomepageAboutMe,
+	createHomepageGallery,
+	createHomepageHero,
+	createHomepageLocation,
+	createHomepageWarranties,
+} from "@/components/keystatic-components/schemas/homepage";
+import {
+	createCareers,
+	createFooter,
+	createOtherPages,
+	createResume,
+	createServices,
+} from "@/components/keystatic-components/schemas/pages";
 
 export default config({
-	// works in local mode in dev, then cloud mode in prod
+	// Works in local mode in dev, then cloud mode in prod
 	storage: import.meta.env.DEV === true ? { kind: "local" } : { kind: "cloud" },
-	// cloud deployment is free to sign up (up to 3 users per team)
-	// docs: https://keystatic.com/docs/cloud
-	// create a Keystatic Cloud account here: https://keystatic.cloud/
-	cloud: { project: "cosmic-themes/starter" },
-	ui: {
-		brand: { name: "Cosmic Themes" },
-	},
-	collections: {
-		blogFR: Collections.Blog("fr"),
 
-		// for now there is a limitation with keystatic where relationship fields don't work well with i18n features
+	// Cloud deployment is free to sign up (up to 3 users per team)
+	// Docs: https://keystatic.com/docs/cloud
+	// Create a Keystatic Cloud account here: https://keystatic.cloud/
+	cloud: { project: "cosmic-themes/starter" },
+
+	ui: {
+		brand: { name: "Naturelec" },
+	},
+
+	collections: {
+		// Content collections
+		blogFR: createBlog("fr"),
+
+		// Authors collection - keeping original name for compatibility
+		// For now there is a limitation with keystatic where relationship fields don't work well with i18n features
 		// If you need multiple languages here (you might not) just create multiple variants of the same author
 		// this might look like "author-1-en" and "author-1-fr"
-		authors: Collections.Authors(""),
+		authors: createAuthors(""),
 
-		servicesFR: Collections.Services("fr"),
+		projectsFR: createProjects("fr"),
 
-		careersFR: Collections.Careers("fr"),
-
-		otherPagesFR: Collections.OtherPages("fr"),
-
-		projectsFR: Collections.Projects("fr"),
+		// Page collections
+		servicesFR: createServices("fr"),
+		careersFR: createCareers("fr"),
+		otherPagesFR: createOtherPages("fr"),
 	},
 
 	singletons: {
-		heroSection: Collections.heroSection("fr"),
-		resumeFR: Collections.Resume("fr"),
-		aboutFR: Collections.homePageAbout("fr"),
-		aboutMeFR: Collections.homePageAboutMe("fr"),
-		WarrantyFR: Collections.homePageWarranties("fr"),
-		homePageLightboxMarqueeFR: Collections.homePageLightboxMarquee("fr"),
-		homePageLocationFR: Collections.homePageLocation("fr"),
+		// Homepage sections - consistent naming with homepage prefix
+		homepageHeroFR: createHomepageHero("fr"),
+		homepageAboutFR: createHomepageAbout("fr"),
+		homepageAboutMeFR: createHomepageAboutMe("fr"),
+		homepageWarrantiesFR: createHomepageWarranties("fr"),
+		homepageGalleryFR: createHomepageGallery("fr"),
+		homepageLocationFR: createHomepageLocation("fr"),
+
+		// Non-homepage singletons
+		footerFR: createFooter("fr"),
+		resumeFR: createResume("fr"),
 	},
 });

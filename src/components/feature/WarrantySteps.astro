@@ -1,12 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+
 import Button from "@/components/button/Button.astro";
 import { getLocaleFromUrl } from "@/js/localeUtils";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 
-const allWarrantyEntries = await getCollection("warranty");
+const allWarrantyEntries = await getCollection("homepageWarranties");
 const warrantyEntry = allWarrantyEntries[0];
 
 const sectionTitle =
@@ -70,7 +71,7 @@ const featureData = [...(warrantyEntry?.data.sectionList || [])];
 					sectionImage && (
 						<Image
 							src={sectionImage}
-							class="h-full w-auto rounded-xl border object-cover"
+							class="h-auto max-h-96 w-full rounded-xl object-cover md:h-full md:max-h-none md:w-auto"
 							alt={sectionImageAlt}
 							loading="lazy"
 							width={550}

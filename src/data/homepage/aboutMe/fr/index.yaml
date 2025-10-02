@@ -3,7 +3,7 @@ sectionDescription: >-
   Électricien passionné depuis plusieurs années, spécialisé dans les solutions
   qui allient performance énergétique et respect de l'environnement pour créer
   des installations durables et optimisées.
-image: '@images/homepage/aboutme/image.jpg'
+image: "@images/homepage/aboutme/image.jpg"
 imageAlt: portrait de Benoît Gillet
 facts:
   - icon: aboutme/naturelec-lightning

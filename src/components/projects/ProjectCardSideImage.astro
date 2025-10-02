@@ -63,11 +63,7 @@ const { title, description, image, technologies, ...rest } = project.data;
 				}
 			</div>
 
-			<Button
-				href={`/projects/${slugify(project.id)}`}
-				variant="secondary"
-				arrow="right"
-			>
+			<Button href={`/projects/${slugify(project.id)}`} variant="secondary" arrow="right">
 				View Project Details
 			</Button>
 		</div>

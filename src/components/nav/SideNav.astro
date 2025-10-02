@@ -1,0 +1,130 @@
+---
+import NavIcon from "./NavIcon.astro";
+
+interface Props {
+	phoneHref?: string;
+	locationHref?: string;
+	facebookHref?: string;
+}
+
+const { phoneHref, locationHref, facebookHref } = Astro.props as Props;
+
+// Create array of navigation items
+const navItems = [
+	{
+		icon: "phone" as const,
+		href: phoneHref,
+		ariaLabel: "Phone",
+		isExternal: false,
+	},
+	{
+		icon: "location" as const,
+		href: locationHref,
+		ariaLabel: "Location",
+		isExternal: true,
+	},
+	{
+		icon: "facebook" as const,
+		href: facebookHref,
+		ariaLabel: "Facebook",
+		isExternal: true,
+	},
+];
+
+const iconClasses =
+	"text-secondary box-content h-auto w-[60px] p-1 duration-200 hover:-translate-y-1 hover:text-[var(--light-btn-sec-hover)]";
+---
+
+<div
+	id="side-nav"
+	class="fixed top-1/2 right-0 z-[999] mr-3 ml-2 hidden -translate-y-1/2 transform flex-col items-end gap-y-3.5 md:flex md:max-xl:flex md:min-2xl:p-3"
+	data-aos-trigger="#hero-shapes-trigger"
+	data-aos="fade-left"
+>
+	{
+		navItems.map(({ icon, href, ariaLabel, isExternal }) => (
+			<NavIcon
+				icon={icon}
+				href={href}
+				ariaLabel={ariaLabel}
+				isExternal={isExternal}
+				class={iconClasses}
+				animated={true}
+			/>
+		))
+	}
+</div>
+
+<script>
+	class ModernSideNav {
+		element: HTMLElement;
+		lastScrollY: number;
+		footerVisible: boolean;
+		rafId: number | null;
+
+		constructor(element: HTMLElement) {
+			this.element = element;
+			this.lastScrollY = window.scrollY;
+			this.footerVisible = false;
+			this.rafId = null;
+
+			this.init();
+		}
+
+		init(): void {
+			this.setupIntersectionObserver();
+			this.setupScrollListener();
+		}
+
+		setupIntersectionObserver(): void {
+			const footer = document.getElementById("footer");
+			if (!footer) return;
+
+			const observer = new IntersectionObserver(
+				(entries) => {
+					this.footerVisible = entries[0].isIntersecting;
+					this.updateVisibility();
+				},
+				{ threshold: 0.3 }, // Adjusted threshold as per your earlier feedback
+			);
+
+			observer.observe(footer);
+		}
+
+		setupScrollListener(): void {
+			const handleScroll = () => {
+				const currentScrollY = window.scrollY;
+				const scrollingUp = currentScrollY < this.lastScrollY;
+				this.lastScrollY = currentScrollY;
+				this.updateVisibility(scrollingUp);
+			};
+
+			const debouncedScroll = this.debounce(() => {
+				if (this.rafId) cancelAnimationFrame(this.rafId);
+				this.rafId = requestAnimationFrame(handleScroll);
+			}, 16); // 60fps
+
+			window.addEventListener("scroll", debouncedScroll, { passive: true });
+		}
+
+		debounce(func: (...args: any[]) => void, wait: number): (...args: any[]) => void {
+			let timeout: ReturnType<typeof setTimeout>;
+			return (...args: any[]) => {
+				clearTimeout(timeout);
+				timeout = setTimeout(() => func.apply(this, args), wait);
+			};
+		}
+
+		updateVisibility(scrollingUp: boolean = false): void {
+			const shouldHide = this.footerVisible && !scrollingUp;
+			this.element.style.opacity = shouldHide ? "0" : "1";
+			this.element.style.pointerEvents = shouldHide ? "none" : "auto";
+		}
+	}
+
+	// Initialize
+	document.addEventListener("DOMContentLoaded", () => {
+		const sideNav = document.getElementById("side-nav");
+		if (sideNav) new ModernSideNav(sideNav);
+	});
+</script>

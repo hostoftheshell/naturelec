@@ -1,90 +1,194 @@
 ---
+import { getCollection } from "astro:content";
+
+import NavIcon from "@/components/nav/NavIcon.astro";
 import SiteLogo from "@/components/site-logo/SiteLogo.astro";
-import SocialIcon from "@/components/social-icon/SocialIcon.astro";
+import { contactData } from "@/config/fr/contactData.json";
+import type { navDropdownItem, navItem, navLinkItem } from "@/config/types/configDataTypes";
 import { getLocaleFromUrl } from "@/js/localeUtils";
 import { getTranslatedData } from "@/js/translationUtils";
 
 import FooterLink from "./FooterLink.astro";
 
+interface Props {
+	phoneHref?: string;
+	locationHref?: string;
+	facebookHref?: string;
+}
+
+const { phoneHref, locationHref, facebookHref } = Astro.props as Props;
+
+const allFooterEntries = await getCollection("footer");
+const footerEntry = allFooterEntries[0];
+
+const footerLine = footerEntry?.data.footerLine || "";
+
 const currLocale = getLocaleFromUrl(Astro.url);
 const siteData = getTranslatedData("siteData", currLocale);
+const navData = getTranslatedData("navData", currLocale);
 const today = new Date();
 
+// Type guards
+const isNavLinkItem = (item: navItem): item is navLinkItem => {
+	return "link" in item && !("dropdown" in item) && !("megaMenuColumns" in item);
+};
+
+const isNavDropdownItem = (item: navItem): item is navDropdownItem => {
+	return "dropdown" in item;
+};
+
+interface FooterColumn {
+	title: string;
+	links: Array<{
+		label: string;
+		href?: string;
+		icon?: "phone" | "mail" | "clock";
+	}>;
+}
+
+// Define which links should be treated as legal/footer-only links
+const legalLinkTexts = ["Mentions légales", "Politique de cookies"];
+
 /**
- * Footer columns and links configuration
- * Edit this object to change column titles and links.
+ * Check if a nav item is a legal link that should appear separately
  */
-const footerColumns = [
-	{
-		title: "Products",
+const isLegalLink = (item: navItem): boolean => {
+	return isNavLinkItem(item) && legalLinkTexts.includes(item.text);
+};
+
+/**
+ * Extract legal links for separate footer display
+ */
+const legalLinks = navData
+	.filter((item): item is navLinkItem => isLegalLink(item))
+	.map((item) => ({
+		label: item.text,
+		href: item.link,
+	}));
+
+/**
+ * Generate footer columns from navigation data
+ * This transforms the navData structure into footer-friendly format
+ * Excludes legal links as they are displayed separately
+ */
+const generateFooterColumns = (): FooterColumn[] => {
+	const columns: FooterColumn[] = [];
+
+	// Add a "Menu" column with main navigation items (excluding legal links)
+	const mainMenuLinks = navData
+		.filter((item): item is navLinkItem => isNavLinkItem(item) && !isLegalLink(item)) // Exclude legal links
+		.map((item) => ({
+			label: item.text,
+			href: item.link,
+		}));
+
+	// Add home link if not present
+	if (!mainMenuLinks.some((link) => link.href === "/" || link.href === "/accueil")) {
+		mainMenuLinks.unshift({ label: "Accueil", href: "/" });
+	}
+
+	if (mainMenuLinks.length > 0) {
+		columns.push({
+			title: "Menu",
+			links: mainMenuLinks,
+		});
+	}
+
+	// Add columns for dropdown items
+	navData
+		.filter((item): item is navDropdownItem => isNavDropdownItem(item))
+		.forEach((item) => {
+			columns.push({
+				title: item.text,
+				links: item.dropdown.map((dropdownItem) => ({
+					label: dropdownItem.text,
+					href: dropdownItem.link,
+				})),
+			});
+		});
+
+	// Add contact column
+	columns.push({
+		title: "Contact",
 		links: [
-			{ label: "About", href: "#" },
-			{ label: "Leadership", href: "#" },
-			{ label: "Press/News", href: "#" },
-			{ label: "Careers/Team", href: "#" },
-			{ label: "Contact Us", href: "#" },
+			{
+				label: contactData.phone,
+				href: `tel:${contactData.phone_link}`,
+				icon: "phone",
+			},
+			{
+				label: contactData.email,
+				href: `mailto:${contactData.email}`,
+				icon: "mail",
+			},
+			{
+				label: contactData.businessHours.week,
+				icon: "clock",
+			},
 		],
-	},
-	{
-		title: "Important links",
-		links: [
-			{ label: "About", href: "#" },
-			{ label: "Leadership", href: "#" },
-			{ label: "Press/News", href: "#" },
-			{ label: "Careers/Team", href: "#" },
-			{ label: "Contact Us", href: "#" },
-		],
-	},
-	{
-		title: "Company",
-		links: [
-			{ label: "About", href: "#" },
-			{ label: "Leadership", href: "#" },
-			{ label: "Press/News", href: "#" },
-			{ label: "Careers/Team", href: "#" },
-			{ label: "Contact Us", href: "#" },
-		],
-	},
-];
+	});
+
+	return columns;
+};
+
+const footerColumns = generateFooterColumns();
 ---
 
-<section class="overflow-hidden pt-16 pb-10">
+<section id="footer" class="bg-muted overflow-hidden pt-16 pb-10">
 	<div class="site-container">
 		<div class="border-b pb-16">
-			<div class="-m-8 flex flex-wrap">
-				<div class="w-full p-8 sm:w-1/2 lg:w-6/12">
+			<div class="-m-8 flex flex-wrap justify-between">
+				<div class="w-full p-8 sm:w-1/2 lg:w-5/12">
 					<div class="lg:max-w-sm">
 						<SiteLogo />
-						<p class="text-muted-foreground mt-4 font-medium md:max-w-xs">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lectus interdum facilisis
-							odio scelerisque vel neque.
-						</p>
-						<div class="mt-10 flex flex-wrap gap-3 lg:mt-16">
-							<SocialIcon
-								href="https://twitter.com/BowTiedWebReapr"
-								icon="tabler/brand-x"
-								social="twitter (x)"
-							/>
-							<SocialIcon
-								href="https://www.threads.com/@bowtiedwebreaper"
-								icon="tabler/brand-threads"
-								social="threads"
-							/>
-							<SocialIcon
-								href="https://www.threads.com/@bowtiedwebreaper"
-								icon="tabler/brand-instagram"
-								social="instagram"
-							/>
+						<p class="text-muted-foreground mt-4 text-base md:max-w-xs">{footerLine}</p>
+						<div class="mt-10 flex flex-wrap gap-2 lg:mt-16">
+							<!-- Add NavIcon components -->
+							{
+								phoneHref && (
+									<NavIcon
+										icon="phone"
+										href={`tel:${phoneHref}`}
+										ariaLabel="Call us"
+										class="text-secondary hover:bg-secondary/10 h-[42px] w-[42px] rounded-md duration-200 hover:text-[var(--light-btn-sec-hover)]"
+										animated={false}
+									/>
+								)
+							}
+							{
+								locationHref && (
+									<NavIcon
+										icon="location"
+										href={locationHref}
+										ariaLabel="Location"
+										isExternal={true}
+										class="text-secondary hover:bg-secondary/10 h-[42px] w-[42px] rounded-md duration-200 hover:text-[var(--light-btn-sec-hover)]"
+										animated={false}
+									/>
+								)
+							}
+							{
+								facebookHref && (
+									<NavIcon
+										icon="facebook"
+										href={facebookHref}
+										ariaLabel="Facebook"
+										isExternal={true}
+										class="text-secondary hover:bg-secondary/10 h-[42px] w-[42px] rounded-md duration-200 hover:text-[var(--light-btn-sec-hover)]"
+										animated={false}
+									/>
+								)
+							}
 						</div>
 					</div>
 				</div>
 				{
 					footerColumns.map((col) => (
-						<div class="w-full p-8 sm:w-1/2 lg:w-2/12" aria-label={col.title}>
+						<div class="w-full p-8 sm:w-1/2 lg:w-fit" aria-label={col.title}>
 							<h3 class="font-heading mb-8 text-sm font-medium uppercase">{col.title}</h3>
 							<ul class="space-y-2">
 								{col.links.map((link) => (
-									<FooterLink label={link.label} href={link.href} />
+									<FooterLink label={link.label} href={link.href} icon={link.icon} />
 								))}
 							</ul>
 						</div>
@@ -92,9 +196,35 @@ const footerColumns = [
 				}
 			</div>
 		</div>
-		<p class="text-muted-foreground py-5 text-center text-sm leading-normal font-medium">
-			Copyright {today.getFullYear()}
-			{siteData.name}. All Rights Reserved
-		</p>
+		<div class="py-5">
+			<div class="flex flex-wrap items-center justify-center gap-2 text-center">
+				<span class="text-muted-foreground text-sm leading-normal">
+					©{today.getFullYear()}
+					{siteData.name}
+				</span>
+				<span class="text-muted-foreground text-sm">|</span>
+				<span class="text-muted-foreground text-sm leading-normal"> Tous droits réservés </span>
+				{
+					legalLinks.length > 0 && (
+						<>
+							<span class="text-muted-foreground text-sm">|</span>
+							{legalLinks.map((link, index) => (
+								<>
+									<a
+										href={link.href}
+										class="text-muted-foreground hover:text-foreground text-sm transition-colors duration-200"
+									>
+										{link.label}
+									</a>
+									{index < legalLinks.length - 1 && (
+										<span class="text-muted-foreground text-sm">|</span>
+									)}
+								</>
+							))}
+						</>
+					)
+				}
+			</div>
+		</div>
 	</div>
 </section>

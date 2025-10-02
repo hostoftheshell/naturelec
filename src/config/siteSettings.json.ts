@@ -10,15 +10,13 @@ export const defaultLocale = "fr" as const;
 
 // localeMap is used to map languages to their respective locales - used for formatDate function
 export const localeMap = {
-	
 	fr: "fr-FR",
 } as const;
 
 // text to show in the language switcher for each locale
 export const languageSwitcherMap = {
-	
 	fr: "FR",
-	// 
+	//
 	// fr: "Français",
 } as const;
 

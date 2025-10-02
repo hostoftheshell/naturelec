@@ -14,6 +14,7 @@ export interface ContactDataProps {
 		weekdays: string;
 		saturday: string;
 		sunday: string;
+		week: string;
 	};
 	website: string;
 	facebook: string;

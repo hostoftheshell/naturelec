@@ -38,6 +38,14 @@ const navConfig: navItem[] = [
 		text: "Contact",
 		link: "/contact",
 	},
+	{
+		text: "Mentions légales",
+		link: "/mentions-legales",
+	},
+	{
+		text: "Politique de cookies",
+		link: "/politique-cookies",
+	},
 ];
 
 export default navConfig;

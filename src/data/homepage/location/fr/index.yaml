@@ -5,7 +5,7 @@ sectionDescription: >-
   limitrophes, assurant un service de proximité pour tous vos travaux
   d'électricité générale et d'énergies renouvelables.
 buttonText: Vérifier ma zone
-buttonHref: /contact
+buttonHref: https://example.com
 locations:
   - Avallon
   - Clamecy

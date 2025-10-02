@@ -9,6 +9,30 @@ import ComponentBlocks from "@/components/keystatic-components/ComponentBlocks";
 import { locales } from "@/config/siteSettings.json";
 
 import Label from "../starwind/label";
+
+/**
+ * * Footer collection
+ * This gets used by Astro Content Collections, so if you update this, you'll need to update the Astro Content Collections schema
+ */
+
+const Footer = (locale: (typeof locales)[number]) =>
+	singleton({
+		label: `Footer ${locale.toUpperCase()}`,
+		path: `src/data/footer/${locale}/index`,
+		format: { data: "yaml" },
+		schema: {
+			footerLine: fields.text({
+				label: "Synthèse de présentation de l'entreprise Naturelec",
+				description: "Un slogan court et percutant",
+				multiline: true,
+				validation: {
+					isRequired: true,
+					length: { min: 10, max: 500 },
+				},
+			}),
+		},
+	});
+
 /**
  * * Services collection
  * This gets used by Astro Content Collections, so if you update this, you'll need to update the Astro Content Collections schema
@@ -960,6 +984,7 @@ const OtherPages = (locale: (typeof locales)[number]) =>
 	});
 
 export default {
+	Footer,
 	heroSection,
 	homePageAbout,
 	homePageAboutMe,
