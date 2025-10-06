@@ -16,7 +16,7 @@ import {
 	resumeCollection,
 } from "./schemas/misc.js";
 import { servicesCollection } from "./schemas/services.js";
-
+import { servicespageIntroCollection } from "./schemas/servicespage.js";
 export const collections = {
 	// Content collections
 	blog: blogCollection,
@@ -35,6 +35,9 @@ export const collections = {
 	homepageWarranties: homepageWarrantiesCollection,
 	homepageGallery: homepageGalleryCollection,
 	homepageLocation: homepageLocationCollection,
+
+	// Servicespage sections
+	servicespageIntro: servicespageIntroCollection,
 
 	// Site configuration
 	footer: footerCollection,

@@ -1,0 +1,32 @@
+{
+	"title": "Électricité générale",
+	"description": "Des services d'électricité générale pour garantir la sécurité, la conformité et le bon fonctionnement de vos installations électriques. Que ce soit pour des constructions neuves ou des extensions, Naturelec réalise l'installation électrique complète et intervient pour remettre aux normes vos installations et réseaux.",
+	"order": 1,
+	"image": "@images/services/categories/electricite-generale/image.jpg",
+	"imageAlt": "Électricien moderne installant un tableau électrique propre et organisé, avec éclairages LED intérieurs et extérieurs, dans l’Yonne et le secteur d’Avallon.",
+	"displayLocation": ["homepage"],
+	"mappingKey": "electricite-generale",
+	"services": [
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-electrician",
+				"title": "Travaux d’électricité"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-led",
+				"title": "Travaux de courant faible"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-troubleshooting",
+				"title": "Dépannage et maintenance"
+			}
+		}
+	]
+}

@@ -17,6 +17,7 @@ const currLocale = getLocaleFromUrl(Astro.url);
 const navData = getTranslatedData("navData", currLocale);
 import { contactData } from "@/config/fr/contactData.json";
 import { locales } from "@/config/siteSettings.json";
+import type { navItem, navLinkItem } from "@/config/types/configDataTypes";
 
 // console.log(JSON.stringify(navData, null, 2));
 
@@ -25,6 +26,28 @@ interface Props {
 }
 
 const { navStyle = "default" } = Astro.props as Props;
+
+// Define which links should be excluded from the nav menu (legal pages)
+const legalLinkTexts = ["Mentions légales", "Politique de cookies"];
+
+/**
+ * Type guard to check if item is a nav link
+ */
+const isNavLinkItem = (item: navItem): item is navLinkItem => {
+	return "link" in item && !("dropdown" in item) && !("megaMenuColumns" in item);
+};
+
+/**
+ * Check if a nav item is a legal link that should be excluded from nav
+ */
+const isLegalLink = (item: navItem): boolean => {
+	return isNavLinkItem(item) && legalLinkTexts.includes(item.text);
+};
+
+/**
+ * Filter out legal links from navigation
+ */
+const filteredNavData = navData.filter((item) => !isLegalLink(item));
 ---
 
 <div
@@ -52,7 +75,7 @@ const { navStyle = "default" } = Astro.props as Props;
 						<ul class="flex h-fit items-center px-4">
 							{
 								// if dropdown exists, setup the dropdown, otherwise it is just a link
-								navData.map((navItem) =>
+								filteredNavData.map((navItem) =>
 									"dropdown" in navItem ? (
 										// non-mobile dropdown menu
 										<li>

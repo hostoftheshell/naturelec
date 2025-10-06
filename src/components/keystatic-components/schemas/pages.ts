@@ -9,16 +9,13 @@ import { fields } from "@keystatic/core";
 import ComponentBlocks from "@/components/keystatic-components/ComponentBlocks";
 
 import {
-	createCheckboxField,
 	createCollectionPath,
 	createDateField,
 	createDraftField,
 	createImageField,
 	createMappingKeyField,
-	createMDXContentField,
 	createNumberField,
 	createSelectField,
-	createSingletonPath,
 	createSlugField,
 	createTextField,
 	createUrlField,
@@ -28,82 +25,139 @@ import {
 
 /**
  * Services Collection
+ * Handles service categories with nested services (text or picture variant)
  */
 export const createServices = (locale: Locale) =>
 	collection({
 		label: `Services (${locale.toUpperCase()})`,
 		slugField: "title",
 		path: createCollectionPath("services", locale),
-		columns: ["title", "type", "order"],
-		entryLayout: "content",
-		format: { contentField: "content" },
+		columns: ["title", "mappingKey"],
+		entryLayout: "form",
+		format: { data: "json" },
 		schema: {
+			// Category-level fields
+			badge: createTextField("Badge de catégorie", {
+				description: "Badge optionnel affiché au-dessus du titre (ex: 'Populaire', 'Nouveau')",
+				validation: { isRequired: false },
+			}),
 			title: createSlugField({
-				nameLabel: "Title",
+				nameLabel: "Titre de la catégorie",
 				slugLabel: "Slug optimisé pour le référencement",
 				slugDescription: "Ne changez jamais le slug une fois qu'un fichier est publié !",
 			}),
-			type: createSelectField(
-				"Type de contenu",
-				[
-					{ label: "Catégorie de services", value: "category" },
-					{ label: "Service individuel", value: "service" },
-				],
-				"service",
-				"S'agit-il d'une catégorie de service ou d'un service individuel ?",
-			),
-			description: createTextField("Description", {
+			description: createTextField("Description courte", {
+				description: "Description résumée de la catégorie de services",
 				multiline: true,
+				validation: VALIDATION_PATTERNS.description,
 			}),
-			order: createNumberField("Ordre d'affichage", {
-				description: "Les nombres inférieurs apparaissent en premier",
-				validation: { isRequired: false },
-			}),
-			draft: createDraftField("service"),
-			mappingKey: createMappingKeyField(),
-			// Fields for individual services
-			titleLong: createTextField("Titre étendu", {
-				description: "Titre plus long (utilisé uniquement pour les services individuels)",
-				validation: { isRequired: false },
-			}),
-			category: createTextField("Category Slug", {
+			order: fields.number({
+				label: "Ordre d'affichage",
 				description:
-					"Le slug de la catégorie à laquelle appartient ce service (uniquement pour les services)",
+					"Numéro d'ordre pour le tri (les valeurs plus petites apparaissent en premier)",
+				defaultValue: 0,
 				validation: { isRequired: false },
 			}),
-			icon: createTextField("Icône", {
-				description: "Nom de l'icône (utilisé uniquement pour les services individuels)",
-				validation: { isRequired: false },
+			image: createImageField("Image de catégorie", {
+				description: "Image principale représentant cette catégorie",
+				directory: "src/assets/images/services/categories",
+				publicPath: "@images/services/categories/",
 			}),
-			image: createImageField("Image du service", {
-				description: "Image principale (utilisée uniquement pour les services individuels)",
-				publicPath: "../",
-				validation: { isRequired: false },
+			imageAlt: createTextField("Texte alternatif de l'image", {
+				description: "Description de l'image pour l'accessibilité et le SEO",
+				validation: VALIDATION_PATTERNS.shortText,
 			}),
-			content: fields.mdx({
-				label: "Contenu",
-				options: {
-					bold: true,
-					italic: true,
-					strikethrough: true,
-					code: true,
-					heading: [2, 3, 4, 5, 6],
-					blockquote: true,
-					orderedList: true,
-					unorderedList: true,
-					table: true,
-					link: true,
-					image: {
-						directory: `src/data/services/${locale}/`,
-						publicPath: "../",
+			displayLocation: fields.multiselect({
+				label: "Afficher sur",
+				description: "Sélectionnez les pages où cette catégorie doit apparaître",
+				options: [
+					{ label: "Page d'accueil", value: "homepage" },
+					{ label: "Page services", value: "servicespage" },
+				],
+				defaultValue: ["servicespage"],
+			}),
+			mappingKey: createMappingKeyField(),
+
+			// Services array (nested level)
+			services: fields.array(
+				fields.conditional(
+					fields.select({
+						label: "Type de service",
+						description: "Choisissez si ce service affiche du texte ou une image",
+						options: [
+							{ label: "Service avec texte et icône", value: "text" },
+							{ label: "Service avec image", value: "picture" },
+						],
+						defaultValue: "text",
+					}),
+					{
+						text: fields.object({
+							icon: createTextField("Icône", {
+								description: "Nom de l'icône (ex:'naturelec/naturelec-alarm_system')",
+								validation: { isRequired: false },
+							}),
+							title: createTextField("Titre du service", {
+								validation: { isRequired: false },
+							}),
+							description: fields.document({
+								label: "Description",
+								description: "Description détaillée avec formatage",
+								formatting: {
+									inlineMarks: {
+										bold: true,
+										italic: true,
+										code: true,
+										strikethrough: true,
+									},
+									listTypes: {
+										ordered: true,
+										unordered: true,
+									},
+									headingLevels: [3, 4, 5],
+									blockTypes: {
+										blockquote: true,
+									},
+									softBreaks: true,
+								},
+								links: true,
+							}),
+						}),
+						picture: fields.object({
+							image: createImageField("Image du service", {
+								description: "Image représentant ce service",
+								directory: "src/assets/images/services/items",
+								publicPath: "@images/services/items/",
+								validation: { isRequired: false },
+							}),
+							imageAlt: createTextField("Texte alternatif", {
+								description: "Description de l'image pour l'accessibilité",
+								validation: { isRequired: false },
+							}),
+							caption: createTextField("Légende", {
+								description: "Légende ou description courte de l'image",
+								multiline: true,
+								validation: { isRequired: false },
+							}),
+						}),
 					},
-					divider: true,
-					codeBlock: true,
+				),
+				{
+					label: "Services",
+					itemLabel: (props) => {
+						if (props.discriminant === "text") {
+							const title = props.value.fields.title.value ?? "Sans titre";
+							return `Service avec texte • ${title}`;
+						}
+						if (props.discriminant === "picture") {
+							const caption = props.value.fields.caption.value ?? "Sans légende";
+							return `Service avec image • ${caption}`;
+						}
+						return "Service";
+					},
+
+					validation: { length: { min: 0 } },
 				},
-				components: {
-					Admonition: ComponentBlocks.Admonition,
-				},
-			}),
+			),
 		},
 	});
 

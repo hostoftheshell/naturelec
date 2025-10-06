@@ -85,6 +85,10 @@
 		/* Spacing for padding and margin */
 		--spacing: 0.25rem;
 
+		/* Link color*/
+		--link: var(--light-link);
+		--link-hover: var(--light-link-hover);
+
 		/* custom shiki styling for markdown code blocks. These are the variables Astro uses
 		Shiki Themes: https://shiki.style/themes   https://shiki.matsu.io/guide/theme-colors#css-variables-theme */
 		--astro-code-foreground: var(--color-base-100);
@@ -170,27 +174,27 @@
 
 	/* Service card specific styles */
 
-	.service-card[data-service-type="general-electricity"] {
+	.service-card[data-service-variant="electricite-generale"] {
 		--service-accent: var(--light-brand-pri);
 		--btn-accent-hover: var(--light-btn-pri-hover);
 	}
-	.service-card[data-service-type="renewable-energy"] {
+	.service-card[data-service-variant="equipements-en-energie-renouvelable"] {
 		--service-accent: var(--light-brand-sec);
 		--btn-accent-hover: var(--light-btn-sec-hover);
 	}
-	.service-card[data-service-type="general-electricity"] {
+	.service-card[data-service-variant="electricite-generale"] {
 		--service-accent: var(--light-brand-pri);
 		--btn-accent-hover: var(--light-btn-pri-hover);
 	}
 
-	.dark .service-card[data-service-type="general-electricity"],
-	[data-theme="dark"] .service-card[data-service-type="general-electricity"] {
+	.dark .service-card[data-service-variant="electricite-generale"],
+	[data-theme="dark"] .service-card[data-service-variant="electricite-generale"] {
 		--service-accent: var(--dark-brand-pri);
 		--btn-accent-hover: var(--dark-btn-pri-hover);
 	}
 
-	.dark .service-card[data-service-type="renewable-energy"],
-	[data-theme="dark"] .service-card[data-service-type="renewable-energy"] {
+	.dark .service-card[data-service-variant="renewable-energy"],
+	[data-theme="dark"] .service-card[data-service-variant="renewable-energy"] {
 		--service-accent: var(--dark-brand-sec);
 		--btn-accent-hover: var(--dark-btn-pri-hover);
 	}

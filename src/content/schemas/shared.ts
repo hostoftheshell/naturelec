@@ -19,6 +19,9 @@ export const DATA_PATHS = {
 		location: "./src/data/homepage/location",
 		hero: "./src/data/homepage/hero",
 	},
+	servicespage: {
+		intro: "./src/data/servicespage/intro",
+	},
 } as const;
 
 export const PATTERNS = {

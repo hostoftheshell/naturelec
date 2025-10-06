@@ -192,9 +192,19 @@ export const createMDXContentField = (
 export const VALIDATION_PATTERNS = {
 	shortText: { length: { min: 1, max: 160 } },
 	description: { length: { min: 10, max: 500 } },
-	altText: { length: { max: 125 } },
+	altText: { length: { max: 150 } },
 	required: { isRequired: true },
 	optional: { isRequired: false },
+
+	// Nouveau pattern pour les slugs/anchors
+	anchorSlug: {
+		length: { min: 2, max: 50 },
+		isRequired: true,
+		pattern: {
+			regex: /^[a-z0-9-]+$/,
+			message: "Uniquement minuscules, chiffres et tirets (ex: electricite-generale)",
+		},
+	},
 } as const;
 
 // Common path patterns - return specific literal types for collections
@@ -206,6 +216,9 @@ export const createSingletonPath = (type: string, locale: Locale) =>
 
 export const createHomepageDataPath = (section: string, locale: Locale) =>
 	`src/data/homepage/${section}/${locale}/index` as const;
+
+export const createServicespageDataPath = (section: string, locale: Locale) =>
+	`src/data/servicespage/${section}/${locale}/index` as const;
 
 // Legacy function for backward compatibility
 export const createDataPath = (type: string, locale: Locale, isCollection: boolean = true) =>

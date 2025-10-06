@@ -25,6 +25,9 @@ export {
 	createHomepageWarranties,
 } from "./schemas/homepage";
 
+// Servicespage singletons
+export { createServicespageIntro } from "./schemas/servicespage";
+
 // Shared utilities
 export {
 	createButtonFields,
@@ -49,49 +52,3 @@ export {
 
 // TypeScript types
 export type * from "./types";
-
-// Legacy compatibility (if needed during migration)
-import { createAuthors, createBlog, createProjects } from "./schemas/content";
-import {
-	createHomepageAbout,
-	createHomepageAboutMe,
-	createHomepageGallery,
-	createHomepageHero,
-	createHomepageLocation,
-	createHomepageWarranties,
-} from "./schemas/homepage";
-import {
-	createCareers,
-	createFooter,
-	createOtherPages,
-	createResume,
-	createServices,
-} from "./schemas/pages";
-
-/**
- * Legacy default export for backward compatibility
- * @deprecated Use named exports instead
- */
-export default {
-	// Content
-	Blog: createBlog,
-	Authors: createAuthors,
-	Projects: createProjects,
-
-	// Pages
-	Services: createServices,
-	Careers: createCareers,
-	OtherPages: createOtherPages,
-
-	// Homepage sections (using new naming)
-	heroSection: createHomepageHero,
-	homePageAbout: createHomepageAbout,
-	homePageAboutMe: createHomepageAboutMe,
-	homePageLocation: createHomepageLocation,
-	homePageWarranties: createHomepageWarranties,
-	homePageLightboxMarquee: createHomepageGallery,
-
-	// Non-homepage singletons
-	Footer: createFooter,
-	Resume: createResume,
-};

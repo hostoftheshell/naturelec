@@ -1,0 +1,24 @@
+servicesPageIntroTitle: Nos services d'électricité à Vermenton et dans l'Yonne
+servicesPageIntroDescription: >-
+  De l'installation électrique complète aux solutions d'énergies renouvelables,
+  Naturelec vous accompagne dans tous vos projets électriques avec expertise et
+  professionnalisme.
+servicesPageIntroImage: "@images/servicespage/intro/servicesPageIntroImage.webp"
+servicesPageIntroImageAlt: >-
+  Maison française moderne avec panneaux solaires, domotique et travaux
+  électriques soignés, dans la campagne ensoleillée de Bourgogne.
+expertise:
+  sectionTitle: "Nos domaines d'expertise :"
+  expertiseAreas:
+    - title: Électricité générale
+      anchorLink: electricite-generale
+      description: Installations neuves, remises aux normes et travaux de rénovation
+    - title: Maintenance & dépannage
+      anchorLink: maintenance-depannage
+      description: Interventions rapides et maintenance préventive
+    - title: Domotique & Maison intelligente
+      anchorLink: domotique-maison-intelligente
+      description: Solutions connectées pour un habitat moderne
+    - title: Énergies renouvelables
+      anchorLink: energies-renouvelables
+      description: Photovoltaïque et systèmes autonomes

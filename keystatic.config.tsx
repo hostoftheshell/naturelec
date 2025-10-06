@@ -33,6 +33,7 @@ import {
 	createResume,
 	createServices,
 } from "@/components/keystatic-components/schemas/pages";
+import { createServicespageIntro } from "@/components/keystatic-components/schemas/servicespage";
 
 export default config({
 	// Works in local mode in dev, then cloud mode in prod
@@ -66,14 +67,15 @@ export default config({
 	},
 
 	singletons: {
-		// Homepage sections - consistent naming with homepage prefix
+		// Homepage sections
 		homepageHeroFR: createHomepageHero("fr"),
 		homepageAboutFR: createHomepageAbout("fr"),
 		homepageAboutMeFR: createHomepageAboutMe("fr"),
 		homepageWarrantiesFR: createHomepageWarranties("fr"),
 		homepageGalleryFR: createHomepageGallery("fr"),
 		homepageLocationFR: createHomepageLocation("fr"),
-
+		// Servicespage sections
+		servicespageIntroFR: createServicespageIntro("fr"),
 		// Non-homepage singletons
 		footerFR: createFooter("fr"),
 		resumeFR: createResume("fr"),

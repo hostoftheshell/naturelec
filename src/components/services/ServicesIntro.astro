@@ -1,56 +1,86 @@
 ---
 import building from "@images/building-2-min.png";
 import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
 
 import { getLocaleFromUrl } from "@/js/localeUtils";
 import { getLocalizedRoute, getTranslatedData, useTranslations } from "@/js/translationUtils";
 
-// Amenities list for Space Coast Medicine
-const amenities = [
-	"Personalized care plans for every patient",
-	"State-of-the-art medical equipment and facilities",
-	"Experienced doctors specialized in multiple fields",
-	"Convenient scheduling with minimal wait times",
-	"Comfortable and modern patient rooms",
-];
-
 const currLocale = getLocaleFromUrl(Astro.url);
+
+// Fetch servicespage intro data
+const servicespageIntroEntries = await getCollection("servicespageIntro");
+let servicespageIntroData = servicespageIntroEntries.find((entry) => entry.id === currLocale);
+
+if (!servicespageIntroData) {
+	servicespageIntroData = servicespageIntroEntries.find((entry) => entry.id === "fr");
+	console.log("  - Fallback to fr:", servicespageIntroData ? "YES" : "NO");
+}
+
 interface Props {
 	class?: string;
 }
-
 const { class: className } = Astro.props as Props;
 ---
 
 <section class:list={["py-20 md:pt-32", className]}>
 	<div class="site-container grid gap-8 md:grid-cols-2 md:gap-16">
-		<div class="aspect-square overflow-clip rounded-xl md:rounded-2xl">
-			<Image
-				src={building}
-				alt="Space Coast Medicine Building"
-				width={1001}
-				densities={[1.5, 2]}
-				class="h-full w-full object-cover"
-			/>
-		</div>
+		{
+			servicespageIntroData?.data.servicesPageIntroImage && (
+				<div class="aspect-square overflow-clip rounded-xl md:rounded-2xl">
+					<Image
+						src={servicespageIntroData.data.servicesPageIntroImage}
+						alt={servicespageIntroData.data.servicesPageIntroImageAlt}
+						width={1001}
+						densities={[1.5, 2]}
+						class="h-full w-full object-cover"
+					/>
+				</div>
+			)
+		}
 
 		<div class="">
-			<h2 class="h1">The Finest Care And Amenities</h2>
-			<p class="text-muted-foreground mt-3 max-w-lg text-pretty md:text-lg">
-				At Space Coast Medicine, our doctors believe in treating the whole person, not just the
-				symptoms. We prioritize holistic primary.
-			</p>
+			{
+				servicespageIntroData ? (
+					<>
+						<h2 class="h1">{servicespageIntroData.data.servicesPageIntroTitle}</h2>
+						<p class="text-muted-foreground mt-3 max-w-lg text-pretty md:text-lg">
+							{servicespageIntroData.data.servicesPageIntroDescription}
+						</p>
 
-			<ul class="mt-8 space-y-3">
-				{
-					amenities.map((item) => (
-						<li class="flex items-start">
-							<span class="bg-accent mt-1.5 mr-3 inline-block size-3 shrink-0 rounded-full md:mt-2" />
-							<span class="text-muted-foreground md:text-lg">{item}</span>
-						</li>
-					))
-				}
-			</ul>
+						<div class="mt-8">
+							<h3 class="mb-4 text-xl font-medium">
+								{servicespageIntroData.data.expertise.sectionTitle}
+							</h3>
+							<ul class="space-y-3">
+								{servicespageIntroData.data.expertise.expertiseAreas.map((area) => (
+									<li class="flex items-start">
+										<span class="bg-accent mt-1.5 mr-3 inline-block size-3 shrink-0 rounded-full md:mt-2" />
+										<div>
+											<a
+												href={`#${area.anchorLink}`}
+												class="text-link hover:text-link-hover hover:underline"
+											>
+												{area.title}
+											</a>
+											<span class="text-muted-foreground"> - </span>
+											<p class="text-muted-foreground inline">{area.description}</p>
+										</div>
+									</li>
+								))}
+							</ul>
+						</div>
+					</>
+				) : (
+					<div class="rounded-lg border-2 border-red-500 bg-red-50 p-8 text-center">
+						<h2 class="text-2xl font-bold text-red-700">⚠️ No Content Found</h2>
+						<p class="mt-2 text-red-600">
+							ServicesIntro data not found. Check console for details.
+						</p>
+						<p class="mt-1 text-sm text-red-500">Looking for: {currLocale} or fr</p>
+					</div>
+				)
+			}
 		</div>
 	</div>
 </section>

@@ -6,8 +6,6 @@
 import { singleton } from "@keystatic/core";
 import { fields } from "@keystatic/core";
 
-import ComponentBlocks from "@/components/keystatic-components/ComponentBlocks";
-
 import {
 	createButtonFields,
 	createHomepageDataPath,

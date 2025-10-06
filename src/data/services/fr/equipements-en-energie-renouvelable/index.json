@@ -1,0 +1,32 @@
+{
+	"title": "Équipements en énergie renouvelable",
+	"description": "Un accompagnement dans la transition vers des solutions énergétiques plus écologiques et économiques. Des installations qui réduisent votre empreinte carbone tout en améliorant l'efficacité de vos équipements à long terme.",
+	"order": 2,
+	"image": "@images/services/categories/equipements-en-energie-renouvelable/image.jpg",
+	"imageAlt": "Eco friendly concept with a light bulb",
+	"displayLocation": ["homepage"],
+	"mappingKey": "equipements-en-energie-renouvelable",
+	"services": [
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-solar_panel",
+				"title": "Pose de panneaux photovoltaïques"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-solar_water_heater",
+				"title": "Installation de capteurs à air chaud"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-energy_efficiency",
+				"title": "Systèmes de gestion énergétique"
+			}
+		}
+	]
+}

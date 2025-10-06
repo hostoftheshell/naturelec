@@ -82,6 +82,22 @@ export interface HomepageGallerySchema {
 	}>;
 }
 
+// Servicespage schema types
+export interface ServicespageIntroSchema {
+	servicesPageIntroTitle: string;
+	servicesPageIntroDescription: string;
+	servicesPageIntroImage: string;
+	servicesPageIntroImageAlt: string;
+	expertise: {
+		sectionTitle: string;
+		expertiseAreas: Array<{
+			title: string;
+			anchorLink: string;
+			description: string;
+		}>;
+	};
+}
+
 // Content schema types
 export interface BlogSchema extends BaseEntry, SlugField {
 	description: string;
@@ -119,6 +135,51 @@ export interface ProjectSchema extends BaseEntry, SlugField {
 }
 
 // Page schema types
+
+// Display location options for services
+export type ServiceDisplayLocation = "homepage" | "servicespage";
+
+// Service variant types
+export interface ServiceTextVariant {
+	icon?: string;
+	title?: string;
+	description: any; // Keystatic document type
+}
+
+export interface ServicePictureVariant {
+	image?: string;
+	imageAlt?: string;
+	caption?: string;
+}
+
+// Discriminated union for service types
+export type ServiceItem =
+	| {
+			discriminant: "text";
+			value: ServiceTextVariant;
+	  }
+	| {
+			discriminant: "picture";
+			value: ServicePictureVariant;
+	  };
+
+// Main service category schema
+export interface ServiceCategory extends BaseEntry, SlugField {
+	badge?: string;
+	description: string;
+	order?: number;
+	image: string;
+	imageAlt: string;
+	displayLocation: ServiceDisplayLocation[];
+	services: ServiceItem[];
+}
+
+// Collection entry type (with id)
+export interface ServiceCategoryEntry extends ServiceCategory {
+	id: string;
+}
+
+// Legacy service schema (deprecated - kept for backwards compatibility)
 export interface ServiceSchema extends BaseEntry, SlugField {
 	type: "category" | "service";
 	description: string;
@@ -232,6 +293,7 @@ export interface KeystaticSingletons {
 	homepageWarrantiesFR: ReturnType<SchemaFactory<any>>;
 	homepageGalleryFR: ReturnType<SchemaFactory<any>>;
 	homepageLocationFR: ReturnType<SchemaFactory<any>>;
+	servicespageIntroFR: ReturnType<SchemaFactory<any>>;
 	footerFR: ReturnType<SchemaFactory<any>>;
 	resumeFR: ReturnType<SchemaFactory<any>>;
 }

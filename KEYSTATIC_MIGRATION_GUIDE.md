@@ -83,18 +83,18 @@ You'll need to update any components that reference the old collection names:
 
 ```typescript
 // In your Astro components
-const heroData = await getEntry('heroSection');
-const aboutData = await getEntry('aboutFR');
-const authors = await getCollection('authors'); // No change needed
+const heroData = await getEntry("heroSection");
+const aboutData = await getEntry("aboutFR");
+const authors = await getCollection("authors"); // No change needed
 ```
 
 **After:**
 
 ```typescript
 // In your Astro components
-const heroData = await getEntry('homepageHeroFR');
-const aboutData = await getEntry('homepageAboutFR');  
-const authors = await getCollection('authors'); // No change needed
+const heroData = await getEntry("homepageHeroFR");
+const aboutData = await getEntry("homepageAboutFR");
+const authors = await getCollection("authors"); // No change needed
 ```
 
 ### Step 2: Update Content References
@@ -126,9 +126,10 @@ const warranties = await getEntry("homepageWarrantiesFR");
 The authors collection keeps its original name for compatibility:
 
 ✅ **No changes needed** - The `authors` collection name remains the same:
+
 ```typescript
 // In blog post MDX files or queries - no changes needed
-authors: ['author-slug']  // still references 'authors' collection
+authors: ["author-slug"]; // still references 'authors' collection
 ```
 
 Note: We kept the `authors` collection name unchanged to maintain compatibility with your existing codebase.
@@ -139,16 +140,16 @@ If you have TypeScript files that reference collection types:
 
 ```typescript
 // Before
-import type { CollectionEntry } from 'astro:content';
-type HeroEntry = CollectionEntry<'heroSection'>;
-type AboutEntry = CollectionEntry<'aboutFR'>;
-type AuthorEntry = CollectionEntry<'authors'>;
+import type { CollectionEntry } from "astro:content";
+type HeroEntry = CollectionEntry<"heroSection">;
+type AboutEntry = CollectionEntry<"aboutFR">;
+type AuthorEntry = CollectionEntry<"authors">;
 
 // After
-import type { CollectionEntry } from 'astro:content';
-type HeroEntry = CollectionEntry<'homepageHeroFR'>;
-type AboutEntry = CollectionEntry<'homepageAboutFR'>;
-type AuthorEntry = CollectionEntry<'authors'>; // No change needed
+import type { CollectionEntry } from "astro:content";
+type HeroEntry = CollectionEntry<"homepageHeroFR">;
+type AboutEntry = CollectionEntry<"homepageAboutFR">;
+type AuthorEntry = CollectionEntry<"authors">; // No change needed
 ```
 
 ## Benefits of New Structure
@@ -160,6 +161,7 @@ type AuthorEntry = CollectionEntry<'authors'>; // No change needed
 - Better code organization
 
 ### 2. **Consistency**
+
 - All homepage sections use `homepage` prefix
 - Language suffixes where appropriate (`FR` for content-specific collections)
 - Consistent casing conventions
@@ -244,6 +246,7 @@ grep -r "WarrantyFR" src/
    - Test any dynamic content queries
 
 4. **Build test:**
+
    ```bash
    npm run build
    ```

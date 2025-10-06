@@ -3,8 +3,6 @@ import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 
-import authorImage from "@/assets/images/about/designer.jpg";
-
 interface AboutItem {
 	title: string;
 	description: string;
@@ -18,7 +16,7 @@ const sectionTitle = aboutMeEntry?.data.sectionTitle || "Benoit Gillet, fondateu
 const sectionDescription =
 	aboutMeEntry?.data.sectionDescription ||
 	"Électricien passionné depuis plusieurs années, spécialisé dans les solutions qui allient performance énergétique et respect de l'environnement pour créer des installations durables et optimisées.";
-const aboutMeImage = aboutMeEntry?.data.image || authorImage;
+const aboutMeImage = aboutMeEntry?.data.image;
 const aboutMeImageAlt = aboutMeEntry?.data.imageAlt || "Benoit Gillet";
 
 const featureData = [...(aboutMeEntry?.data.facts || [])];
