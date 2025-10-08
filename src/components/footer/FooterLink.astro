@@ -15,9 +15,12 @@ type Props = {
 const { label, href, icon } = Astro.props;
 ---
 
-<li class={icon ? "flex items-center gap-2" : ""}>
-	{icon && <Icon name={`tabler/${icon}`} class="text-muted-foreground h-4 w-4 flex-shrink-0" />}
-	<a href={href} class="hover:text-foreground text-muted-foreground transition-colors">
+<li>
+	<a
+		href={href}
+		class="text-muted-foreground hover:text-link-hover flex items-center gap-2 transition-colors"
+	>
+		{icon && <Icon name={`tabler/${icon}`} class="h-4 w-4 flex-shrink-0" />}
 		{label}
 	</a>
 </li>

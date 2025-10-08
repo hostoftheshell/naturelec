@@ -1,0 +1,41 @@
+{
+	"badge": "Électricien Yonne et Avallonnais",
+	"title": "Électricité générale",
+	"description": "Naturelec assure l'installation de nouveaux réseaux électriques et la mise aux normes de vos installations existantes, avec des interventions professionnelles conformes aux normes NF C 15-100.",
+	"order": 1,
+	"image": "@images/services/categories/electricite-generale-1/image.jpg",
+	"imageAlt": "Ligne à haute tension traversant le ciel, avec le soleil éclatant en arrière-plan.",
+	"displayLocation": ["servicespage"],
+	"mappingKey": "electricite-generale-1",
+	"services": [
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-electrical_panel",
+				"title": "Tableaux électriques"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-ceiling_lamp",
+				"title": "Solutions d'éclairage"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-electric_outlet",
+				"title": "Installations électriques"
+			}
+		},
+		{
+			"discriminant": "picture",
+			"value": {
+				"image": "@images/services/items/electricite-generale-1/services/3/value/image.jpg",
+				"imageAlt": "Une main manipule un tableau électrique rempli de fils colorés et de disjoncteurs.",
+				"caption": "Un technicien effectue une vérification dans un tableau électrique moderne rempli de câbles multicolores et de disjoncteurs."
+			}
+		}
+	]
+}

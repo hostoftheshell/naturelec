@@ -32,7 +32,7 @@ export const createServices = (locale: Locale) =>
 		label: `Services (${locale.toUpperCase()})`,
 		slugField: "title",
 		path: createCollectionPath("services", locale),
-		columns: ["title", "mappingKey"],
+		columns: ["order", "title", "displayLocation"] as any,
 		entryLayout: "form",
 		format: { data: "json" },
 		schema: {

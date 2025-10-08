@@ -134,7 +134,7 @@ const generateFooterColumns = (): FooterColumn[] => {
 const footerColumns = generateFooterColumns();
 ---
 
-<section id="footer" class="bg-muted overflow-hidden pt-16 pb-10">
+<section id="footer" class="overflow-hidden bg-[var(--bgter)] pt-16 pb-10">
 	<div class="site-container">
 		<div class="border-b pb-16">
 			<div class="-m-8 flex flex-wrap justify-between">
@@ -212,7 +212,7 @@ const footerColumns = generateFooterColumns();
 								<>
 									<a
 										href={link.href}
-										class="text-muted-foreground hover:text-foreground text-sm transition-colors duration-200"
+										class="text-muted-foreground hover:text-link-hover text-sm transition-colors duration-200"
 									>
 										{link.label}
 									</a>

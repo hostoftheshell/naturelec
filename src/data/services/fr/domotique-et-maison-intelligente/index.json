@@ -1,0 +1,41 @@
+{
+	"badge": "Technologies modernes pour votre confort, sécurité et économies d'énergie",
+	"title": "Domotique & Maison intelligente ",
+	"description": "Naturelec intègre des solutions domotiques fiables dans votre habitat pour améliorer votre quotidien et optimiser votre consommation énergétique.",
+	"order": 2,
+	"image": "@images/services/categories/domotique-et-maison-intelligente/image.jpg",
+	"imageAlt": "Appareils Domotiques Intelligents Ampoule Domotique Caméra",
+	"displayLocation": ["servicespage"],
+	"mappingKey": "domotique-et-maison-intelligente",
+	"services": [
+		{
+			"discriminant": "picture",
+			"value": {
+				"image": "@images/services/items/domotique-et-maison-intelligente/services/0/value/image.png",
+				"imageAlt": "Gros plan sur une main entrant un code sur un clavier numérique de sécurité fixé au mur.",
+				"caption": "Système de sécurité moderne avec clavier tactile pour le contrôle d’accès."
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-alarm_system",
+				"title": "Sécurité connectée"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-ethernet",
+				"title": "Réseaux et multimédia"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-domotics",
+				"title": "Automatisation intelligente"
+			}
+		}
+	]
+}

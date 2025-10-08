@@ -1,0 +1,34 @@
+{
+	"badge": "Transition énergétique pour un habitat durable et économique",
+	"title": "Énergies renouvelables",
+	"description": "Naturelec vous accompagne dans l'installation de systèmes d'énergies renouvelables avec un accompagnement personnalisé de l'étude à la mise en service.",
+	"order": 3,
+	"image": "@images/services/categories/energies-renouvelables/image.jpg",
+	"imageAlt": "Éoliennes Dans Un Champ Vert Sous Un Ciel Bleu",
+	"displayLocation": ["servicespage"],
+	"mappingKey": "energies-renouvelables",
+	"services": [
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-solar_panel",
+				"title": "Panneaux photovoltaïques"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-solar_water_heater",
+				"title": "Chauffage solaire à air chaud"
+			}
+		},
+		{
+			"discriminant": "picture",
+			"value": {
+				"image": "@images/services/items/energies-renouvelables/services/2/value/image.png",
+				"imageAlt": "Maison moderne avec panneaux solaires sur le toit sous un ciel bleu.",
+				"caption": "Maison moderne avec panneaux solaires sur le toit sous un ciel bleu, symbole d’énergie propre, de durabilité et de technologie éco-responsable."
+			}
+		}
+	]
+}

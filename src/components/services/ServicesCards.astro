@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
 
+import Badge from "@/components/badge/Badge.astro";
 import { filterCollectionByLanguage, getLocaleFromUrl } from "@/js/localeUtils";
 import { loadServiceDescriptions } from "@/js/servicesUtils";
 
@@ -38,7 +39,6 @@ const sortedCategories = locationFilteredCategories.sort((a, b) => {
 	const orderB = b.data.order ?? Number.MAX_SAFE_INTEGER;
 	return orderA - orderB;
 });
-console.log(sortedCategories);
 
 // Get the specific category if categorySlug is provided
 const categoryData = categorySlug
@@ -124,22 +124,22 @@ const showingMultipleCategories = !categorySlug;
 			categoriesToDisplay.length > 0 ? (
 				<div class="mt-12">
 					{categoriesToDisplay.map((category) => (
-						<div class="mb-20 last:mb-0">
-							{/* Show category title and description for each category */}
+						<div class="mb-28 last:mb-0">
 							{!categorySlug && (
 								<div class="mb-8 text-center">
+									{category.data.badge && (
+										<Badge data-service-variant={category.data.mappingKey || category.id}>
+											{category.data.badge}
+										</Badge>
+									)}
 									<h3
-										class="h2 mx-auto max-w-3xl text-center text-4xl"
+										class="h2 mx-auto mt-4 max-w-3xl text-center text-4xl"
 										data-aos="fade-left"
 										data-aos-trigger="#services-cards-trigger"
 									>
 										{category.data.title}
 									</h3>
-									{category.data.badge && (
-										<span class="bg-accent text-accent-foreground mt-2 inline-block rounded-full px-3 py-1 text-sm">
-											{category.data.badge}
-										</span>
-									)}
+
 									{category.data.description && (
 										<p class="text-muted-foreground mx-auto mt-4 max-w-5xl text-lg">
 											{category.data.description}
@@ -150,7 +150,7 @@ const showingMultipleCategories = !categorySlug;
 
 							{/* Display the nested services */}
 							{category.data.services && category.data.services.length > 0 ? (
-								<div class="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+								<div class="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2">
 									{category.data.services.map((serviceItem, idx) => (
 										<ServiceCard
 											serviceItem={serviceItem}

@@ -131,9 +131,6 @@ export async function loadServiceDescriptions(
 		return category;
 	}
 
-	// Debug: Log the actual category ID to understand the structure
-	console.log("DEBUG: category.id =", category.id);
-
 	// The category.id might be "fr/electricite-generale" or just "electricite-generale"
 	// depending on how Astro loads the collection
 	const idParts = category.id.split("/");
@@ -152,11 +149,6 @@ export async function loadServiceDescriptions(
 	}
 
 	const basePath = `src/data/services/${locale}/${categorySlug}`;
-	console.log("DEBUG: basePath =", basePath);
-	console.log(
-		"DEBUG: full path =",
-		join(process.cwd(), basePath, "services", "0", "value", "description.mdoc"),
-	);
 
 	const servicesWithDescriptions = await Promise.all(
 		category.data.services.map(async (service, index) => {

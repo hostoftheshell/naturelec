@@ -1,96 +1,87 @@
+/* -------------------------------------------------------------
+GLOBAL IMPORTS
+------------------------------------------------------------- */
+
 @import url("./fonts.css");
 
+/* Tailwind base + animation plugin */
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* tailwind plugins */
+/* Tailwind plugins */
 @plugin "@tailwindcss/forms";
 
-/* dark mode */
+/* Dark mode variant */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* theme definition import */
+/* Theme definition */
 @import "./tailwind-theme.css";
 
-/* other imports into specific layers */
+/* -------------------------------------------------------------
+LAYERED IMPORTS
+------------------------------------------------------------- */
+
 @import "./aos.css" layer(utilities);
 @import "./markdown-content.css" layer(components);
 @import "./buttons.css" layer(components);
 
-/* https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layer */
+/* -------------------------------------------------------------
+BASE LAYER
+------------------------------------------------------------- */
+
 @layer base {
 	:root {
-		/* default color of <body> background and text */
+		/* Background & Text */
 		--background: var(--light-bg-pri);
 		--foreground: var(--light-text-pri);
+		--btn-sec-hover: var(--light-btn-sec-hover);
 		--bgter: var(--light-bg-ter);
 		--bgforth: var(--light-bg-forth);
 
-		/* Background and text color for <Card> */
+		/* Card / Popover */
 		--card: var(--color-base-50);
 		--card-foreground: var(--color-base-950);
-
-		/* Colors for popovers like <SelectContent> and <TooltipContent> */
 		--popover: var(--light-bg-ter);
 		--popover-foreground: var(--light-text-pri);
 
-		/* Primary colors for <Button>, etc. when variant="primary" */
+		/* Buttons */
 		--primary: var(--light-btn-pri);
 		--primary-foreground: var(--light-text-btn);
-
-		/* Secondary colors for <Button>, etc. when variant="secondary" */
 		--secondary: var(--light-btn-sec);
 		--secondary-foreground: var(--light-text-btn);
 
-		/* Muted colors used for <TabsList>, <Avatar>, etc. */
+		/* Muted / Accent */
 		--muted: var(--light-bg-sec);
 		--muted-foreground: var(--color-base-700);
-
-		/* Accents used throughout the site */
 		--accent: var(--light-brand-pri);
 		--accent-sec: var(--light-brand-sec);
 		--accent-foreground: var(--light-text-btn);
 
-		/* Various component colors for variant="info" */
+		/* States */
 		--info: var(--color-sky-300);
 		--info-foreground: var(--light-text-info);
-
-		/* Various component colors for variant="success" */
 		--success: var(--color-green-300);
 		--success-foreground: var(--color-green-950);
-
-		/* Various component colors for variant="warning" */
 		--warning: var(--color-amber-300);
 		--warning-foreground: var(--color-amber-950);
-
-		/* Various component colors for variant="error" */
 		--error: var(--color-red-700);
 		--error-foreground: var(--color-base-50);
 
-		/* Default border color */
+		/* Borders / Inputs / Focus */
 		--border: var(--color-base-200);
-
-		/* Border colors for inputs like <Input>, <Textarea>, <SelectTrigger>  */
 		--input: var(--light-border);
-
-		/* Outline color for focus states */
 		--outline: var(--color-primary-600);
 
-		/* Default transition duration */
+		/* Misc */
 		--default-transition-duration: 0.2s;
-
-		/* Radius for rounded corners */
 		--radius: 0.65rem;
-
-		/* Spacing for padding and margin */
 		--spacing: 0.25rem;
 
-		/* Link color*/
+		/* Links */
 		--link: var(--light-link);
 		--link-hover: var(--light-link-hover);
 
-		/* custom shiki styling for markdown code blocks. These are the variables Astro uses
-		Shiki Themes: https://shiki.style/themes   https://shiki.matsu.io/guide/theme-colors#css-variables-theme */
+		/* Code blocks (Shiki) */
 		--astro-code-foreground: var(--color-base-100);
 		--astro-code-background: var(--color-base-900);
 		--astro-code-token-constant: var(--color-primary-300);
@@ -104,21 +95,28 @@
 		--astro-code-token-link: var(--color-base-200);
 	}
 
-	/* overriding above variables when a parent has the class "dark" */
+	/* ---------------------------------------------------------
+	DARK MODE OVERRIDES
+	--------------------------------------------------------- */
 	.dark {
 		--background: var(--dark-bg-pri);
+		--btn-sec-hover: var(--dark-btn-sec-hover);
+		--bgter: var(--dark-bg-ter);
+		--bgforth: var(--dark-bg-sec);
 		--foreground: var(--dark-text-pri);
+		--foreground-hover: var(--dark-text-pri-dimmed);
 		--card: var(--color-base-950);
 		--card-foreground: var(--color-base-50);
 		--popover: var(--dark-bg-sec);
 		--popover-foreground: var(--dark-text-pri-dimmed);
 		--primary: var(--dark-cta);
 		--primary-foreground: var(--dark-text-btn);
-		--secondary: var(--color-base-50);
+		--secondary: var(--dark-btn-sec);
 		--secondary-foreground: var(--color-base-950);
 		--muted: var(--dark-bg-sec);
 		--muted-foreground: var(--dark-text-pri-dimmed);
-		--accent: var(--color-primary-400);
+		--accent: var(--dark-brand-pri-dimmed);
+		--accent-sec: var(--dark-brand-sec);
 		--accent-foreground: var(--color-base-950);
 		--info: var(--color-sky-300);
 		--info-foreground: var(--color-sky-950);
@@ -130,10 +128,13 @@
 		--error-foreground: var(--color-base-50);
 		--border: var(--dark-border);
 		--input: var(--dark-border);
-		--outline: var(--color-primary-600);
+		--link: var(--dark-link);
+		--link-hover: var(--dark-link-hover);
 	}
 
-	/* starwind preflight merged with Cosmic Themes */
+	/* ---------------------------------------------------------
+	GLOBAL ELEMENTS
+	--------------------------------------------------------- */
 	* {
 		@apply border-border;
 	}
@@ -143,15 +144,22 @@
 	html {
 		@apply bg-background text-foreground leading-[1.6rem] scheme-light dark:scheme-dark;
 		scroll-behavior: smooth;
+		text-size-adjust: none;
 		-moz-text-size-adjust: none;
 		-webkit-text-size-adjust: none;
-		text-size-adjust: none;
 	}
 	button {
 		@apply cursor-pointer;
 	}
+	a {
+		@apply hover:text-foreground-hover;
+	}
 }
-/* Custom popup styling */
+
+/* -------------------------------------------------------------
+LEAFLET POPUP STYLING
+------------------------------------------------------------- */
+
 .leaflet-container .naturelec-popup .leaflet-popup-content-wrapper {
 	background-color: var(--background);
 	color: var(--foreground);
@@ -162,52 +170,73 @@
 .leaflet-popup-tip {
 	background: var(--background);
 }
+
+/* -------------------------------------------------------------
+COMPONENTS LAYER
+------------------------------------------------------------- */
+
 @layer components {
 	.site-container {
 		@apply mx-auto max-w-[86rem] px-4 md:max-2xl:pr-24;
 	}
 
-	/* styles navbar links */
+	/* Navigation */
 	.nav__link--base {
-		@apply text-muted-foreground hover:text-foreground leading-tight transition;
+		@apply text-muted-foreground hover:text-foreground-hover leading-tight transition;
 	}
 
-	/* Service card specific styles */
-
-	.service-card[data-service-variant="electricite-generale"] {
+	/* Service cards */
+	.service-card[data-service-variant="electricite-generale"],
+	.service-card[data-service-variant="electricite-generale-1"] {
 		--service-accent: var(--light-brand-pri);
 		--btn-accent-hover: var(--light-btn-pri-hover);
 	}
-	.service-card[data-service-variant="equipements-en-energie-renouvelable"] {
+
+	.service-card[data-service-variant="equipements-en-energie-renouvelable"],
+	.service-card[data-service-variant="energies-renouvelables"] {
 		--service-accent: var(--light-brand-sec);
 		--btn-accent-hover: var(--light-btn-sec-hover);
 	}
-	.service-card[data-service-variant="electricite-generale"] {
-		--service-accent: var(--light-brand-pri);
-		--btn-accent-hover: var(--light-btn-pri-hover);
+
+	.service-card[data-service-variant="domotique-et-maison-intelligente"] {
+		--service-accent: var(--dark-cta-hover);
+		--btn-accent-hover: var(--dark-cta);
 	}
 
+	.service-card[data-service-variant="maintenance-et-depannage"] {
+		--service-accent: var(--light-text-sec);
+		--btn-accent-hover: var(--light-text-pri);
+	}
+
+	/* Dark mode variants */
 	.dark .service-card[data-service-variant="electricite-generale"],
-	[data-theme="dark"] .service-card[data-service-variant="electricite-generale"] {
+	[data-theme="dark"] .service-card[data-service-variant="electricite-generale"],
+	.dark .service-card[data-service-variant="electricite-generale-1"],
+	[data-theme="dark"] .service-card[data-service-variant="electricite-generale-1"] {
 		--service-accent: var(--dark-brand-pri);
 		--btn-accent-hover: var(--dark-btn-pri-hover);
 	}
 
-	.dark .service-card[data-service-variant="renewable-energy"],
-	[data-theme="dark"] .service-card[data-service-variant="renewable-energy"] {
-		--service-accent: var(--dark-brand-sec);
-		--btn-accent-hover: var(--dark-btn-pri-hover);
+	.dark .service-card[data-service-variant="maintenance-et-depannage"],
+	[data-theme="dark"] .service-card[data-service-variant="maintenance-et-depannage"] {
+		--service-accent: var(--dark-text-sec-dimmed);
+		--btn-accent-hover: var(--dark-text-sec);
 	}
 
-	/* Button styling for service cards */
+	.dark .service-card[data-service-variant="equipements-en-energie-renouvelable"],
+	[data-theme="dark"] .service-card[data-service-variant="equipements-en-energie-renouvelable"],
+	.dark .service-card[data-service-variant="energies-renouvelables"],
+	[data-theme="dark"] .service-card[data-service-variant="energies-renouvelables"] {
+		--service-accent: var(--dark-brand-sec);
+		--btn-accent-hover: var(--dark-btn-sec-hover);
+	}
+
 	.service-card .service-button {
 		background-color: var(--service-accent, var(--accent));
 	}
-
 	.service-card .service-button:hover {
 		background-color: var(--btn-accent-hover, var(--light-btn-pri-hover));
 	}
-
 	.service-card:hover {
 		border-color: var(--service-accent, var(--accent));
 	}
@@ -215,55 +244,79 @@
 	.service-card h3 {
 		color: var(--light-text-sec);
 	}
-
-	/* Dark mode support for service card h3 */
 	.dark .service-card h3 {
-		color: var(--dark-text-sec);
+		color: var(--dark-text-sec-dimmed);
 	}
 
-	/* logo text styling used throughout the components*/
-	.logo-text {
-		@apply font-logo text-xl;
-		font-weight: 500;
+	/* Badges */
+	.badge {
+		color: var(--service-accent, var(--accent));
 	}
-	/* various H1 styling used throughout the components */
+	.badge[data-service-variant="electricite-generale"] {
+		--service-accent: var(--light-brand-pri);
+	}
+	.badge[data-service-variant="equipements-en-energie-renouvelable"],
+	.badge[data-service-variant="energies-renouvelables"] {
+		--service-accent: var(--light-brand-sec);
+	}
+	.badge[data-service-variant="domotique-et-maison-intelligente"] {
+		--service-accent: var(--dark-cta-hover);
+	}
+	.badge[data-service-variant="maintenance-et-depannage"] {
+		--service-accent: var(--light-text-sec);
+	}
+
+	.dark .badge[data-service-variant="maintenance-et-depannage"],
+	[data-theme="dark"] .badge[data-service-variant="maintenance-et-depannage"] {
+		--service-accent: var(--dark-text-sec-dimmed);
+	}
+
+	.dark .badge[data-service-variant="electricite-generale"],
+	[data-theme="dark"] .badge[data-service-variant="electricite-generale"] {
+		--service-accent: var(--dark-brand-pri);
+	}
+	.dark .badge[data-service-variant="equipements-en-energie-renouvelable"],
+	[data-theme="dark"] .badge[data-service-variant="equipements-en-energie-renouvelable"],
+	.dark .badge[data-service-variant="energies-renouvelables"],
+	[data-theme="dark"] .badge[data-service-variant="energies-renouvelables"] {
+		--service-accent: var(--dark-brand-sec);
+	}
+
+	/* Typography */
+	.logo-text {
+		@apply font-logo text-xl font-medium;
+	}
 	.h1 {
 		@apply font-heading text-4xl leading-tight font-semibold lg:text-5xl;
 	}
-
-	/* various H2 styling used throughout the components */
 	.h2 {
 		@apply font-heading text-2xl leading-tight font-semibold md:text-4xl lg:text-5xl;
 	}
-
-	/* various H3 styling used throughout the components */
 	.h3 {
 		@apply font-heading text-lg leading-tight font-semibold md:text-xl lg:text-2xl;
 	}
-
-	/* text details immediately below a number of section headings */
 	.description {
 		@apply text-muted-foreground text-pretty md:text-lg;
 	}
 }
 
+/* -------------------------------------------------------------
+UTILITIES LAYER
+------------------------------------------------------------- */
+
 @layer utilities {
-	/* focus utility class (for when user is tabbing through items on page) */
 	.primary-focus {
 		@apply focus-visible:outline-outline focus-visible:outline-2;
 	}
 
-	/* use with "animate-pause" to pause a CSS animation */
 	.pause {
 		animation-play-state: paused !important;
 	}
 
-	/* transition-colors but without outline-color transition property */
 	.starwind-transition-colors {
 		transition-property:
 			color, background-color, border-color, text-decoration-color, fill, stroke,
 			--tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
-		transition-timing-function: var(--default-transition-timing-function);
 		transition-duration: var(--default-transition-duration);
 	}
 }

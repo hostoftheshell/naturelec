@@ -5,6 +5,9 @@ import type { CollectionEntry } from "astro:content";
 import AboutNumbers from "@/components/about/AboutNumbers.astro";
 import Contact from "@/components/contact/Contact.astro";
 import FaqAccordions from "@/components/faq/FaqAccordionsSideImage.astro";
+import ServiceCard from "@/components/services/ServiceCard.astro";
+import { resolveImage } from "@/js/imageUtils";
+import { loadServiceDescriptions } from "@/js/servicesUtils";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 interface Props {
@@ -13,15 +16,28 @@ interface Props {
 
 const { service } = Astro.props as Props;
 const { data } = service;
+
+// Load service descriptions from MDOC files
+const serviceWithDescriptions = await loadServiceDescriptions(service);
+
+// Resolve the image path to ImageMetadata
+const resolvedImage = resolveImage(data.image);
 ---
 
-<BaseLayout title={data.title} description={data.description} image={data.image}>
+<BaseLayout title={data.title} description={data.description} image={resolvedImage || undefined}>
 	<section class="site-container mt-8 py-20 md:pt-32">
 		<div class="grid grid-cols-1 items-start gap-8 md:grid-cols-2">
 			<div class="flex flex-col gap-8">
 				<div class="flex flex-col gap-4">
-					<h1 class="h1">{data.titleLong}</h1>
-					<!-- <p class="text-muted-foreground text-lg">{data.description}</p> -->
+					{
+						data.badge && (
+							<span class="bg-accent text-accent-foreground inline-block w-fit rounded-full px-3 py-1 text-sm font-medium">
+								{data.badge}
+							</span>
+						)
+					}
+					<h1 class="h1">{data.title}</h1>
+					<p class="text-muted-foreground text-lg">{data.description}</p>
 				</div>
 
 				<div class="markdown-content max-w-none">
@@ -33,10 +49,10 @@ const { data } = service;
 				class="order-first flex aspect-square justify-center overflow-clip rounded-xl md:order-last md:rounded-2xl"
 			>
 				{
-					data.image && (
+					resolvedImage && (
 						<Image
-							src={data.image}
-							alt={`${data.title} service image`}
+							src={resolvedImage}
+							alt={data.imageAlt || `${data.title} service image`}
 							width={650}
 							densities={[1.5, 2]}
 							class="h-full w-full rounded-xl object-cover shadow-xl md:rounded-2xl"
@@ -47,6 +63,31 @@ const { data } = service;
 			</div>
 		</div>
 	</section>
+
+	<!-- Service Items Section -->
+	{
+		serviceWithDescriptions.data.services && serviceWithDescriptions.data.services.length > 0 && (
+			<section class="site-container py-16">
+				<div class="mb-12 text-center">
+					<h2 class="h2 mb-4">Nos Services</h2>
+					<p class="text-muted-foreground mx-auto max-w-2xl">
+						Découvrez en détail les services que nous proposons dans cette catégorie
+					</p>
+				</div>
+				<div class="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+					{serviceWithDescriptions.data.services.map((serviceItem, idx) => (
+						<ServiceCard
+							serviceItem={serviceItem}
+							categorySlug={data.mappingKey || service.id}
+							data-aos="fade-up"
+							data-aos-delay={idx * 100}
+						/>
+					))}
+				</div>
+			</section>
+		)
+	}
+
 	<AboutNumbers />
 	<Contact />
 	<FaqAccordions />

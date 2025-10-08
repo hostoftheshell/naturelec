@@ -1,0 +1,183 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+
+import Badge from "@/components/badge/Badge.astro";
+import { filterCollectionByLanguage, getLocaleFromUrl } from "@/js/localeUtils";
+import { loadServiceDescriptions } from "@/js/servicesUtils";
+
+import HomePageCard from "./HomePageCard.astro";
+
+interface Props {
+	categorySlug?: string; // Optional prop to show services from specific category
+	displayLocation?: "homepage" | "servicespage"; // Optional filter by display location
+}
+
+const { categorySlug, displayLocation } = Astro.props;
+
+const currLocale = getLocaleFromUrl(Astro.url);
+
+// Get all service category entries
+const allCategoriesEntries = await getCollection("services", ({ data }) => {
+	// Filter out draft entries
+	return data.draft !== true;
+});
+
+// Filter by language
+const filteredCategories = filterCollectionByLanguage(
+	allCategoriesEntries,
+	currLocale,
+) as CollectionEntry<"services">[];
+
+// Apply display location filter if specified
+const locationFilteredCategories = displayLocation
+	? filteredCategories.filter((cat) => cat.data.displayLocation?.includes(displayLocation))
+	: filteredCategories;
+
+// Sort by order field (lower numbers first, undefined/null last)
+const sortedCategories = locationFilteredCategories.sort((a, b) => {
+	const orderA = a.data.order ?? Number.MAX_SAFE_INTEGER;
+	const orderB = b.data.order ?? Number.MAX_SAFE_INTEGER;
+	return orderA - orderB;
+});
+
+// Get the specific category if categorySlug is provided
+const categoryData = categorySlug
+	? locationFilteredCategories.find(
+			(cat) => cat.id === categorySlug || cat.data.mappingKey === categorySlug,
+		)
+	: null;
+
+// Determine which categories to display
+const categoriesToDisplayRaw =
+	categorySlug && categoryData ? [categoryData] : locationFilteredCategories;
+
+// Load descriptions from .mdoc files
+const categoriesToDisplay = await Promise.all(
+	categoriesToDisplayRaw.map((cat) => loadServiceDescriptions(cat)),
+);
+
+// When showing a single category, use global title/description
+// When showing multiple categories, each will have its own title/description
+const showingMultipleCategories = !categorySlug;
+
+// const globalTitle =
+// 	categorySlug && categoryData ? categoryData.data.title : "Nos Services Électriques";
+// const globalDescription =
+// 	categorySlug && categoryData
+// 		? categoryData.data.description
+// 		: showingMultipleCategories
+// 			? "Découvrez notre gamme complète de services électriques professionnels conçus pour répondre à tous vos besoins avec expertise et qualité."
+// 			: "";
+---
+
+<section id="services-cards" class="my-12 bg-transparent py-12">
+	<div class="site-container" id="services-cards-trigger">
+		<!-- {/* Global title and description - only shown when filtering by single category */}
+		{
+			categorySlug && (
+				<>
+					<h2
+						class="h2 mx-auto max-w-3xl text-center text-4xl"
+						data-aos="fade-left"
+						data-aos-trigger="#services-cards-trigger"
+					>
+						{globalTitle}
+					</h2>
+					{globalDescription && (
+						<p
+							class="text-muted-foreground mx-auto mt-4 max-w-5xl text-center text-lg"
+							data-aos="fade-left"
+							data-aos-delay="0.1"
+							data-aos-trigger="#services-cards-trigger"
+						>
+							{globalDescription}
+						</p>
+					)}
+				</>
+			)
+		}
+
+		{/* Show global intro when displaying multiple categories */}
+		{
+			!categorySlug && (
+				<>
+					<h2
+						class="h2 mx-auto max-w-3xl text-center text-4xl"
+						data-aos="fade-left"
+						data-aos-trigger="#services-cards-trigger"
+					>
+						{globalTitle}
+					</h2>
+					<p
+						class="text-muted-foreground mx-auto mt-4 max-w-5xl text-center text-lg"
+						data-aos="fade-left"
+						data-aos-delay="0.1"
+						data-aos-trigger="#services-cards-trigger"
+					>
+						{globalDescription}
+					</p>
+				</>
+			)
+		} -->
+
+		{
+			categoriesToDisplay.length > 0 ? (
+				<div class="mt-12">
+					{categoriesToDisplay.map((category) => (
+						<div class="mb-20 last:mb-0">
+							{!categorySlug && (
+								<div class="mb-8 text-center">
+									{category.data.badge && (
+										<Badge data-service-variant={category.data.mappingKey || category.id}>
+											{category.data.badge}
+										</Badge>
+									)}
+									<h3
+										class="h2 mx-auto max-w-3xl text-center text-4xl"
+										data-aos="fade-left"
+										data-aos-trigger="#services-cards-trigger"
+									>
+										{category.data.title}
+									</h3>
+
+									{category.data.description && (
+										<p class="text-muted-foreground mx-auto mt-4 max-w-5xl text-lg">
+											{category.data.description}
+										</p>
+									)}
+								</div>
+							)}
+
+							{/* Display the nested services */}
+							{category.data.services && category.data.services.length > 0 ? (
+								<div class="mt-8 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2 lg:grid-cols-3">
+									{category.data.services.map((serviceItem, idx) => (
+										<HomePageCard
+											serviceItem={serviceItem}
+											categorySlug={category.data.mappingKey || category.id}
+											data-aos="fade-left"
+											data-aos-delay={idx * 0.15}
+											data-aos-trigger="#services-cards-trigger"
+										/>
+									))}
+								</div>
+							) : (
+								<p class="text-muted-foreground text-center">
+									Aucun service disponible dans cette catégorie
+								</p>
+							)}
+						</div>
+					))}
+				</div>
+			) : (
+				<div class="mt-12 text-center">
+					<p class="text-muted-foreground">
+						{categorySlug
+							? `Aucune catégorie trouvée pour "${categorySlug}"`
+							: "Aucune catégorie de services disponible"}
+					</p>
+				</div>
+			)
+		}
+	</div>
+</section>

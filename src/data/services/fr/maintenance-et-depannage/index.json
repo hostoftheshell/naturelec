@@ -1,0 +1,41 @@
+{
+	"badge": "Interventions rapides et maintenance préventive pour vos installations électriques",
+	"title": "Maintenance & dépannage",
+	"description": "Naturelec garantit la sécurité et la performance de vos équipements avec des interventions d'urgence et un suivi régulier dans tout le secteur de l'Yonne.",
+	"order": 4,
+	"image": "@images/services/categories/maintenance-et-depannage/image.jpg",
+	"imageAlt": "Éclairs illuminant le ciel nocturne au-dessus de lignes électriques.",
+	"displayLocation": ["servicespage"],
+	"mappingKey": "maintenance-et-depannage",
+	"services": [
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-electrical_repair",
+				"title": "Dépannage d'urgence"
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-electrical_maintenance",
+				"title": "Maintenance préventive"
+			}
+		},
+		{
+			"discriminant": "picture",
+			"value": {
+				"image": "@images/services/items/maintenance-et-depannage/services/2/value/image.png",
+				"imageAlt": "Électricien raccordant des fils colorés dans une prise murale avec des gants de protection.",
+				"caption": "Travaux d’installation électrique réalisés avec précision et sécurité par un professionnel qualifié."
+			}
+		},
+		{
+			"discriminant": "text",
+			"value": {
+				"icon": "naturelec/naturelec-electric_standard",
+				"title": "Remise aux normes"
+			}
+		}
+	]
+}

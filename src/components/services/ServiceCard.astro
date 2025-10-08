@@ -1,9 +1,11 @@
 ---
+import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
 
 import Button from "@/components/button/Button.astro";
 import DocumentRenderer from "@/components/keystatic/DocumentRenderer.astro";
 import type { ServiceItem } from "@/content/schemas/services";
+import { resolveImage } from "@/js/imageUtils";
 
 interface Props {
 	serviceItem: ServiceItem;
@@ -13,64 +15,65 @@ interface Props {
 const { serviceItem, categorySlug, ...rest } = Astro.props as Props;
 const isTextVariant = serviceItem.discriminant === "text";
 const isPictureVariant = serviceItem.discriminant === "picture";
+
+// Resolve image for picture variant
+const resolvedServiceImage =
+	isPictureVariant && serviceItem.value.image ? resolveImage(serviceItem.value.image) : null;
 ---
 
 <div class="flex" {...rest}>
-	<div
-		class="service-card hover:border-service-accent bg-muted flex flex-col rounded-lg border p-8 transition-colors md:rounded-xl"
-		data-service-variant={categorySlug || ""}
-		data-service-kind={serviceItem.discriminant}
-	>
-		{
-			isTextVariant && (
-				<div class="flex h-full flex-col justify-between">
-					<div>
-						{serviceItem.value.icon && (
-							<div class="relative mr-auto flex items-center">
-								<Icon
-									name={serviceItem.value.icon}
-									class="ml-[-6px] h-[68px] w-[68px]"
-									style="color: var(--service-accent);"
-								/>
-							</div>
-						)}
-						{serviceItem.value.title && (
-							<h3 class="font-heading mt-6 text-xl font-semibold">{serviceItem.value.title}</h3>
-						)}
-						{serviceItem.value.description && (
-							<div class="text-muted-foreground mt-4 text-base">
-								<DocumentRenderer content={serviceItem.value.description} />
-							</div>
-						)}
-					</div>
-					<Button
-						variant="primary"
-						arrow="right"
-						href={`/services/#${categorySlug || ""}`}
-						class="service-button mt-6 py-2 pl-4 font-medium"
-					>
-						En Savoir Plus
-					</Button>
-				</div>
-			)
-		}
-		{
-			isPictureVariant && (
-				<div>
-					{serviceItem.value.image && (
-						<div class="relative overflow-hidden rounded-lg">
-							<img
-								src={serviceItem.value.image}
-								alt={serviceItem.value.imageAlt || "Service image"}
-								class="h-48 w-full object-cover"
+	{
+		isTextVariant && (
+			<div
+				class="service-card hover:border-service-accent bg-muted flex flex-col rounded-lg border p-8 transition-colors md:rounded-xl"
+				data-service-variant={categorySlug || ""}
+				data-service-kind={serviceItem.discriminant}
+			>
+				<div class="flex h-full flex-col">
+					{serviceItem.value.icon && (
+						<div class="relative mr-auto flex items-center">
+							<Icon
+								name={serviceItem.value.icon}
+								class="ml-[-6px] h-[68px] w-[68px]"
+								style="color: var(--service-accent);"
 							/>
 						</div>
 					)}
-					{serviceItem.value.caption && (
-						<p class="text-muted-foreground mt-4 text-base">{serviceItem.value.caption}</p>
+					{serviceItem.value.title && (
+						<h3 class="font-heading mt-6 text-xl font-semibold">{serviceItem.value.title}</h3>
+					)}
+					{serviceItem.value.description && (
+						<div class="text-muted-foreground mt-4 text-base">
+							<DocumentRenderer content={serviceItem.value.description} />
+						</div>
 					)}
 				</div>
-			)
-		}
-	</div>
+			</div>
+		)
+	}
+	{
+		isPictureVariant && resolvedServiceImage && (
+			<div
+				class="service-card bg-muted hover:border-border flex min-h-[340px] w-full flex-col rounded-lg border transition-colors md:rounded-xl"
+				data-service-variant={categorySlug || ""}
+				data-service-kind={serviceItem.discriminant}
+			>
+				<div class="relative h-full overflow-hidden rounded-lg contain-size md:rounded-xl">
+					<Image
+						src={resolvedServiceImage}
+						alt={serviceItem.value.imageAlt || "Service image"}
+						width={600}
+						height={400}
+						densities={[1.5, 2]}
+						class="h-full w-full object-cover"
+					/>
+				</div>
+				{/* 
+        {serviceItem.value.caption && (
+          <p class="text-muted-foreground mt-4 text-base px-8 pb-8">{serviceItem.value.caption}</p>
+        )} 
+        */}
+			</div>
+		)
+	}
 </div>

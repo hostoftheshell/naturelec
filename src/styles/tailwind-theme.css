@@ -33,7 +33,7 @@
 	/* light theme */
 	--light-bg-pri: oklch(0.9623 0.0184 86.15);
 	--light-bg-sec: oklch(0.712 0.1238 134.27 / 17%);
-	--light-bg-ter: oklch(0.9679 0.0226 98.64);
+	--light-bg-ter: #f0f2d4;
 	--light-bg-forth: oklch(0.9452 0.0795 103.15);
 	--light-brand-pri: oklch(0.5446 0.1707 255.29);
 	--light-brand-sec: oklch(0.5304 0.1134 134.88);
@@ -59,6 +59,7 @@
 	/* dark theme */
 	--dark-bg-pri: oklch(0.2771 0.0126 243.31);
 	--dark-bg-sec: oklch(0.3456 0.0139 226.4);
+	--dark-bg-ter: #1e2326;
 	--dark-border: oklch(0.5187 0.008 247.98);
 	--dark-brand-pri: oklch(0.6757 0.1464 252.54);
 	--dark-brand-pri-dimmed: oklch(0.7365 0.1166 251.78);
@@ -66,6 +67,7 @@
 	--dark-btn-pri: oklch(0.7487 0.0631 185.5);
 	--dark-btn-pri-hover: oklch(0.6692 0.0566 209.48);
 	--dark-btn-sec: oklch(0.7732 0.0906 125.78);
+	--dark-btn-sec-hover: oklch(0.8569 0.0703 146.18);
 	--dark-cta: oklch(0.7147 0.1729 50.75);
 	--dark-cta-hover: oklch(0.5813 0.1371 49.94);
 	--dark-danger: oklch(0.8155 0.079 12.03);
@@ -168,6 +170,8 @@
 	/* starwind utilities setup */
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
+	--color-foreground-hover: var(--foreground-hover);
+	--color-btn-sec-hover: var(--btn-sec-hover);
 	--color-bgter: var(--bgter);
 	--color-bgforth: var(--bgforth);
 	--color-card: var(--card);
