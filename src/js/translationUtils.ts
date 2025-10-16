@@ -2,6 +2,7 @@ import type { DataEntryMap } from "astro:content";
 import { getCollection } from "astro:content";
 import { getRelativeLocaleUrl } from "astro:i18n";
 
+import { getNavConfig } from "@/config/fr/navData.json";
 import { defaultLocale, locales } from "@/config/siteSettings.json";
 import {
 	dataTranslations,
@@ -9,6 +10,7 @@ import {
 	routeTranslations,
 	textTranslations,
 } from "@/config/translationData.json";
+import type { navItem } from "@/config/types/configDataTypes";
 
 /**
  * * text translation helper function
@@ -52,6 +54,31 @@ export function getTranslatedData<T extends Locale, K extends DataKey<T>>(
 	locale: T,
 ): (typeof dataTranslations)[T][K] {
 	return dataTranslations[locale][data] || dataTranslations[defaultLocale as T][data];
+}
+
+/**
+ * * Get navigation data with dynamic services populated
+ * @param locale: Language to use for navigation
+ * @returns Promise with navigation data including dynamically loaded services
+ *
+ * ## Example
+ *
+ * ```ts
+ * import { getLocaleFromUrl } from "@/js/i18nUtils";
+ * import { getNavData } from "@/js/translations";
+ * const currLocale = getLocaleFromUrl(Astro.url);
+ * const navData = await getNavData(currLocale);
+ * ```
+ */
+export async function getNavData(locale: Locale): Promise<navItem[]> {
+	// For now, only French is supported with dynamic services
+	// You can extend this for other locales as needed
+	if (locale === "fr") {
+		return await getNavConfig();
+	}
+
+	// Fallback to static data for other locales
+	return getTranslatedData("navData", locale);
 }
 
 /**

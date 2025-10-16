@@ -22,46 +22,56 @@ const currLocale = getLocaleFromUrl(Astro.url);
 
 <form id="contact-form" class="flex flex-col gap-6">
 	<div class="flex flex-col">
-		<Label for="full-name">Full Name</Label>
-		<Input type="text" name="full-name" class="min-h-12 px-4 py-3" placeholder="John Doe" />
+		<Label for="full-name">Nom et prénom</Label>
+		<Input
+			type="text"
+			name="full-name"
+			class="min-h-12 px-4 py-3"
+			placeholder="Jean-Michel Dupont"
+		/>
 	</div>
 	<div class="flex flex-col">
-		<Label for="email">Email Address</Label>
-		<Input type="email" name="email" class="min-h-12 px-4 py-3" placeholder="johndoe@example.com" />
+		<Label for="email">Adresse e-mail </Label>
+		<Input
+			type="email"
+			name="email"
+			class="min-h-12 px-4 py-3"
+			placeholder="jmdupont@example.com"
+		/>
 	</div>
 	<div class="flex flex-col">
-		<Label for="phone">Phone Number</Label>
-		<Input type="tel" name="phone" class="min-h-12 px-4 py-3" placeholder="(555) 123-4567" />
+		<Label for="phone">Numéro de téléphone</Label>
+		<Input type="tel" name="phone" class="min-h-12 px-4 py-3" placeholder="0612345678" />
 	</div>
 	<div class="flex flex-col">
-		<Label for="reason">Reason for Contact</Label>
+		<Label for="reason">Motif de contact</Label>
 		<Select name="reason">
 			<SelectTrigger class="min-h-12 w-full px-4 py-3">
-				<SelectValue placeholder="Select a reason" />
+				<SelectValue placeholder="Sélectionner un motif" />
 			</SelectTrigger>
 			<SelectContent>
 				<SelectGroup>
-					<SelectItem value="appointment-scheduling">Appointment Scheduling</SelectItem>
-					<SelectItem value="medical-records">Medical Records</SelectItem>
-					<SelectItem value="billing-inquiry">Billing Inquiry</SelectItem>
-					<SelectItem value="general-information">General Information</SelectItem>
-					<SelectItem value="other">Other</SelectItem>
+					<SelectItem value="demande-de-devis">Demande de devis</SelectItem>
+					<SelectItem value="installation-electrique">Installation électrique</SelectItem>
+					<SelectItem value="mise-en-conformite">Mise en conformité</SelectItem>
+					<SelectItem value="conseils-et-aide">Conseils et aide</SelectItem>
+					<SelectItem value="autre">Autre</SelectItem>
 				</SelectGroup>
 			</SelectContent>
 		</Select>
 	</div>
-	<div class="flex flex-col">
+	<!-- <div class="flex flex-col">
 		<Label for="existing-patient" class="mb-1">Are you an existing patient?</Label>
 		<div class="flex gap-1">
 			<Checkbox id="existing-patient" variant="primary" name="existing-patient" /><p>Yes</p>
 		</div>
-	</div>
+	</div> -->
 	<div class="flex flex-col">
-		<Label for="message">Your Message</Label>
+		<Label for="message">Votre message</Label>
 		<Textarea
 			name="message"
 			class="min-h-12 px-4 py-3"
-			placeholder="How can we help you?"
+			placeholder="Comment pouvons-nous vous aider ?"
 			rows={4}
 		/>
 	</div>
@@ -69,12 +79,14 @@ const currLocale = getLocaleFromUrl(Astro.url);
 		<div class="flex gap-1">
 			<Label for="consent" class="sr-only">Consent</Label>
 			<Checkbox id="consent" variant="primary" name="consent" /><p>
-				I consent to having this website store my submitted information
+				J'accepte que mes données soient conservées pour traiter ma demande
 			</p>
 		</div>
 	</div>
 	<div>
-		<Button variant="primary" type="submit" class="w-full py-3 text-lg">Send Message</Button>
+		<Button variant="primary" type="submit" class="w-full py-3 text-lg"
+			>Envoyer votre message</Button
+		>
 	</div>
 </form>
 

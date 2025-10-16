@@ -6,7 +6,7 @@ import SiteLogo from "@/components/site-logo/SiteLogo.astro";
 import { contactData } from "@/config/fr/contactData.json";
 import type { navDropdownItem, navItem, navLinkItem } from "@/config/types/configDataTypes";
 import { getLocaleFromUrl } from "@/js/localeUtils";
-import { getTranslatedData } from "@/js/translationUtils";
+import { getNavData, getTranslatedData } from "@/js/translationUtils";
 
 import FooterLink from "./FooterLink.astro";
 
@@ -25,7 +25,7 @@ const footerLine = footerEntry?.data.footerLine || "";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 const siteData = getTranslatedData("siteData", currLocale);
-const navData = getTranslatedData("navData", currLocale);
+const navData = await getNavData(currLocale);
 const today = new Date();
 
 // Type guards

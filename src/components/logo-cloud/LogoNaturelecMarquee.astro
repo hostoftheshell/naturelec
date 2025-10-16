@@ -77,17 +77,16 @@ const activeLogos = logos.filter((logo) => logo.active);
 		transition-property: opacity;
 		transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
 		transition-duration: var(--tw-duration, var(--default-transition-duration));
+	}
 
-		&:hover {
-			opacity: 100%;
-		}
+	.logo:hover {
+		opacity: 100%;
 	}
 
 	.logo-link {
 		display: inline-block;
-
-		&:hover .logo {
-			opacity: 100%;
-		}
+	}
+	.logo-link:hover .logo {
+		opacity: 100%;
 	}
 </style>

@@ -98,6 +98,25 @@ export interface ServicespageIntroSchema {
 	};
 }
 
+export interface AdditionalServicesSchema extends BaseEntry {
+	additionalServicesBadge?: string;
+
+	additionalServicesTitle: {
+		name: string; // human-readable title
+		slug: string; // SEO slug (never to be changed after publishing)
+	};
+
+	additionalServicesDescription: string;
+
+	additionalServices: Array<{
+		title?: string;
+		description?: any; // Keystatic document field (rich text)
+		image?: string;
+		imageAlt?: string;
+		caption?: string;
+	}>;
+}
+
 // Content schema types
 export interface BlogSchema extends BaseEntry, SlugField {
 	description: string;
@@ -294,6 +313,7 @@ export interface KeystaticSingletons {
 	homepageGalleryFR: ReturnType<SchemaFactory<any>>;
 	homepageLocationFR: ReturnType<SchemaFactory<any>>;
 	servicespageIntroFR: ReturnType<SchemaFactory<any>>;
+	servicespageAdditionalFR: ReturnType<SchemaFactory<any>>;
 	footerFR: ReturnType<SchemaFactory<any>>;
 	resumeFR: ReturnType<SchemaFactory<any>>;
 }

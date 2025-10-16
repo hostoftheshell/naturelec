@@ -33,7 +33,10 @@ import {
 	createResume,
 	createServices,
 } from "@/components/keystatic-components/schemas/pages";
-import { createServicespageIntro } from "@/components/keystatic-components/schemas/servicespage";
+import {
+	createAdditionals,
+	createServicespageIntro,
+} from "@/components/keystatic-components/schemas/servicespage";
 
 export default config({
 	// Works in local mode in dev, then cloud mode in prod
@@ -76,6 +79,7 @@ export default config({
 		homepageLocationFR: createHomepageLocation("fr"),
 		// Servicespage sections
 		servicespageIntroFR: createServicespageIntro("fr"),
+		servicespageAdditionalFR: createAdditionals("fr"),
 		// Non-homepage singletons
 		footerFR: createFooter("fr"),
 		resumeFR: createResume("fr"),

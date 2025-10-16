@@ -1,48 +1,64 @@
 ---
 import ContactForm from "@/components/forms/ContactForm.astro";
+import { getImage } from "astro:assets";
 import { getLocaleFromUrl } from "@/js/localeUtils";
 import { getLocalizedRoute, getTranslatedData, useTranslations } from "@/js/translationUtils";
+import BgPng from "@images/contact/image.png";
+
 const currLocale = getLocaleFromUrl(Astro.url);
+const siteData = getTranslatedData("siteData", currLocale);
+const contactData = getTranslatedData("contactData", currLocale);
+const optimizedPng = await getImage({
+	src: BgPng,
+});
 ---
 
 <section id="contact" class="site-container my-20 scroll-mt-20 md:my-32">
 	<div class="mt-6 grid gap-10 lg:grid-cols-2">
-		<div class="">
-			<h2 class="h2 mb-4">Book Your Appointment</h2>
+		<div class="bgpng-container" style={`--bg-image: url(${optimizedPng.src});`}>
+			<h2 class="h2 mb-4 text-4xl">Prenez rendez-vous avec Naturelec</h2>
 			<p class="description mb-8">
-				We're here to help with all your needs. Feel free to request an appointment or ask us a
-				question.
+				Nous sommes à votre disposition pour tous vos besoins électriques. N'hésitez pas à demander
+				un rendez-vous ou à nous poser une question.
 			</p>
 			<div class="mb-8">
-				<h3 class="font-heading mb-4 text-xl leading-normal font-semibold">Office Hours</h3>
-				<p class="text-muted-foreground">Monday - Friday: 8:00 AM - 6:00 PM</p>
-				<p class="text-muted-foreground">Saturday: 9:00 AM - 1:00 PM</p>
-				<p class="text-muted-foreground">Sunday: Closed</p>
+				<h3 class="font-heading mb-4 text-xl leading-normal font-semibold">
+					Horaires d'intervention
+				</h3>
+				<p class="text-muted-foreground">lundi - vendredi : {contactData.businessHours.weekdays}</p>
+				<p class="text-muted-foreground">samedi : {contactData.businessHours.saturday}</p>
+				<p class="text-muted-foreground">dimanche : {contactData.businessHours.sunday}</p>
 			</div>
 			<div class="mb-8">
-				<h3 class="font-heading mb-4 text-xl leading-normal font-semibold">Contact Information</h3>
+				<h3 class="font-heading mb-4 text-xl leading-normal font-semibold">Contact</h3>
 				<p class="text-muted-foreground mb-2">
-					<span class="font-semibold">Phone:</span>
-					(555) 123-4567
+					<span class="font-semibold">Téléphone : </span>
+					{contactData.phone}
 				</p>
 				<p class="text-muted-foreground mb-2">
-					<span class="font-semibold">Email:</span>
+					<span class="font-semibold">E-mail:</span>
 					<a
 						class="text-foreground hover:text-accent hover:decoration-accent underline"
-						href={`mailto:info@medicaloffice.com`}>info@medicaloffice.com</a
+						href={`mailto:#${contactData.email}`}
 					>
+						{contactData.email}
+					</a>
+				</p>
+				<p class="text-muted-foreground mb-2">
+					<em>Dépannage urgent : nous contacter</em>
 				</p>
 			</div>
 			<div class="mb-8">
-				<h3 class="font-heading mb-4 text-xl leading-normal font-semibold">Our Location</h3>
+				<h3 class="font-heading mb-4 text-xl leading-normal font-semibold">Où nous trouver</h3>
 				<p class="text-muted-foreground">
-					For emergencies, please call our 24/7 hotline:
-					<span class="font-semibold">(555) 911-0000</span>
+					<span class="font-semibold"
+						><span>{contactData.address.postalCode} {contactData.address.city}</span>
+					</span>
 				</p>
 			</div>
 		</div>
 		<div class="">
-			<div class="rounded-lg border p-8 shadow-md">
+			<div class="bg-muted rounded-lg border p-8">
 				<h3 class="font-heading tracking-px-n mb-6 text-3xl leading-tight font-semibold">
 					Send Us A Message
 				</h3>
@@ -51,3 +67,26 @@ const currLocale = getLocaleFromUrl(Astro.url);
 		</div>
 	</div>
 </section>
+
+<style>
+	.bgpng-container {
+		position: relative;
+		z-index: 0;
+		overflow: hidden;
+		border-radius: 0.5rem;
+	}
+
+	.bgpng-container::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: var(--bg-image) center / cover no-repeat;
+		background-size: contain;
+		background-repeat: no-repeat;
+		opacity: 0.2;
+		z-index: -1;
+	}
+</style>

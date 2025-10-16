@@ -1,0 +1,151 @@
+---
+import ArrowLeft from "@tabler/icons/outline/arrow-left.svg";
+import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
+import { Image } from "astro:assets";
+
+import Badge from "@/components/badge/Badge.astro";
+import { getLocaleFromUrl } from "@/js/localeUtils";
+import { resolveImage } from "@/js/imageUtils";
+import { loadAdditionalServiceDescriptions } from "@/js/servicesUtils";
+
+import AdditionalSwiperCard from "./AdditionalSwiperCard.astro";
+
+// Get current locale and fetch additional services data
+const currLocale = getLocaleFromUrl(Astro.url);
+
+// Import additional services data and load descriptions
+let additionalServicesData: any = {};
+try {
+	// Try current locale first
+	const dataModule = await import(
+		/* @vite-ignore */ `@/data/servicespage/additionals/${currLocale}/index.json`
+	);
+	additionalServicesData = await loadAdditionalServiceDescriptions(dataModule.default, currLocale);
+} catch (error) {
+	// Fallback to French
+	try {
+		const dataModule = await import(
+			/* @vite-ignore */ `@/data/servicespage/additionals/fr/index.json`
+		);
+		additionalServicesData = await loadAdditionalServiceDescriptions(dataModule.default, "fr");
+	} catch (fallbackError) {
+		console.warn(`No additional services data found for locale: ${currLocale}`, fallbackError);
+	}
+}
+
+// Extract services and section data
+const additionalServices = additionalServicesData?.additionalServices || [];
+const sectionTitle =
+	additionalServicesData?.additionalServicesTitle?.name || "Services additionnels";
+const sectionBadge = additionalServicesData?.additionalServicesBadge;
+const sectionDescription = additionalServicesData?.additionalServicesDescription;
+const sectionMappinKey = additionalServicesData?.additionalServicesTitle?.slug;
+
+// Only render if we have services
+const hasServices = additionalServices.length > 0;
+---
+
+{
+	hasServices && (
+		<section id="additional-swiper" class="relative overflow-hidden py-20">
+			<div class="site-container">
+				<div class="mb-8 text-center" data-aos="fade-up">
+					{sectionBadge && (
+						<Badge data-service-variant={sectionMappinKey || sectionMappinKey.id}>
+							{sectionBadge}
+						</Badge>
+					)}
+					<h2 class="h2">{sectionTitle}</h2>
+					{sectionDescription && <p class="text-muted-foreground mt-4">{sectionDescription}</p>}
+				</div>
+				<div class="additional-services-slider relative w-full overflow-hidden rounded-3xl">
+					<div class="swiper-wrapper">
+						{additionalServices.map((service: any) => (
+							<AdditionalSwiperCard service={service} />
+						))}
+					</div>
+					<div class="absolute right-4 bottom-4 z-10 flex space-x-4">
+						<button
+							class="additional-prev group text-muted-foreground hover:text-accent"
+							aria-label="Previous service"
+						>
+							<div class="border-muted-foreground hover:border-accent bg-bgter flex size-14 items-center justify-center rounded-full border transition duration-200 md:size-18">
+								<ArrowLeft class="opacity-90" />
+							</div>
+						</button>
+						<button
+							class="additional-next group text-muted-foreground hover:text-accent"
+							aria-label="Next service"
+						>
+							<div class="bg-bgter border-muted-foreground hover:border-accent flex size-14 items-center justify-center rounded-full border transition duration-200 md:size-18">
+								<ArrowRight class="opacity-90" />
+							</div>
+						</button>
+					</div>
+				</div>
+			</div>
+		</section>
+	)
+}
+
+<script>
+	import "swiper/css";
+
+	import Swiper from "swiper";
+	import { A11y, Autoplay, Keyboard, Navigation } from "swiper/modules";
+
+	const initAdditionalServicesSwiper = () => {
+		const swiperElement = document.querySelector(".additional-services-slider");
+		if (!swiperElement) return;
+
+		// Initialize Swiper
+		const swiper = new Swiper(".additional-services-slider", {
+			modules: [Navigation, Keyboard, A11y, Autoplay],
+			slidesPerView: 1,
+			spaceBetween: 0,
+			grabCursor: true,
+			loop: true,
+			autoplay: {
+				delay: 8000,
+				disableOnInteraction: false,
+			},
+			keyboard: {
+				enabled: true,
+			},
+			navigation: {
+				nextEl: ".additional-next",
+				prevEl: ".additional-prev",
+			},
+			a11y: {
+				prevSlideMessage: "Previous service",
+				nextSlideMessage: "Next service",
+			},
+		});
+
+		return swiper;
+	};
+
+	// Initialize on page load
+	initAdditionalServicesSwiper();
+
+	// Re-initialize after view transitions
+	document.addEventListener("astro:after-swap", () => {
+		initAdditionalServicesSwiper();
+	});
+</script>
+
+<style>
+	.additional-services-slider {
+		overflow: hidden;
+	}
+
+	.swiper-slide {
+		height: auto;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.swiper-slide > div {
+		flex: 1;
+	}
+</style>

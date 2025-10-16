@@ -160,7 +160,6 @@ export const createServices = (locale: Locale) =>
 			),
 		},
 	});
-
 /**
  * Careers Collection
  */

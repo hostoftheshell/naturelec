@@ -1,0 +1,63 @@
+---
+import { Image } from "astro:assets";
+
+import DocumentRenderer from "@/components/keystatic/DocumentRenderer.astro";
+import type { AdditionalServicesSchema } from "@/components/keystatic-components/types";
+import { resolveImage } from "@/js/imageUtils";
+
+interface Props {
+	service: AdditionalServicesSchema["additionalServices"][number];
+}
+
+const { service } = Astro.props;
+
+// Resolve the service image if it exists
+const resolvedImage = service.image ? resolveImage(service.image) : null;
+---
+
+<div class="swiper-slide">
+	<div
+		class="bg-muted border-border relative overflow-hidden rounded-3xl border p-3 md:h-96"
+		data-aos="fade-up"
+		data-aos-delay="0.3"
+	>
+		<div class="relative z-10 flex h-full flex-col lg:flex-row lg:items-stretch">
+			{
+				resolvedImage && (
+					<div class="flex items-center justify-center p-6 lg:h-full lg:w-1/3">
+						<Image
+							src={resolvedImage}
+							quality={100}
+							alt={service.imageAlt || "Service image"}
+							class="h-full w-full rounded-lg object-cover"
+							width={600}
+							height={400}
+							densities={[1.5, 2]}
+						/>
+					</div>
+				)
+			}
+			<div class={`w-full p-6 ${resolvedImage ? "lg:w-2/3" : ""}`}>
+				<div class="max-w-2xl">
+					{
+						service.title && (
+							<h3 class="font-heading mb-6 text-xl leading-snug font-semibold md:text-2xl lg:text-3xl">
+								{service.title}
+							</h3>
+						)
+					}
+
+					{
+						service.description && (
+							<div class="mb-8 text-base leading-relaxed md:text-lg">
+								<div class="text-muted-foreground">
+									<DocumentRenderer content={service.description} />
+								</div>
+							</div>
+						)
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

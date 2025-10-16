@@ -11,6 +11,7 @@ import {
 	createImageField,
 	createMappingKeyField,
 	createServicespageDataPath,
+	createSlugField,
 	createTextField,
 	type Locale,
 	VALIDATION_PATTERNS,
@@ -77,6 +78,81 @@ export const createServicespageIntro = (locale: Locale) =>
 				},
 				{
 					label: "Nos domaines d'expertise",
+				},
+			),
+		},
+	});
+
+/**
+ * Additional Services
+ * Handles the additinal service categorie with nested services
+ */
+export const createAdditionals = (locale: Locale) =>
+	singleton({
+		label: `Page Services - Services supplémentaires (${locale.toUpperCase()})`,
+		path: createServicespageDataPath("additionals", locale),
+		entryLayout: "form",
+		format: { data: "json" },
+		schema: {
+			additionalServicesBadge: createTextField("Badge de la section services additionnels", {
+				description: "Badge de la section dédiée aux services additionnels proposés par Naturelec",
+				validation: {
+					...VALIDATION_PATTERNS.shortText,
+					...VALIDATION_PATTERNS.optional,
+				},
+			}),
+			additionalServicesTitle: createSlugField({
+				nameLabel: "Titre de la catégorie",
+				slugLabel: "Slug optimisé pour le référencement",
+				slugDescription: "Ne changez jamais le slug une fois qu'un fichier est publié !",
+			}),
+			additionalServicesDescription: createTextField("Introduction de la section", {
+				description:
+					"Paragraphe d'introduction de la section dédiée aux services additionnels proposés par Naturelec",
+				validation: {
+					...VALIDATION_PATTERNS.shortText,
+					...VALIDATION_PATTERNS.required,
+				},
+			}),
+
+			additionalServices: fields.array(
+				fields.object({
+					title: createTextField("Titre du service", {
+						validation: { isRequired: false },
+					}),
+					description: fields.document({
+						label: "Description",
+						description: "Description détaillée avec formatage",
+						formatting: {
+							inlineMarks: true,
+							listTypes: true,
+							alignment: true,
+							headingLevels: [3, 4, 5],
+							blockTypes: true,
+							softBreaks: true,
+						},
+						links: true,
+					}),
+					image: createImageField("Image du service", {
+						description: "Image représentant le service additionnel",
+						directory: "src/assets/images/servicespage/additional",
+						publicPath: "@images/servicespage/additional/",
+						validation: { isRequired: false },
+					}),
+					imageAlt: createTextField("Texte alternatif", {
+						description: "Description de l'image pour l'accessibilité",
+						validation: { isRequired: false },
+					}),
+					caption: createTextField("Légende", {
+						description: "Légende ou description courte de l'image",
+						multiline: true,
+						validation: { isRequired: false },
+					}),
+				}),
+				{
+					label: "Services Additionnels",
+					itemLabel: (props) => props.fields.title.value || "Nouveau service",
+					validation: { length: { min: 0 } },
 				},
 			),
 		},

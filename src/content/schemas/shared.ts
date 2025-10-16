@@ -21,6 +21,7 @@ export const DATA_PATHS = {
 	},
 	servicespage: {
 		intro: "./src/data/servicespage/intro",
+		additionals: "./src/data/servicespage/additionals",
 	},
 } as const;
 

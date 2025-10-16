@@ -35,3 +35,36 @@ export const servicespageIntroCollection = defineCollection({
 			}),
 		}),
 });
+
+/**
+ * Services page - Additional services section
+ */
+export const servicespageAdditionalCollection = defineCollection({
+	loader: glob({
+		pattern: PATTERNS.json,
+		base: DATA_PATHS.servicespage.additionals,
+	}),
+	schema: ({ image }) =>
+		z.object({
+			additionalServicesBadge: z.string().optional(),
+
+			additionalServicesTitle: z.object({
+				name: z.string(),
+				slug: z.string(),
+			}),
+
+			additionalServicesDescription: z.string(),
+
+			additionalServices: z.array(
+				z.object({
+					title: z.string().optional(),
+					description: z
+						.any() // Keystatic rich text (document)
+						.optional(),
+					image: image().optional(),
+					imageAlt: z.string().optional(),
+					caption: z.string().optional(),
+				}),
+			),
+		}),
+});

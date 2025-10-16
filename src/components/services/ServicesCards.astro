@@ -124,7 +124,7 @@ const showingMultipleCategories = !categorySlug;
 			categoriesToDisplay.length > 0 ? (
 				<div class="mt-12">
 					{categoriesToDisplay.map((category) => (
-						<div class="mb-28 last:mb-0">
+						<div id={category.id} class="mb-28 last:mb-0">
 							{!categorySlug && (
 								<div class="mb-8 text-center">
 									{category.data.badge && (

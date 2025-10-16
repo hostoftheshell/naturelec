@@ -64,16 +64,16 @@
 	@apply font-heading text-2xl font-semibold md:text-3xl;
 }
 .markdown-content h3:not(:where(.not-content *)) {
-	@apply font-heading text-xl font-semibold md:text-2xl;
+	@apply font-sans text-xl font-semibold md:text-2xl;
 }
 .markdown-content h4:not(:where(.not-content *)) {
-	@apply font-heading text-lg font-semibold md:text-xl;
+	@apply font-sans text-lg font-semibold md:text-xl;
 }
 .markdown-content h5:not(:where(.not-content *)) {
-	@apply text-foreground/85 font-heading text-base font-semibold md:text-lg;
+	@apply text-foreground/85 font-sans text-base font-semibold md:text-lg;
 }
 .markdown-content h6:not(:where(.not-content *)) {
-	@apply text-foreground/85 font-heading text-base font-semibold md:text-lg;
+	@apply text-foreground/85 font-sans text-base font-semibold md:text-lg;
 }
 
 /* anchor tags */
@@ -157,6 +157,19 @@
 }
 .markdown-content dd:not(:where(.not-content *)) {
 	@apply ps-4;
+}
+/* markdown in legal pages */
+.markdown-content li:not(:where(.not-content #legal__container)) {
+	@apply pl-0;
+	overflow-wrap: anywhere;
+}
+
+.markdown-content :is(ul):not(:where(.not-content #legal__container)) {
+	@apply ml-0 list-none;
+}
+
+.markdown-content :is(ol):not(:where(.not-content #legal__container)) {
+	@apply ml-0 list-none;
 }
 
 /* Table styling */

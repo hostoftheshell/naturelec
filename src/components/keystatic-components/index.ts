@@ -26,7 +26,7 @@ export {
 } from "./schemas/homepage";
 
 // Servicespage singletons
-export { createServicespageIntro } from "./schemas/servicespage";
+export { createAdditionals, createServicespageIntro } from "./schemas/servicespage";
 
 // Shared utilities
 export {

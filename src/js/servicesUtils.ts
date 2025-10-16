@@ -192,3 +192,53 @@ export async function loadServiceDescriptions(
 		},
 	} as CollectionEntry<"services">;
 }
+
+/**
+ * Load description content from .mdoc files for additional services
+ * Similar to loadServiceDescriptions but for the additionals collection structure
+ */
+export async function loadAdditionalServiceDescriptions(
+	additionalServicesData: any,
+	locale: string = "fr",
+): Promise<any> {
+	if (
+		!additionalServicesData?.additionalServices ||
+		additionalServicesData.additionalServices.length === 0
+	) {
+		return additionalServicesData;
+	}
+
+	const basePath = `src/data/servicespage/additionals/${locale}/index`;
+
+	const servicesWithDescriptions = await Promise.all(
+		additionalServicesData.additionalServices.map(async (service: any, index: number) => {
+			try {
+				// Try to read the description.mdoc file
+				const descPath = join(
+					process.cwd(),
+					basePath,
+					"additionalServices",
+					String(index),
+					"description.mdoc",
+				);
+
+				const content = await readFile(descPath, "utf-8");
+				const parsedContent = parseMdocContent(content);
+
+				return {
+					...service,
+					description: parsedContent,
+				};
+			} catch (error) {
+				// If file doesn't exist or can't be read, return service as-is
+				// Silently continue - descriptions are optional
+				return service;
+			}
+		}),
+	);
+
+	return {
+		...additionalServicesData,
+		additionalServices: servicesWithDescriptions,
+	};
+}

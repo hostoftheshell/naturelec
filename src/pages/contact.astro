@@ -1,0 +1,13 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ContactComponent from "@/components/contact/Contact.astro";
+import { getTranslatedData } from "@/js/translationUtils";
+import { getLocaleFromUrl } from "@/js/localeUtils";
+
+const currLocale = getLocaleFromUrl(Astro.url);
+const siteData = getTranslatedData("siteData", currLocale);
+---
+
+<BaseLayout title={siteData.title} description={siteData.description}>
+	<ContactComponent />
+</BaseLayout>

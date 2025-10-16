@@ -16,7 +16,10 @@ import {
 	resumeCollection,
 } from "./schemas/misc.js";
 import { servicesCollection } from "./schemas/services.js";
-import { servicespageIntroCollection } from "./schemas/servicespage.js";
+import {
+	servicespageAdditionalCollection,
+	servicespageIntroCollection,
+} from "./schemas/servicespage.js";
 export const collections = {
 	// Content collections
 	blog: blogCollection,
@@ -38,6 +41,7 @@ export const collections = {
 
 	// Servicespage sections
 	servicespageIntro: servicespageIntroCollection,
+	servicespageAdditionals: servicespageAdditionalCollection,
 
 	// Site configuration
 	footer: footerCollection,

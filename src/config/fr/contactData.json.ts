@@ -8,7 +8,7 @@ export const contactData: ContactDataProps = {
 	// Physical address
 	address: {
 		street: "5 place de l'Église",
-		city: "LUCY-SUR-CURE",
+		city: "ESSERT",
 		postalCode: "89270",
 		country: "France",
 	},
