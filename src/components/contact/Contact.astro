@@ -1,9 +1,10 @@
 ---
-import ContactForm from "@/components/forms/ContactForm.astro";
+import BgPng from "@images/contact/image.png";
 import { getImage } from "astro:assets";
+
+import ContactForm from "@/components/forms/ContactForm.astro";
 import { getLocaleFromUrl } from "@/js/localeUtils";
 import { getLocalizedRoute, getTranslatedData, useTranslations } from "@/js/translationUtils";
-import BgPng from "@images/contact/image.png";
 
 const currLocale = getLocaleFromUrl(Astro.url);
 const siteData = getTranslatedData("siteData", currLocale);

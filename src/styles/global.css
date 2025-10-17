@@ -65,7 +65,7 @@ BASE LAYER
 		--warning: var(--color-amber-300);
 		--warning-foreground: var(--color-amber-950);
 		--error: var(--color-red-700);
-		--error-foreground: var(--color-base-50);
+		--error-foreground: var(--light-danger);
 
 		/* Borders / Inputs / Focus */
 		--border: var(--color-base-200);
@@ -125,7 +125,7 @@ BASE LAYER
 		--warning: var(--color-amber-300);
 		--warning-foreground: var(--color-amber-950);
 		--error: var(--color-red-800);
-		--error-foreground: var(--color-base-50);
+		--error-foreground: var(--dark-danger);
 		--border: var(--dark-border);
 		--input: var(--dark-border);
 		--link: var(--dark-link);

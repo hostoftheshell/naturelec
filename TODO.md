@@ -8,7 +8,6 @@ The document field supports the features you mentioned:
 - Inline formatting (bold, italic, code, strikethrough)
 - Additional features like images, tables, dividers, and custom component blocks
 
-
 ## Rendering Document Field Content
 
 To render content from the `fields.document` field, you need to use the `DocumentRenderer` component provided by Keystatic. The document field returns a complex JSON object with structured data, and the DocumentRenderer handles converting this into renderable HTML.[^2]
@@ -23,14 +22,14 @@ The modern replacement for the document field is `fields.markdoc`, which integra
 
 ```typescript
 content: fields.markdoc({
-  label: 'Content',
+  label: "Content",
   options: {
     image: {
-      directory: 'src/content/posts',
-      publicPath: '/src/content/posts/',
+      directory: "src/content/posts",
+      publicPath: "/src/content/posts/",
     },
   },
-})
+});
 ```
 
 **Benefits for Astro:**
@@ -40,15 +39,14 @@ content: fields.markdoc({
 - Better TypeScript support
 - More capable editor than the old document field[^4]
 
-
 ### 2. Rendering Markdoc in Astro
 
 With `fields.markdoc`, rendering is much simpler in Astro. You can use Astro's native Markdoc support:
 
 ```astro
 ---
-import { Markdoc } from '@astrojs/markdoc/components';
-import { reader } from '../utils/keystatic';
+import { Markdoc } from "@astrojs/markdoc/components";
+import { reader } from "../utils/keystatic";
 
 const post = await reader.collections.posts.read(slug);
 const content = await post.content();
@@ -56,7 +54,6 @@ const content = await post.content();
 
 <Markdoc content={content} />
 ```
-
 
 ### 3. Using Astro Content Collections
 
@@ -74,23 +71,24 @@ const { Content } = await post.render();
 <Content />
 ```
 
-
 ## Setup for Astro + Keystatic
 
 To use the modern approach:
 
 1. Install dependencies:
+
 ```bash
 npx astro add react markdoc
 npm install @keystatic/core @keystatic/astro
 ```
 
 2. Configure `astro.config.mjs`:
+
 ```javascript
-import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
-import markdoc from '@astrojs/markdoc';
-import keystatic from '@keystatic/astro';
+import { defineConfig } from "astro/config";
+import react from "@astrojs/react";
+import markdoc from "@astrojs/markdoc";
+import keystatic from "@keystatic/astro";
 
 export default defineConfig({
   integrations: [react(), markdoc(), keystatic()],

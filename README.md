@@ -22,6 +22,34 @@ Otherwise, this is a a plain project with no content, for those that want to bri
    - [Animations](https://cosmicthemes.com/docs/animations/)
    - [Keystatic CMS](https://cosmicthemes.com/docs/keystatic/) - if you don't want Keystatic you can run `npm run remove-keystatic`
    - [Forms](https://cosmicthemes.com/docs/contact-form/)
+   - [Bot Protection](#bot-protection-with-botpoison) - Protect your forms from spam
+
+## Bot Protection with Botpoison
+
+This project includes bot protection using [Botpoison](https://botpoison.com) to prevent spam and automated abuse on forms.
+
+### Quick Setup
+
+1. **Get your API keys** from [botpoison.com](https://botpoison.com/dashboard)
+2. **Add to `.env` file**:
+   ```bash
+   PUBLIC_BOTPOISON_PUBLIC_KEY=pk_your_public_key_here
+   BOTPOISON_SECRET_KEY=sk_your_secret_key_here
+   ```
+3. **For production**, add these same variables to your hosting platform (Netlify/Vercel environment variables)
+
+### Documentation
+
+- **[BOTPOISON_SETUP.md](./BOTPOISON_SETUP.md)** - Complete setup guide with examples
+- **[BOTPOISON_MIGRATION.md](./BOTPOISON_MIGRATION.md)** - Migration from old implementation
+- **[src/js/README.md](./src/js/README.md)** - Quick reference
+
+### Example Usage
+
+See working examples in:
+
+- `src/components/forms/BotprotectedContactForm.tsx` - React form with bot protection
+- `src/pages/api/message.ts` - API endpoint with verification
 
 Should you need any assistance, send me a message at support@cosmicthemes.com
 

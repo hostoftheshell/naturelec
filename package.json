@@ -11,7 +11,7 @@
 		"config-i18n": "node ./scripts/config-i18n.js",
 		"remove-keystatic": "node ./scripts/remove-keystatic.js",
 		"format": "eslint . --fix && prettier -w \"**/*\" --ignore-unknown --cache",
-		"lint": "eslint ."
+		"lint": "eslint . --fix --no-warn-ignored"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^4.3.6",
@@ -19,6 +19,8 @@
 		"@astrojs/react": "^4.4.0",
 		"@astrojs/rss": "^4.0.12",
 		"@astrojs/sitemap": "^3.6.0",
+		"@botpoison/browser": "^0.1.30",
+		"@botpoison/node": "^0.1.10",
 		"@fontsource-variable/albert-sans": "^5.2.7",
 		"@fontsource-variable/inter": "5.2.5",
 		"@fontsource/barlow": "^5.2.7",

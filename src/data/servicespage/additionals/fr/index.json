@@ -1,22 +1,22 @@
 {
-  "additionalServicesBadge": "Des solutions innovantes pour un habitat encore plus durable",
-  "additionalServicesTitle": {
-    "name": "Services complémentaires",
-    "slug": "services-additionnels"
-  },
-  "additionalServicesDescription": "Au-delà de l'électricité, Naturelec vous propose des installations écologiques et des équipements durables pour parfaire votre démarche environnementale.",
-  "additionalServices": [
-    {
-      "title": "Toilettes à compostage automatique",
-      "image": "@images/servicespage/additional/additionalServices/0/image.jpg",
-      "imageAlt": "toilette sèche pour maison haut de gamme",
-      "caption": "toilette sèche pour maison haut de gamme"
-    },
-    {
-      "title": "Marmite norvégienne",
-      "image": "@images/servicespage/additional/additionalServices/1/image.jpg",
-      "imageAlt": "Marmite norvégienne dans un pré",
-      "caption": "Marmite norvégienne dans un pré"
-    }
-  ]
+	"additionalServicesBadge": "Des solutions innovantes pour un habitat encore plus durable",
+	"additionalServicesTitle": {
+		"name": "Services complémentaires",
+		"slug": "services-additionnels"
+	},
+	"additionalServicesDescription": "Au-delà de l'électricité, Naturelec vous propose des installations écologiques et des équipements durables pour parfaire votre démarche environnementale.",
+	"additionalServices": [
+		{
+			"title": "Toilettes à compostage automatique",
+			"image": "@images/servicespage/additional/additionalServices/0/image.jpg",
+			"imageAlt": "toilette sèche pour maison haut de gamme",
+			"caption": "toilette sèche pour maison haut de gamme"
+		},
+		{
+			"title": "Marmite norvégienne",
+			"image": "@images/servicespage/additional/additionalServices/1/image.jpg",
+			"imageAlt": "Marmite norvégienne dans un pré",
+			"caption": "Marmite norvégienne dans un pré"
+		}
+	]
 }

@@ -8,109 +8,353 @@ import {
 	SelectContent,
 	SelectGroup,
 	SelectItem,
-	SelectLabel,
-	SelectSeparator,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/starwind/select";
 import { Textarea } from "@/components/starwind/textarea";
-import { getLocaleFromUrl } from "@/js/localeUtils";
-import { getLocalizedRoute, getTranslatedData, useTranslations } from "@/js/translationUtils";
 
-const currLocale = getLocaleFromUrl(Astro.url);
+// Get Formspark ID from environment variable
+const FORMSPARK_FORM_ID =
+	import.meta.env.PUBLIC_FORMSPARK_FORM_ID || "https://submit-form.com/echo";
 ---
 
-<form id="contact-form" class="flex flex-col gap-6">
-	<div class="flex flex-col">
-		<Label for="full-name">Nom et prénom</Label>
-		<Input
-			type="text"
-			name="full-name"
-			class="min-h-12 px-4 py-3"
-			placeholder="Jean-Michel Dupont"
-		/>
-	</div>
-	<div class="flex flex-col">
-		<Label for="email">Adresse e-mail </Label>
-		<Input
-			type="email"
-			name="email"
-			class="min-h-12 px-4 py-3"
-			placeholder="jmdupont@example.com"
-		/>
-	</div>
-	<div class="flex flex-col">
-		<Label for="phone">Numéro de téléphone</Label>
-		<Input type="tel" name="phone" class="min-h-12 px-4 py-3" placeholder="0612345678" />
-	</div>
-	<div class="flex flex-col">
-		<Label for="reason">Motif de contact</Label>
-		<Select name="reason">
-			<SelectTrigger class="min-h-12 w-full px-4 py-3">
-				<SelectValue placeholder="Sélectionner un motif" />
-			</SelectTrigger>
-			<SelectContent>
-				<SelectGroup>
-					<SelectItem value="demande-de-devis">Demande de devis</SelectItem>
-					<SelectItem value="installation-electrique">Installation électrique</SelectItem>
-					<SelectItem value="mise-en-conformite">Mise en conformité</SelectItem>
-					<SelectItem value="conseils-et-aide">Conseils et aide</SelectItem>
-					<SelectItem value="autre">Autre</SelectItem>
-				</SelectGroup>
-			</SelectContent>
-		</Select>
-	</div>
-	<!-- <div class="flex flex-col">
-		<Label for="existing-patient" class="mb-1">Are you an existing patient?</Label>
-		<div class="flex gap-1">
-			<Checkbox id="existing-patient" variant="primary" name="existing-patient" /><p>Yes</p>
+<div class="form-wrapper">
+	<form id="contact-form" class="flex flex-col gap-6" novalidate>
+		<div class="flex flex-col">
+			<Label for="full-name">Nom et prénom <span class="text-error-foreground">*</span></Label>
+			<Input
+				id="full-name"
+				type="text"
+				name="fullName"
+				class="min-h-12 px-4 py-3"
+				placeholder="Jean-Michel Dupont"
+				required
+			/>
+			<span class="error-message text-error-foreground mt-1 hidden text-sm" data-error="full-name"
+			></span>
 		</div>
-	</div> -->
-	<div class="flex flex-col">
-		<Label for="message">Votre message</Label>
-		<Textarea
-			name="message"
-			class="min-h-12 px-4 py-3"
-			placeholder="Comment pouvons-nous vous aider ?"
-			rows={4}
-		/>
-	</div>
-	<div class="mt-2 flex flex-col">
-		<div class="flex gap-1">
-			<Label for="consent" class="sr-only">Consent</Label>
-			<Checkbox id="consent" variant="primary" name="consent" /><p>
-				J'accepte que mes données soient conservées pour traiter ma demande
+
+		<div class="flex flex-col">
+			<Label for="email">Adresse e-mail <span class="text-error-foreground">*</span></Label>
+			<Input
+				id="email"
+				type="email"
+				name="email"
+				class="min-h-12 px-4 py-3"
+				placeholder="jmdupont@example.com"
+				required
+			/>
+			<span class="error-message text-error-foreground mt-1 hidden text-sm" data-error="email"
+			></span>
+		</div>
+
+		<div class="flex flex-col">
+			<Label for="phone">Numéro de téléphone</Label>
+			<Input
+				id="phone"
+				type="tel"
+				name="phone"
+				class="min-h-12 px-4 py-3"
+				placeholder="0612345678"
+				pattern="[0-9]{10}"
+			/>
+			<span class="error-message text-error-foreground mt-1 hidden text-sm" data-error="phone"
+			></span>
+		</div>
+
+		<div class="flex flex-col">
+			<Label for="reason">Motif de contact <span class="text-error-foreground">*</span></Label>
+			<Select name="reason">
+				<SelectTrigger id="reason" class="min-h-12 w-full px-4 py-3" required>
+					<SelectValue placeholder="Sélectionner un motif" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectGroup>
+						<SelectItem value="demande-de-devis">Demande de devis</SelectItem>
+						<SelectItem value="installation-electrique">Installation électrique</SelectItem>
+						<SelectItem value="mise-en-conformite">Mise en conformité</SelectItem>
+						<SelectItem value="conseils-et-aide">Conseils et aide</SelectItem>
+						<SelectItem value="autre">Autre</SelectItem>
+					</SelectGroup>
+				</SelectContent>
+			</Select>
+			<span class="error-message text-error-foreground mt-1 hidden text-sm" data-error="reason"
+			></span>
+		</div>
+
+		<div class="flex flex-col">
+			<Label for="message">Votre message <span class="text-error-foreground">*</span></Label>
+			<Textarea
+				id="message"
+				name="message"
+				class="min-h-12 px-4 py-3"
+				placeholder="Comment pouvons-nous vous aider ?"
+				rows={4}
+				required
+			/>
+			<span class="error-message text-error-foreground mt-1 hidden text-sm" data-error="message"
+			></span>
+		</div>
+
+		<div class="mt-2 flex flex-col">
+			<div class="flex items-start gap-2">
+				<Checkbox id="consent" variant="primary" name="consent" required class="mt-1" />
+				<Label for="consent" class="cursor-pointer text-sm">
+					J'accepte que mes données soient conservées pour traiter ma demande <span
+						class="text-error-foreground">*</span
+					>
+				</Label>
+			</div>
+			<span class="error-message text-error-foreground mt-1 hidden text-sm" data-error="consent"
+			></span>
+		</div>
+
+		<!-- Honeypot field for spam protection -->
+		<input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+
+		<div>
+			<Button id="submit-btn" variant="primary" type="submit" class="w-full py-3 text-lg">
+				Envoyer votre message
+			</Button>
+			<p class="text-muted-foreground mt-2 text-center text-xs">
+				🛡️ Ce formulaire est protégé par Botpoison contre le spam
 			</p>
 		</div>
-	</div>
-	<div>
-		<Button variant="primary" type="submit" class="w-full py-3 text-lg"
-			>Envoyer votre message</Button
+
+		<!-- Status messages -->
+		<div
+			id="form-success"
+			class="text-success-foreground hidden rounded-lg border border-green-200 bg-green-50 p-4"
+			role="alert"
 		>
-	</div>
-</form>
+			<p class="font-semibold">✓ Message envoyé avec succès !</p>
+			<p class="text-sm">Nous vous répondrons dans les plus brefs délais.</p>
+		</div>
+
+		<div
+			id="form-error"
+			class="hidden rounded-lg border border-red-200 bg-red-50 p-4 text-red-800"
+			role="alert"
+		>
+			<p class="font-semibold">⚠ Une erreur est survenue</p>
+			<p class="text-sm" id="error-message">Veuillez réessayer plus tard.</p>
+		</div>
+	</form>
+</div>
 
 <script>
-	function handleFormSubmit() {
-		const form = document.querySelector("#contact-form") as HTMLFormElement;
-		if (form) {
-			form.addEventListener("submit", (e) => {
-				e.preventDefault();
-				const formData = new FormData(form);
-				const formValues = Object.fromEntries(formData.entries());
+	import { getBotpoisonSolution } from "@/js/botpoisonUtils";
 
-				// demo form data logging
-				console.log("Form submission values:", formValues);
+	function validateForm(form) {
+		let isValid = true;
+		const errors = document.querySelectorAll(".error-message");
+		errors.forEach((error) => error.classList.add("hidden"));
 
-				// You can add additional logic here like:
-				// - Form validation
-				// - API submission
-				// - Success/error handling
+		// Validate full name
+		const fullName = form.querySelector('[name="fullName"]');
+		if (!fullName.value.trim()) {
+			showError("full-name", "Le nom et prénom sont requis");
+			isValid = false;
+		}
+
+		// Validate email
+		const email = form.querySelector('[name="email"]');
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!email.value.trim()) {
+			showError("email", "L'adresse e-mail est requise");
+			isValid = false;
+		} else if (!emailRegex.test(email.value)) {
+			showError("email", "L'adresse e-mail n'est pas valide");
+			isValid = false;
+		}
+
+		// Validate phone (if provided)
+		const phone = form.querySelector('[name="phone"]');
+		if (phone.value.trim() && !/^[0-9]{10}$/.test(phone.value.replace(/\s/g, ""))) {
+			showError("phone", "Le numéro doit contenir 10 chiffres");
+			isValid = false;
+		}
+
+		// Validate reason
+		const reason = form.querySelector('[name="reason"]');
+		if (!reason.value) {
+			showError("reason", "Veuillez sélectionner un motif");
+			isValid = false;
+		}
+
+		// Validate message
+		const message = form.querySelector('[name="message"]');
+		if (!message.value.trim()) {
+			showError("message", "Le message est requis");
+			isValid = false;
+		}
+
+		// Validate consent
+		const consent = form.querySelector('[name="consent"]');
+		if (!consent.checked) {
+			showError("consent", "Vous devez accepter pour continuer");
+			isValid = false;
+		}
+
+		return isValid;
+	}
+
+	function showError(fieldName, message) {
+		const errorElement = document.querySelector(`[data-error="${fieldName}"]`);
+		if (errorElement) {
+			errorElement.textContent = message;
+			errorElement.classList.remove("hidden");
+		}
+	}
+
+	function setFormLoading(isLoading: boolean) {
+		const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;
+		const form = document.getElementById("contact-form") as HTMLFormElement;
+
+		if (!submitBtn || !form) return;
+
+		if (isLoading) {
+			submitBtn.disabled = true;
+			submitBtn.textContent = "Envoi en cours...";
+			form.querySelectorAll("input, textarea, select, button").forEach((el) => {
+				(
+					el as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLButtonElement
+				).disabled = true;
+			});
+		} else {
+			submitBtn.disabled = false;
+			submitBtn.textContent = "Envoyer votre message";
+			form.querySelectorAll("input, textarea, select, button").forEach((el) => {
+				(
+					el as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLButtonElement
+				).disabled = false;
 			});
 		}
 	}
 
+	function showSuccessMessage() {
+		const successEl = document.getElementById("form-success");
+		const errorEl = document.getElementById("form-error");
+
+		if (successEl) successEl.classList.remove("hidden");
+		if (errorEl) errorEl.classList.add("hidden");
+
+		// Scroll to success message
+		if (successEl) {
+			successEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+		}
+	}
+
+	function showErrorMessage(message?: string) {
+		const errorEl = document.getElementById("form-error");
+		const successEl = document.getElementById("form-success");
+		const errorMessageEl = document.getElementById("error-message");
+
+		if (errorEl) errorEl.classList.remove("hidden");
+		if (successEl) successEl.classList.add("hidden");
+		if (errorMessageEl) {
+			errorMessageEl.textContent = message || "Veuillez réessayer plus tard.";
+		}
+
+		// Scroll to error message
+		if (errorEl) {
+			errorEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+		}
+	}
+
+	async function handleFormSubmit() {
+		const form = document.querySelector("#contact-form") as HTMLFormElement;
+
+		if (!form) return;
+
+		form.addEventListener("submit", async (e) => {
+			e.preventDefault();
+
+			// Hide previous messages
+			const successEl = document.getElementById("form-success");
+			const errorEl = document.getElementById("form-error");
+			if (successEl) successEl.classList.add("hidden");
+			if (errorEl) errorEl.classList.add("hidden");
+
+			// Validate form
+			if (!validateForm(form)) {
+				return;
+			}
+
+			// Get form data
+			const formData = new FormData(form);
+			const formValues: Record<string, any> = {};
+
+			// Convert FormData to object, handling checkboxes properly
+			for (const [key, value] of formData.entries()) {
+				if (key === "_gotcha") continue; // Skip honeypot
+				if (key === "consent") {
+					const consentEl = form.querySelector(`[name="${key}"]`) as HTMLInputElement;
+					formValues[key] = consentEl?.checked || false;
+				} else {
+					formValues[key] = value;
+				}
+			}
+
+			console.log("Form submission values:", formValues);
+
+			// Set loading state
+			setFormLoading(true);
+
+			try {
+				// Get Botpoison solution
+				let botpoisonSolution;
+				try {
+					botpoisonSolution = await getBotpoisonSolution();
+				} catch (error) {
+					console.error("Botpoison challenge failed:", error);
+					showErrorMessage("Échec de la vérification anti-bot. Veuillez réessayer.");
+					setFormLoading(false);
+					return;
+				}
+
+				// Add Botpoison solution to form data
+				formValues._botpoison = botpoisonSolution;
+
+				// Submit to our API endpoint which verifies bot protection and forwards to Formspark
+				const response = await fetch("/api/contact", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Accept: "application/json",
+					},
+					body: JSON.stringify(formValues),
+				});
+
+				if (response.ok) {
+					const responseData = await response.json();
+					console.log("Form submitted successfully!", responseData);
+					showSuccessMessage();
+					form.reset();
+
+					// Hide success message after 10 seconds
+					setTimeout(() => {
+						const successEl = document.getElementById("form-success");
+						if (successEl) successEl.classList.add("hidden");
+					}, 10000);
+				} else {
+					const errorData = await response.json().catch(() => ({}));
+					showErrorMessage(errorData.error || "Une erreur est survenue lors de l'envoi");
+				}
+			} catch (error) {
+				console.error("Error:", error);
+				showErrorMessage(
+					"Impossible de se connecter au serveur. Vérifiez votre connexion internet.",
+				);
+			} finally {
+				setFormLoading(false);
+			}
+		});
+	}
+
+	// Initialize on page load
 	handleFormSubmit();
 
+	// Re-initialize on page navigation (for Astro View Transitions)
 	document.addEventListener("astro:after-swap", handleFormSubmit);
 </script>

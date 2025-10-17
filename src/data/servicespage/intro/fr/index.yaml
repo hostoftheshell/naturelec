@@ -3,12 +3,12 @@ servicesPageIntroDescription: >-
   De l'installation électrique complète aux solutions d'énergies renouvelables,
   Naturelec vous accompagne dans tous vos projets électriques avec expertise et
   professionnalisme.
-servicesPageIntroImage: '@images/servicespage/intro/servicesPageIntroImage.webp'
+servicesPageIntroImage: "@images/servicespage/intro/servicesPageIntroImage.webp"
 servicesPageIntroImageAlt: >-
   Maison française moderne avec panneaux solaires, domotique et travaux
   électriques soignés, dans la campagne ensoleillée de Bourgogne.
 expertise:
-  sectionTitle: 'Nos domaines d''expertise :'
+  sectionTitle: "Nos domaines d'expertise :"
   expertiseAreas:
     - title: Électricité générale
       anchorLink: electricite-generale-1
