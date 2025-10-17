@@ -45,7 +45,7 @@ export default config({
 	// Cloud deployment is free to sign up (up to 3 users per team)
 	// Docs: https://keystatic.com/docs/cloud
 	// Create a Keystatic Cloud account here: https://keystatic.cloud/
-	cloud: { project: "cosmic-themes/starter" },
+	cloud: { project: "equipe-naturelec/naturelec89" },
 
 	ui: {
 		brand: { name: "Naturelec" },
